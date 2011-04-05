@@ -1,0 +1,2 @@
+#define DROPBOX_KEY 	@"KEY"
+#define DROPBOX_SECRET	@"SECRET"
