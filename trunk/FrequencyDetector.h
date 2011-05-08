@@ -1,9 +1,6 @@
+// -*- Mode: ObjC -*-
 //
-//  FrequencyDetector.h
-//  Datac
-//
-//  Created by Brad Howes on 5/2/11.
-//  Copyright 2011 Skype. All rights reserved.
+// Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

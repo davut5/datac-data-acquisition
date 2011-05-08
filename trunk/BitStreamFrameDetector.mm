@@ -1,11 +1,3 @@
-//
-//  BitStreamFrameDetector.mm
-//  Datac
-//
-//  Created by Brad Howes on 4/15/11.
-//  Copyright 2011 Skype. All rights reserved.
-//
-
 // -*- Mode: ObjC -*-
 //
 // Copyright (C) 2011, Brad Howes. All rights reserved.

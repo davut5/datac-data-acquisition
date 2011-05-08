@@ -1,9 +1,6 @@
+// -*- Mode: ObjC -*-
 //
-//  WeightedAverager.mm
-//  Datac
-//
-//  Created by Brad Howes on 4/29/11.
-//  Copyright 2011 Skype. All rights reserved.
+// Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
 #import "WeightedAverager.h"
