@@ -4,6 +4,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <vector>
 
 /** Digital low-pass filter, using the direct form II transposed method. The
     tap weights for the filter are provided externally, either in a text file
@@ -16,9 +17,8 @@
 @interface LowPassFilter : NSObject {
 @private
     NSString* fileName;
-    UInt32 numTaps;
-    Float32* B;
-    Float32* Z;
+    std::vector<Float32> B;
+    std::vector<Float32> Z;
 }
 
 @property (nonatomic, assign) NSString* fileName;
@@ -44,5 +44,7 @@
 /** Filter the given value and return the result.
  */
 - (Float32)filter:(Float32)x;
+
+- (NSUInteger)size;
 
 @end

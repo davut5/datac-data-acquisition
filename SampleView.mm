@@ -1,3 +1,4 @@
+// -*- Mode: ObjC -*-
 //
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //
@@ -42,7 +43,7 @@
 	}
 
 	[self setupView];
-	[self drawView];
+            //	[self drawView];
     }
 
     return self;
@@ -54,7 +55,6 @@
     [self destroyFramebuffer];
     [self createFramebuffer];
     [self setupView];
-    [self drawView];
 }
 
 -(BOOL)createFramebuffer

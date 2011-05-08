@@ -1,3 +1,4 @@
+// -*- Mode: ObjC -*-
 //
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //
@@ -22,7 +23,7 @@
 - (void)viewDidLoad {
     NSLog(@"RecordingsViewController.viewDidLoad");
     [super viewDidLoad];
-    self.title = @"Recordings";
+    self.title = NSLocalizedString(@"Recordings", @"Recordings view title");
     self.tableView.allowsSelection = NO;
 }
 
@@ -131,16 +132,16 @@
     NSString* status;
 
     if (recording.uploaded == YES) {
-	status = @"uploaded";
+	status = NSLocalizedString(@"uploaded", @"Status tag for uploaded files");
     }
     else if (recording.uploading == YES) {
-	status = @"uploading";
+	status = NSLocalizedString(@"uploading", @"Status tag for uploading files");
     }
     else if ([appDelegate isRecordingInto:recording]) {
-	status = @"recording";
+	status = NSLocalizedString(@"recording", @"Status tag for active recording file");
     }
     else {
-	status = @"not uploaded";
+	status = NSLocalizedString(@"not uploaded", @"Status tag for files not uploaded");
     }
 
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@", recording.size, status];

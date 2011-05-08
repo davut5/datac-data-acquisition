@@ -1,3 +1,4 @@
+// -*- Mode: ObjC -*-
 //
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //
@@ -9,7 +10,9 @@
 
 - (void)networkReachabilityChanged:(NSNotification*)notification;
 - (void)startRestClient;
+- (void)warnNetworkAvailable;
 - (void)stopRestClient;
+- (void)warnNetworkUnavailable;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 
 @end
@@ -38,6 +41,7 @@
 						     name:kReachabilityChangedNotification
 						   object:serverReachability];
 	[serverReachability startNotifier];
+        [self networkReachabilityChanged: nil];
     }
 
     return self;
@@ -126,14 +130,16 @@
     ReachabilityState state = [serverReachability currentReachabilityState];
     NSLog(@"DropboxUploader.networkReachabilityChanged: %d", state);
     if (state == kNotReachable) {
-	[self stopRestClient];
+        if (restClient != nil) {
+            [self stopRestClient];
+            [self warnNetworkUnavailable];
+        }
     }
     else {
-	[self startRestClient];
-	if (warnedUser == YES) {
-	    [self warnNetworkAvailable];
-	}
-	warnedUser = NO;
+        if (restClient == nil) {
+            [self startRestClient];
+            [self warnNetworkAvailable];
+        }
     }
 }
 
@@ -163,9 +169,6 @@
     }
 	
     if (restClient == nil) {
-	if (warnedUser == NO) {
-	    [self warnNetworkUnavailable];
-	}
 	return;
     }
 

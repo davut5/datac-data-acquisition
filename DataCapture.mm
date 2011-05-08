@@ -1,3 +1,4 @@
+// -*- Mode: ObjC -*-
 //
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //
@@ -6,14 +7,10 @@
 #import <AudioUnit/AudioUnitProperties.h>
 #import <AudioToolbox/AudioServices.h>
 
-#import "AudioSampleBuffer.h"
 #import "CAStreamBasicDescription.h"
 #import "CAXException.h"
 #import "DataCapture.h"
-#import "LowPassFilter.h"
 #import "SampleRecorder.h"
-#import "SignalDetector.h"
-#import "SwitchDetector.h"
 #import "VertexBuffer.h"
 #import "VertexBufferManager.h"
 
@@ -24,6 +21,12 @@ struct AudioUnitRenderProcContext
     SEL processSamplesSelector;
     DataCaptureProcessSamplesProc processSamplesProc;
 };
+
+static const SInt32 kFloatToQ824 = 1 << 24;
+static const Float32 kQ824ToFloat = Float32(1.0) / Float32(kFloatToQ824);
+
+#define Q824_TO_FLOAT(V) ((V) * kQ824ToFloat);
+#define FLOAT_TO_Q824(V) ((V) * kFloatToQ824);
 
 @interface DataCapture(Private)
 
@@ -69,7 +72,7 @@ struct AudioUnitRenderProcContext
 
 @implementation DataCapture
 
-@synthesize audioUnit, audioSampleBuffer, maxAudioSampleCount, vertexBufferManager, signalDetector, switchDetector, sampleRecorder;
+@synthesize audioUnit, maxAudioSampleCount, vertexBufferManager, signalProcessor, switchDetector, sampleRecorder;
 @synthesize audioUnitRunning, emittingPowerSignal, pluggedIn, sampleRate, processSamplesSelector, processSamplesProc;
 
 + (DataCapture*)create
@@ -81,7 +84,7 @@ struct AudioUnitRenderProcContext
 {
     if ((self = [super init])) {
 	audioUnit = nil;
-	signalDetector = nil;
+	signalProcessor = nil;
 	switchDetector = nil;
 	vertexBufferManager = nil;
 	sampleRecorder = nil;
@@ -91,11 +94,7 @@ struct AudioUnitRenderProcContext
 	audioUnitRunning = NO;
 	emittingPowerSignal = NO;
 	pluggedIn = NO;
-
-	addSampleSelector = @selector(addSample:);
-	signalDetectorProc = (DataCaptureProc)[SignalDetector instanceMethodForSelector:addSampleSelector];
-	switchDetectorProc = (DataCaptureProc)[SwitchDetector instanceMethodForSelector:addSampleSelector];
-	vertexBufferProc = (DataCaptureProc)[VertexBuffer instanceMethodForSelector:addSampleSelector];
+        sampleBuffer.clear();
 
 	processSamplesSelector = @selector(processSamples:frameCount:atTime:);
 	processSamplesProc = (DataCaptureProcessSamplesProc)[self methodForSelector:processSamplesSelector];
@@ -112,7 +111,7 @@ struct AudioUnitRenderProcContext
     delete audioUnitRenderProcContext;
 
     [self stop];
-    self.signalDetector = nil;
+    self.signalProcessor = nil;
     self.switchDetector = nil;
     self.vertexBufferManager = nil;
     self.sampleRecorder = nil;
@@ -267,7 +266,8 @@ audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, co
 					   &maxAudioSampleCount, &size), "failed to get max sample count");
 	NSLog(@"maxAudioSampleCount: %d", maxAudioSampleCount);
 
-	self.audioSampleBuffer = [AudioSampleBuffer bufferWithCapacity:maxAudioSampleCount];
+        sampleBuffer.clear();
+        sampleBuffer.resize(maxAudioSampleCount, 0.0);
 
 	//
 	// 8.24 fixed-point representation
@@ -392,29 +392,29 @@ audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, co
 - (void)processSamples:(AudioBufferList*)ioData frameCount:(UInt32)frameCount atTime:(const AudioTimeStamp*)timeStamp
 {
     UInt32 count = frameCount;
-    SInt32* sptr = static_cast<SInt32*>(ioData->mBuffers[0].mData);
+    SInt32* sptr = static_cast<SInt32*>(ioData->mBuffers[0].mData); 
 
+    //
+    // Save samples if recording
+    //
     if (sampleRecorder != nil) {
 	[sampleRecorder write:sptr maxLength:count];
     }
 
+    //
+    // Convert samples to floats
+    //
+    Float32* fptr = &sampleBuffer[0];
+    for (UInt32 index = 0; index < count; ++index) {
+        *fptr++ = Q824_TO_FLOAT(*sptr++);
+    }
+
+    fptr = &sampleBuffer[0];
+    [signalProcessor addSamples:fptr count:count];
+    [switchDetector addSamples:fptr count:count];
+
     VertexBuffer* vertexBuffer = [vertexBufferManager getBufferForCount:count];
-    if (vertexBuffer != nil) {
-	while (count-- > 0) {
-	    Float32 value = [AudioSampleBuffer convertQ824ToFloat:*sptr++];
-	    (vertexBufferProc)(vertexBuffer, addSampleSelector, value);
-	    (signalDetectorProc)(signalDetector, addSampleSelector, value);
-	    (switchDetectorProc)(switchDetector, addSampleSelector, value);
-	}
-	vertexBuffer.count = frameCount;
-    }
-    else {
-	while (count-- > 0) {
-	    Float32 value = [AudioSampleBuffer convertQ824ToFloat:*sptr++];
-	    (signalDetectorProc)(signalDetector, addSampleSelector, value);
-	    (switchDetectorProc)(switchDetector, addSampleSelector, value);
-	}
-    }
+    [vertexBuffer addSamples:fptr count:count];
 
     if (emittingPowerSignal == YES) {
 	for (UInt32 buffer = 0; buffer < ioData->mNumberBuffers; ++buffer ) {

@@ -4,17 +4,15 @@
 //
 
 #import <AudioUnit/AudioUnit.h>
+#import <vector>
+
+#import "SampleProcessorProtocol.h"
 
 struct AudioUnitRenderProcContext;
 
-@class AudioSampleBuffer;
-@class LowPassFilter;
 @class SampleRecorder;
-@class SignalDetector;
-@class SwitchDetector;
 @class VertexBufferManager;
 
-typedef void (*DataCaptureProc)(id, SEL, Float32);
 typedef void (*DataCaptureProcessSamplesProc)(id, SEL, AudioBufferList*, UInt32, const AudioTimeStamp*);
 
 /** Data collection class for the exteral device. Uses the AudioUnit
@@ -32,31 +30,21 @@ typedef void (*DataCaptureProcessSamplesProc)(id, SEL, AudioBufferList*, UInt32,
     AURenderCallbackStruct renderCallback;
     SInt32* powerSignal;
     UInt32 maxAudioSampleCount;
-    SignalDetector* signalDetector;
-    SwitchDetector* switchDetector;
+    NSObject<SampleProcessorProtocol>* signalProcessor;
+    NSObject<SampleProcessorProtocol>* switchDetector;
     VertexBufferManager* vertexBufferManager;
     SampleRecorder* sampleRecorder;
     Float64 sampleRate;
     BOOL audioUnitRunning;
     BOOL emittingPowerSignal;
     BOOL pluggedIn;
-
-    //
-    // Method cache for the internal processSamples callback that receives raw
-    // audio samples. Probably naive attempt to speed up method dispatch...
-    //
-    SEL addSampleSelector;
-    DataCaptureProc vertexBufferProc;
-    DataCaptureProc signalDetectorProc;
-    DataCaptureProc switchDetectorProc;
-
+    std::vector<Float32> sampleBuffer;
     struct AudioUnitRenderProcContext* audioUnitRenderProcContext;
 }
 
 @property (nonatomic, assign, readonly) AudioUnit audioUnit;
-@property (nonatomic, retain) AudioSampleBuffer* audioSampleBuffer;
-@property (nonatomic, retain) SignalDetector* signalDetector;
-@property (nonatomic, retain) SwitchDetector* switchDetector;
+@property (nonatomic, retain) NSObject<SampleProcessorProtocol>* signalProcessor;
+@property (nonatomic, retain) NSObject<SampleProcessorProtocol>* switchDetector;
 @property (nonatomic, retain) VertexBufferManager* vertexBufferManager;
 @property (nonatomic, retain) SampleRecorder* sampleRecorder;
 @property (nonatomic, assign, readonly) UInt32 maxAudioSampleCount;

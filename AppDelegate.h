@@ -10,22 +10,27 @@
 #import "DBSession.h"
 #import "DBLoginController.h"
 #import "IASKAppSettingsViewController.h"
+#import "SampleProcessorProtocol.h"
 
 @class DataCapture;
 @class DropboxUploader;
+@class BitDetector;
 @class RecordingInfo;
 @class RecordingsViewController;
 @class RpmViewController;
 @class SettingsViewController;
-@class SignalDetector;
+@class LevelDetector;
 @class SignalViewController;
-@class SwitchDetector;
+@class MicSwitchDetector;
 @class VertexBufferManager;
+@class WaveCycleDetector;
 
-/** Application delegate that manages the various controllers of the
- * application.
+/** Application delegate that manages the various view controllers of the application, and the application-wide
+ services such as data capture and signal detection.
  */
-@interface AppDelegate : NSObject <UIApplicationDelegate, IASKSettingsDelegate, UITabBarControllerDelegate, CPPlotDataSource, DBSessionDelegate, DBLoginControllerDelegate, UIActionSheetDelegate> {
+@interface AppDelegate : NSObject <UIApplicationDelegate, IASKSettingsDelegate, UITabBarControllerDelegate, 
+                                   DBSessionDelegate, DBLoginControllerDelegate, 
+                                   UIActionSheetDelegate> {
 @private
     IBOutlet UIWindow *window;
     IBOutlet UITabBarController* tabBarController;
@@ -36,14 +41,12 @@
 
     DBSession* dropboxSession;
     DataCapture* dataCapture;
-    SignalDetector* signalDetector;
-    SwitchDetector* switchDetector;
+    NSObject<SampleProcessorProtocol>* signalDetector;
+    MicSwitchDetector* switchDetector;
     VertexBufferManager* vertexBufferManager;
-    NSMutableArray* points;
-    UInt32 newest;
-    Float32 xScale;
     DropboxUploader* uploader;
-
+    NSTimer* uploadChecker;
+                                       
     // CoreData stuff
     NSManagedObjectModel* managedObjectModel;
     NSManagedObjectContext* managedObjectContext;
@@ -59,12 +62,12 @@
 @property (nonatomic, retain) IBOutlet SettingsViewController* appSettingsViewController;
 @property (nonatomic, retain) DBSession* dropboxSession;
 @property (nonatomic, retain) DataCapture* dataCapture;
-@property (nonatomic, retain) SignalDetector* signalDetector;
-@property (nonatomic, retain) SwitchDetector* switchDetector;
+@property (nonatomic, retain) NSObject<SampleProcessorProtocol>* signalDetector;
+@property (nonatomic, retain) MicSwitchDetector* switchDetector;
 @property (nonatomic, retain) VertexBufferManager* vertexBufferManager;
-@property (nonatomic, retain) NSMutableArray* points;
-@property (nonatomic, assign) UInt32 newest;
 @property (nonatomic, retain) DropboxUploader* uploader;
+@property (nonatomic, retain) NSTimer* uploadChecker;
+
 @property (nonatomic, retain, readonly) NSManagedObjectModel* managedObjectModel;
 @property (nonatomic, retain, readonly) NSManagedObjectContext* managedObjectContext;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator* persistentStoreCoordinator;
@@ -93,10 +96,12 @@
  */
 - (void)stopRecording;
 
-/** Determine if application is currently recording.
+/** Determine if the application is currently recording.
  */
 - (BOOL)isRecording;
 
+/** Determine if the application is currently recording into a file referenced in the given RecordingInfo instance.
+ */
 - (BOOL)isRecordingInto:(RecordingInfo*)recording;
 
 /** Remove the indicated recording file and meta data.

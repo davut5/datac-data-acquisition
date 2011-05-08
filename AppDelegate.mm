@@ -4,25 +4,31 @@
 //
 
 #import "AppDelegate.h"
+#import "BitDetector.h"
+#import "BitFrameDecoder.h"
+#import "BitStreamFrameDetector.h"
 #import "DropboxSDK.h"
 #import "Dropbox.keys"
 #import "DropboxUploader.h"
+#import "FrequencyDetector.h"
 #import "IASKSpecifier.h"
 #import "IndicatorButton.h"
 #import "RecordingInfo.h"
 #import "RecordingsViewController.h"
 #import "RpmViewController.h"
 #import "SampleRecorder.h"
-#import "SignalDetector.h"
+#import "LevelDetector.h"
+#import "LevelDetectorController.h"
 #import "SignalViewController.h"
 #import "SettingsViewController.h"
 #import "UserSettings.h"
 #import "VertexBufferManager.h"
+#import "WaveCycleDetector.h"
 
 @interface AppDelegate ()
 
+- (void)uploaderCheck:(NSNotification*)notification;
 - (void)updateDropboxUploader;
-- (void)updateSignalStats:(NSNotification*)notification;
 - (void)updateDropboxCell:(UITableViewCell*)cell;
 - (void)sessionDidReceiveAuthorizationFailure:(DBSession*)session;
 
@@ -32,7 +38,7 @@
 
 @synthesize window, tabBarController, signalViewController, appSettingsViewController, recordingsViewController;
 @synthesize rpmViewController, dropboxSession, fetchedResultsController;
-@synthesize dataCapture, signalDetector, switchDetector, vertexBufferManager, points, newest, uploader;
+@synthesize dataCapture, signalDetector, switchDetector, vertexBufferManager, uploader, uploadChecker;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -59,31 +65,19 @@
 
     [application setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
 
-    xScale = [settings floatForKey:kSettingsSignalDetectorUpdateRateKey];
-    Float32 duration = [settings floatForKey:kSettingsRpmViewDurationKey];
-    UInt32 count = duration / xScale + 0.5;
-    self.points = [NSMutableArray arrayWithCapacity:count];
-    while ([points count] < count) {
-	[points addObject:[NSNumber numberWithFloat:0.0]];
-    }
-
-    newest = 0;
-
     self.dataCapture = [DataCapture create];
-    self.signalDetector = [SignalDetector create];
-    self.switchDetector = [SwitchDetector createWithSampleRate:dataCapture.sampleRate];
+    self.signalDetector = [LevelDetector create];
+
+    signalViewController.detectorController;
+
+    self.switchDetector = [MicSwitchDetector createWithSampleRate:dataCapture.sampleRate];
     self.vertexBufferManager = [VertexBufferManager createForDuration:1.0 sampleRate:dataCapture.sampleRate];
 
-    dataCapture.signalDetector = signalDetector;
+    dataCapture.signalProcessor = self.signalDetector;
     dataCapture.switchDetector = switchDetector;
     dataCapture.vertexBufferManager = vertexBufferManager;
     
     application.idleTimerDisabled = YES;
-
-    [notificationCenter addObserver:self 
-			   selector:@selector(updateSignalStats:)
-			       name:kSignalDetectorCounterUpdateNotification
-			     object:signalDetector];
 
     NSError* error;
     if (![self.fetchedResultsController performFetch:&error]) {
@@ -92,7 +86,13 @@
 
     [self.window addSubview:tabBarController.view];
     [self.window makeKeyAndVisible];
-	
+
+    self.uploadChecker = [NSTimer scheduledTimerWithTimeInterval:1.0 
+                                                            target:self
+                                                          selector:@selector(uploaderCheck:)
+                                                          userInfo:nil 
+                                                           repeats:YES];
+
     return YES;
 }
 
@@ -160,35 +160,14 @@
     [signalViewController updateFromSettings];
     [switchDetector updateFromSettings];
     [settingsController synchronizeSettings];
-
-    NSUserDefaults* settings = [NSUserDefaults standardUserDefaults];
-    xScale = [settings floatForKey:kSettingsSignalDetectorUpdateRateKey];
-    Float32 duration = [settings floatForKey:kSettingsRpmViewDurationKey];
-    UInt32 count = duration / xScale + 0.5;
-    if (count != [points count]) {
-	self.points = [NSMutableArray arrayWithCapacity:count];
-	while ([points count] < count) {
-	    [points addObject:[NSNumber numberWithFloat:0.0]];
-	}
-	newest = 0;
-	[rpmViewController update];
-    }
-
     [self updateDropboxUploader];
 }
 
 #pragma mark -
 #pragma mark Periodic Updates
 
-- (void)updateSignalStats:(NSNotification*)notification
+- (void)uploaderCheck:(NSNotification*)notification
 {
-    if (newest == 0) newest = [points count];
-    newest -= 1;
-    NSDictionary* userInfo = [notification userInfo];
-    NSNumber* rpmValue = [userInfo objectForKey:kSignalDetectorRPMKey];
-    [points replaceObjectAtIndex:newest withObject:rpmValue];
-    [rpmViewController update];
-	
     if (uploader != nil && fetchedResultsController != nil && ! [self isRecording]) {
 	NSArray* recordings = [fetchedResultsController fetchedObjects];
 	UInt32 count = [recordings count];
@@ -212,35 +191,12 @@
 	if (sender.selectedIndex == 3) {
 	    [settingsController dismiss:self];
 	}
+        else if (viewController == rpmViewController) {
+            [rpmViewController.view sizeToFit];
+        }
     }
 	
     return YES;
-}
-
-#pragma mark -
-#pragma mark Plot Data Source Methods
-
-- (NSUInteger)numberOfRecordsForPlot:(CPPlot*)plot
-{
-    return [points count];
-}
-
-- (NSNumber*)numberForPlot:(CPPlot*)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
-{
-    switch (fieldEnum) {
-    case CPScatterPlotFieldX:
-	// Generate X values based on the index of the point we are working with
-	return [NSNumber numberWithFloat:(index * xScale)];
-	break;
-    case CPScatterPlotFieldY:
-	// Points are stored in a circular buffer, starting at newest.
-	index = ( newest + index ) % [points count];
-	return [points objectAtIndex:index];
-	break;
-    default:
-	// Anything else is ignored.
-	return [NSDecimalNumber zero];
-    }
 }
 
 #pragma mark -
@@ -248,7 +204,7 @@
 
 - (void)updateDropboxCell:(UITableViewCell*)cell
 {
-    cell.textLabel.text = @"Dropbox";
+    cell.textLabel.text = NSLocalizedString(@"Dropbox", @"Name of the Dropbox button shown in the Settings Display");
     if ([dropboxSession isLinked]) {
 	cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
@@ -275,11 +231,12 @@
     }
     else {
 	NSString* cancel = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? @"No" : nil;
-	UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"Really unlink Dropbox account? Doing so will disable automatic uploading of recordings."
-								 delegate:self 
-							cancelButtonTitle:nil
-						   destructiveButtonTitle:@"Unlink"
-							otherButtonTitles:nil];
+	UIActionSheet* actionSheet = [[UIActionSheet alloc] 
+                                      initWithTitle:NSLocalizedString(@"Really unlink Dropbox account?",
+                                                                      @"Prompt to show before unlinking account")
+                                            delegate:self cancelButtonTitle:nil
+                                      destructiveButtonTitle:NSLocalizedString(@"Unlink", @"Unlink button title")
+                                      otherButtonTitles:nil];
 			
 	[actionSheet setDelegate:self];
 	[actionSheet showFromTabBar:[tabBarController tabBar]];
@@ -306,8 +263,9 @@
     self.uploader = nil;
     NSLog(@"failed to receive authorization");
     [[[[UIAlertView alloc] 
-	   initWithTitle:@"Dropbox Authorization" 
-		 message:@"Failed to access configured Dropbox account." 
+	   initWithTitle:NSLocalizedString(@"Dropbox Authorization", @"Dropbox authorization failure alert title.")
+		 message:NSLocalizedString(@"Failed to access configured Dropbox account.",
+                                           @"Dropbox authorization failure alert text.")
 		delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]
 	 autorelease]
 	show];
