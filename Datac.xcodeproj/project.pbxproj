@@ -58,7 +58,6 @@
 		BD232B7F1333FA9D006ADDC4 /* YellowButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BD232B6C1333FA9D006ADDC4 /* YellowButton@2x.png */; };
 		BD232B821333FAC5006ADDC4 /* DimGreenButton.opacity in Resources */ = {isa = PBXBuildFile; fileRef = BD232B801333FAC5006ADDC4 /* DimGreenButton.opacity */; };
 		BD232B831333FAC5006ADDC4 /* SplashScreen.opacity in Resources */ = {isa = PBXBuildFile; fileRef = BD232B811333FAC5006ADDC4 /* SplashScreen.opacity */; };
-		BD232F0F1334F13D006ADDC4 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD232B4D1333FA0B006ADDC4 /* libCorePlot-CocoaTouch.a */; };
 		BD2647D5134B4746005CC79E /* 159-voicemail.png in Resources */ = {isa = PBXBuildFile; fileRef = BD2647D4134B4746005CC79E /* 159-voicemail.png */; };
 		BD29187C1328456500FE5395 /* SignalView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD29187B1328456500FE5395 /* SignalView.xib */; };
 		BD2FC1B81373F643004BEA40 /* LevelDetectorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2FC1B71373F643004BEA40 /* LevelDetectorController.mm */; };
@@ -111,6 +110,7 @@
 		BD937542134B51D70015CC8D /* Dropbox.keys in Resources */ = {isa = PBXBuildFile; fileRef = BD937541134B51D70015CC8D /* Dropbox.keys */; };
 		BD937579134B53000015CC8D /* IASKAppSettingsWebViewController+Customizations.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD937578134B53000015CC8D /* IASKAppSettingsWebViewController+Customizations.mm */; };
 		BD9D943B134919920054C7E8 /* copyrights.html in Resources */ = {isa = PBXBuildFile; fileRef = BD9D9439134919920054C7E8 /* copyrights.html */; };
+		BDB1D7D913773C000051F5B9 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB1D7D813773C000051F5B9 /* libCorePlot-CocoaTouch.a */; };
 		BDB66E911369FE05009FF047 /* WaveCycleDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB66E901369FE05009FF047 /* WaveCycleDetector.mm */; };
 		BDB66EC1136AAED7009FF047 /* WeightedAverager.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB66EC0136AAED7009FF047 /* WeightedAverager.mm */; };
 		BDB66ED9136B17DF009FF047 /* WeightedAveragerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB66ECE136B176F009FF047 /* WeightedAveragerTests.mm */; };
@@ -202,20 +202,6 @@
 			remoteGlobalIDString = BD14B4A8135728D500F39A4B;
 			remoteInfo = LogicTests;
 		};
-		BD232B4C1333FA0B006ADDC4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BD232B431333FA0B006ADDC4 /* CorePlot-CocoaTouch.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BC9B83470FB8A0A40035D8DA;
-			remoteInfo = "CorePlot-CocoaTouch";
-		};
-		BD232F341334F3AA006ADDC4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BD232B431333FA0B006ADDC4 /* CorePlot-CocoaTouch.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = BC9B83460FB8A0A40035D8DA;
-			remoteInfo = "CorePlot-CocoaTouch";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -247,11 +233,9 @@
 		BD14B4A9135728D500F39A4B /* LogicTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LogicTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD14B4AA135728D500F39A4B /* LogicTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LogicTests-Info.plist"; sourceTree = "<group>"; };
 		BD14B4CA1357296E00F39A4B /* SampleCircularBufferTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SampleCircularBufferTests.mm; sourceTree = "<group>"; };
-		BD14B6151357524A00F39A4B /* LogicTests-Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LogicTests-Info copy.plist"; sourceTree = "<group>"; };
 		BD2303731331FCBA006ADDC4 /* taps.txt */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text; path = taps.txt; sourceTree = "<group>"; };
 		BD230B881333A366006ADDC4 /* RpmView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RpmView.xib; sourceTree = "<group>"; };
 		BD230CCD1333BADB006ADDC4 /* caution.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = caution.png; path = Images/caution.png; sourceTree = "<group>"; };
-		BD232B431333FA0B006ADDC4 /* CorePlot-CocoaTouch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "CorePlot-CocoaTouch.xcodeproj"; path = "core-plot/framework/CorePlot-CocoaTouch.xcodeproj"; sourceTree = "<group>"; };
 		BD232B4E1333FA76006ADDC4 /* CloseButton.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = CloseButton.opacity; path = Images/CloseButton.opacity; sourceTree = "<group>"; };
 		BD232B4F1333FA76006ADDC4 /* GreenButton.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = GreenButton.opacity; path = Images/GreenButton.opacity; sourceTree = "<group>"; };
 		BD232B501333FA76006ADDC4 /* OffButton.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = OffButton.opacity; path = Images/OffButton.opacity; sourceTree = "<group>"; };
@@ -356,6 +340,7 @@
 		BD937577134B53000015CC8D /* IASKAppSettingsWebViewController+Customizations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IASKAppSettingsWebViewController+Customizations.h"; sourceTree = "<group>"; };
 		BD937578134B53000015CC8D /* IASKAppSettingsWebViewController+Customizations.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "IASKAppSettingsWebViewController+Customizations.mm"; sourceTree = "<group>"; };
 		BD9D943A134919920054C7E8 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = English; path = English.lproj/copyrights.html; sourceTree = "<group>"; };
+		BDB1D7D813773C000051F5B9 /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libCorePlot-CocoaTouch.a"; path = "CorePlot/libCorePlot-CocoaTouch.a"; sourceTree = "<group>"; };
 		BDB66E8F1369FE05009FF047 /* WaveCycleDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaveCycleDetector.h; sourceTree = "<group>"; };
 		BDB66E901369FE05009FF047 /* WaveCycleDetector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WaveCycleDetector.mm; sourceTree = "<group>"; };
 		BDB66EBF136AAED7009FF047 /* WeightedAverager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeightedAverager.h; sourceTree = "<group>"; };
@@ -497,7 +482,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD232F0F1334F13D006ADDC4 /* libCorePlot-CocoaTouch.a in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765080DF74369002DB57D /* CoreGraphics.framework in Frameworks */,
@@ -514,6 +498,7 @@
 				BDF9DA061326F25C004DC652 /* MessageUI.framework in Frameworks */,
 				BDDD473D1341DCB0001A574B /* Security.framework in Frameworks */,
 				BD5EB0F813460E7200B01DC7 /* SystemConfiguration.framework in Frameworks */,
+				BDB1D7D913773C000051F5B9 /* libCorePlot-CocoaTouch.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -547,7 +532,6 @@
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				BD14B4AA135728D500F39A4B /* LogicTests-Info.plist */,
-				BD14B6151357524A00F39A4B /* LogicTests-Info copy.plist */,
 			);
 			name = Tabby;
 			sourceTree = "<group>";
@@ -558,7 +542,6 @@
 				BD5EB0F213460E2700B01DC7 /* Reachability.h */,
 				BD5EB0F313460E2700B01DC7 /* Reachability.mm */,
 				BDDD46A21341DC8E001A574B /* DropboxSDK */,
-				BD232B431333FA0B006ADDC4 /* CorePlot-CocoaTouch.xcodeproj */,
 				BDF9D9A01326E9A5004DC652 /* InAppSettingsKit */,
 				BD7FD90A1316C355001D1FBF /* iPublicUtility */,
 				28A0AB4B0D9B1048005BE974 /* Datac_Prefix.pch */,
@@ -590,6 +573,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BDB1D7D813773C000051F5B9 /* libCorePlot-CocoaTouch.a */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765070DF74369002DB57D /* CoreGraphics.framework */,
@@ -622,14 +606,6 @@
 				BDB66ECE136B176F009FF047 /* WeightedAveragerTests.mm */,
 			);
 			name = Tests;
-			sourceTree = "<group>";
-		};
-		BD232B441333FA0B006ADDC4 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				BD232B4D1333FA0B006ADDC4 /* libCorePlot-CocoaTouch.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		BD5EAF391345CAC200B01DC7 /* Classes */ = {
@@ -1044,7 +1020,6 @@
 			);
 			dependencies = (
 				BD14B4D913572AD800F39A4B /* PBXTargetDependency */,
-				BD232F351334F3AA006ADDC4 /* PBXTargetDependency */,
 			);
 			name = Datac;
 			productName = Tabby;
@@ -1089,12 +1064,6 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Tabby */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = BD232B441333FA0B006ADDC4 /* Products */;
-					ProjectRef = BD232B431333FA0B006ADDC4 /* CorePlot-CocoaTouch.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Datac */,
@@ -1102,16 +1071,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		BD232B4D1333FA0B006ADDC4 /* libCorePlot-CocoaTouch.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libCorePlot-CocoaTouch.a";
-			remoteRef = BD232B4C1333FA0B006ADDC4 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1D60588D0D05DD3D006BFB54 /* Resources */ = {
@@ -1337,11 +1296,6 @@
 			target = BD14B4A8135728D500F39A4B /* LogicTests */;
 			targetProxy = BD14B4D813572AD800F39A4B /* PBXContainerItemProxy */;
 		};
-		BD232F351334F3AA006ADDC4 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "CorePlot-CocoaTouch";
-			targetProxy = BD232F341334F3AA006ADDC4 /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -1385,6 +1339,10 @@
 				GCC_PREFIX_HEADER = Datac_Prefix.pch;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				INFOPLIST_FILE = "Datac-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/CorePlot\"",
+				);
 				PRODUCT_NAME = Datac;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1404,6 +1362,10 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				INFOPLIST_FILE = "Datac-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/CorePlot\"",
+				);
 				PRODUCT_NAME = Datac;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1501,11 +1463,11 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CURRENT_PROJECT_VERSION = 1.0;
+				CURRENT_PROJECT_VERSION = 1.1;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
-				HEADER_SEARCH_PATHS = "core-plot/framework/**";
+				HEADER_SEARCH_PATHS = "CorePlot/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = (
@@ -1535,6 +1497,10 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				INFOPLIST_FILE = "Datac-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/CorePlot\"",
+				);
 				PRODUCT_NAME = Datac;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1545,10 +1511,10 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1.0;
+				CURRENT_PROJECT_VERSION = 1.1;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				HEADER_SEARCH_PATHS = "core-plot/framework/**";
+				HEADER_SEARCH_PATHS = "CorePlot/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -1565,10 +1531,10 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1.0;
+				CURRENT_PROJECT_VERSION = 1.1;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = s;
-				HEADER_SEARCH_PATHS = "core-plot/framework/**";
+				HEADER_SEARCH_PATHS = "CorePlot/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = (
