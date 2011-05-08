@@ -5,8 +5,8 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString* kSettingsSignalDetectorLevelKey;
-extern NSString* kSettingsSignalDetectorUpdateRateKey;
+extern NSString* kSettingsLevelDetectorLevelKey;
+extern NSString* kSettingsLevelDetectorUpdateRateKey;
 extern NSString* kSettingsEnableLowPassFilterKey;
 extern NSString* kSettingsTapsFileNameKey;
 extern NSString* kSettingsXMinKey;
@@ -14,10 +14,14 @@ extern NSString* kSettingsXMaxKey;
 extern NSString* kSettingsRPMScaleFactorKey;
 extern NSString* kSettingsCounterDecayDurationKey;
 extern NSString* kSettingsSignalDisplayUpdateRateKey;
-extern NSString* kSettingsSwitchDetectorThresholdKey;
-extern NSString* kSettingsSwitchDetectorDurationKey;
+extern NSString* kSettingsMicSwitchDetectorThresholdKey;
+extern NSString* kSettingsMicSwitchDetectorDurationKey;
 extern NSString* kSettingsRpmViewDurationKey;
 extern NSString* kSettingsCloudStorageEnableKey;
+extern NSString* kSettingsPulseDecoderSamplesPerPulseKey;
+extern NSString* kSettingsPulseDecoderMaxLowLevelKey;
+extern NSString* kSettingsPulseDecoderMinHighLevelKey;
+extern NSString* kSettingsWaveCycleDetectorNonZeroLevelKey;
 
 @interface UserSettings : NSObject
 {

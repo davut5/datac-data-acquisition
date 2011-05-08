@@ -1,8 +1,8 @@
+// -*- Mode: ObjC -*-
 //
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
-#import "AudioSampleBuffer.h"
 #import "DataCapture.h"
 #import "VertexBuffer.h"
 #import "VertexBufferManager.h"
@@ -45,10 +45,6 @@
 
 - (VertexBuffer*)getBufferForCount:(UInt32)count
 {
-    if (frozen) {
-	return nil;
-    }
-
     UInt32 pos;
     VertexBuffer* vertexBuffer;
 
@@ -72,7 +68,9 @@
     // Keep the main thread from using the buffer collection until we are done
     //
     [lock lock];
-    first = pos;
+
+    if (! frozen) first = pos;
+
     if (unallocated > 0) {
 	[vertexBuffers addObject:vertexBuffer];
 	unallocated -= count;

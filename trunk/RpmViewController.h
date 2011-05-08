@@ -8,18 +8,17 @@
 
 @class AppDelegate;
 
-@interface RpmViewController : UIViewController {
+@interface RpmViewController : UIViewController<CPPlotDataSource> {
 @private
-    IBOutlet AppDelegate* appDelegate;
+    NSMutableArray* points;
+    UInt32 newest;
+    Float32 xScale;
     CPXYGraph* graph;
-    BOOL visible;
 }
 
-@property (nonatomic, retain) IBOutlet AppDelegate* appDelegate;
+@property (nonatomic, retain) NSMutableArray* points;
 @property (nonatomic, retain) CPXYGraph* graph;
-@property (nonatomic, assign) BOOL visible;
 
-- (void)update;
 - (void)updateFromSettings;
 
 @end

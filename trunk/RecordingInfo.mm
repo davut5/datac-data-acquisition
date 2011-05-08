@@ -1,3 +1,4 @@
+// -*- Mode: ObjC -*-
 //
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //
@@ -80,11 +81,12 @@ NSString* kFileSuffix = @"raw";
 + (NSString*)niceSizeOfFileString:(int)bytes
 {
     if (bytes<1024)
-	return [NSString stringWithFormat: @"%d bytes", bytes];
+	return [NSString stringWithFormat: NSLocalizedString(@"%d bytes", "@Format for size in bytes"), bytes];
     else if (bytes<1048576)
-	return [NSString stringWithFormat: @"%dKB", (bytes/1024)];
+	return [NSString stringWithFormat: NSLocalizedString(@"%dKB", "@Format for size in kilobytes"), (bytes/1024)];
     else
-	return [NSString stringWithFormat: @"%.2fMB", ((float)bytes/1048576)];
+	return [NSString stringWithFormat: NSLocalizedString(@"%.2fMB", @"Format for size in megabytes"),
+                ((float)bytes/1048576)];
 }
 
 + (NSString*)generateRecordingPath
@@ -120,7 +122,7 @@ NSString* kFileSuffix = @"raw";
     NSString* name = [fileUrl lastPathComponent];
     NSArray* bits = [name componentsSeparatedByString:@"."];
     self.name = [bits objectAtIndex:0];
-    self.size = @"0 bytes";
+    self.size = [RecordingInfo niceSizeOfFileString:0];
     self.uploaded = NO;
     self.uploading = NO;
     self.progress = 0.0;

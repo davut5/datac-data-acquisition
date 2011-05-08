@@ -5,8 +5,7 @@
 
 #import <Foundation/Foundation.h>
 #import <OpenGLES/ES1/gl.h>
-
-@class AudioSampleBuffer;
+#import "DataCapture.h"
 
 /** Array of OpenGL floats used to communicate vertex coordinates to OpenGL processor.
     The array has a maximum capacity, and a current count value that is set from within
@@ -14,7 +13,7 @@
     vertices attribute does not hold new data, but is instead held in reserve to hold
     the Y value of the last vertex of the previously drawn VertexBuffer.
 */
-@interface VertexBuffer : NSObject {
+@interface VertexBuffer : NSObject<SampleProcessorProtocol> {
 @private
     GLfloat* vertices;
     GLfloat* vptr;
@@ -37,8 +36,6 @@
 - (id)initWithCapacity:(UInt32)capacity sampleRate:(Float64)sampleRate;
 
 - (void)clear;
-
-- (void)addSample:(Float32)sample;
 
 /** Render the vertices held in the buffer. If the given previousBuffer is not
     nil, set up the draw such that the new vertices appear joined to the previous

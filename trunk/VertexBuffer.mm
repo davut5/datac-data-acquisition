@@ -1,8 +1,8 @@
+// -*- Mode: ObjC -*-
 //
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
-#import "AudioSampleBuffer.h"
 #import "VertexBuffer.h"
 
 @implementation VertexBuffer
@@ -62,10 +62,13 @@ static const int kValuesPerVertex = 2;
     count = 0;
 }
 
-- (void)addSample:(Float32)sample
+- (void)addSamples:(Float32*)ptr count:(UInt32)numSamples
 {
-    *vptr = sample;
-    vptr += 2;
+    count = numSamples;
+    while (numSamples-- > 0) {
+        *vptr = *ptr++;
+        vptr += 2;
+    }
 }
 
 - (GLfloat)drawVerticesJoinedWith:(VertexBuffer*)previousBuffer

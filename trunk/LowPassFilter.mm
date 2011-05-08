@@ -1,8 +1,8 @@
+// -*- Mode: ObjC -*-
 //
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
-#import "AudioSampleBuffer.h"
 #import "LowPassFilter.h"
 
 @implementation LowPassFilter
@@ -11,11 +11,8 @@
 
 - (void)setFileName:(NSString *)theFileName
 {
-    numTaps = 0;
-    delete [] B;
-    delete [] Z;
-    B = nil;
-    Z = nil;
+    B.clear();
+    Z.clear();
 	
     fileName = [theFileName retain];
 
@@ -51,21 +48,10 @@
 
     NSLog(@"num taps: %d", [taps count]);
 
-    //
-    // Initialize filter using loaded weight values.
-    //
-    if (numTaps != [taps count]) {
-	numTaps = [taps count];
-	delete [] B;
-	delete [] Z;
-	B = new Float32[numTaps];
-	Z = new Float32[numTaps];
-    }
-
-    for (UInt32 index = 0; index < numTaps; ++index) {
-	B[ index ] = [[taps objectAtIndex:index] floatValue];
-	NSLog(@"B[%d]: %f", index, B[index]);
-	Z[ index ] = 0.0;
+    for (NSDecimalNumber* obj in taps) {
+	B.push_back([obj floatValue]);
+	NSLog(@"B[%d]: %f", B.size()-1, B.back());
+	Z.push_back(0.0);
     }
 }
 
@@ -91,50 +77,51 @@
 {
     self = [super init];
     if (self == nil) return self;
-    numTaps = [taps count];
-    B = nil;
-    Z = nil;
-    if (numTaps > 0) {
-	B = new Float32[numTaps];
-	Z = new Float32[numTaps];
-	for (UInt32 index = 0; index < numTaps; ++index) {
-	    NSNumber* tap = [taps objectAtIndex:index];
-	    B[index] = [tap floatValue];
-	    Z[index] = 0.0;
-	}
+    if (taps == nil) {
+        @throw [NSException exceptionWithName:@"NullTaps" reason:@"" userInfo:nil];
     }
+    
+    for (NSNumber* obj in taps) {
+        B.push_back([obj floatValue]);
+	Z.push_back(0.0);
+    }
+
     return self;
 }
 
 - (void)dealloc
 {
-    delete [] B;
-    delete [] Z;
+    B.clear();
+    Z.clear();
     [super dealloc];
 }
 
 - (void)reset
 {
-    for (UInt32 index = 0; index < numTaps; ++index)
+    for (UInt32 index = 0; index < Z.size(); ++index)
 	Z[index] = 0.0;
 }
 
 - (Float32)filter:(Float32)x
 {
-    if (numTaps == 0) return x;
+    if (Z.size() == 0) return x;
 
-    Float32 y = fabs(B[ 0 ] * x + Z[ 0 ]);
+    Float32 y = B[0] * x + Z[0];
 
     //
     // Update difference equation weights.
     //
     UInt32 tapIndex = 1;
-    for (; tapIndex < numTaps - 1; ++tapIndex) {
+    for (; tapIndex < Z.size(); ++tapIndex) {
 	Z[tapIndex - 1] = B[tapIndex] * x + Z[tapIndex];
     }
-    Z[tapIndex - 1] = B[tapIndex] * x;
 
     return y;
+}
+
+- (NSUInteger)size
+{
+    return Z.size();
 }
 
 @end

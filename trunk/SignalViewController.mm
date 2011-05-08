@@ -1,13 +1,17 @@
+// -*- Mode: ObjC -*-
 //
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
 #import "AppDelegate.h"
+#import "BitDetector.h"
 #import "DataCapture.h"
+#import "DetectorController.h"
 #import "IndicatorButton.h"
 #import "IndicatorLight.h"
+#import "LevelDetector.h"
 #import "SampleRecorder.h"
-#import "SignalDetector.h"
+#import "LevelDetector.h"
 #import "SignalViewController.h"
 #import "UserSettings.h"
 #import "VertexBufferManager.h"
@@ -16,8 +20,8 @@
 
 - (void)handleSingleTapGesture:(UITapGestureRecognizer*)recognizer;
 - (void)handlePanGesture:(UIPanGestureRecognizer *)recognizer;
-- (void)updateSignalStats:(NSNotification*)notification;
-- (void)switchStateChanged:(SwitchDetector *)sender;
+- (void)handlePinchGesture:(UIPinchGestureRecognizer *)recognizer;
+- (void)switchStateChanged:(MicSwitchDetector*)sender;
 - (void)adaptViewToOrientation;
 
 @end
@@ -25,52 +29,53 @@
 @implementation SignalViewController
 
 @synthesize appDelegate, sampleView, powerIndicator, connectedIndicator, recordIndicator;
-@synthesize xMinLabel, xMaxLabel, yPos05Label, yZeroLabel, yNeg05Label;
-@synthesize peaks, rpms, peakFormatter, rpmFormatter, lastPeakValue, lastRpmValue;
+@synthesize xMinLabel, xMaxLabel, yPos05Label, yZeroLabel, yNeg05Label, detectorController;
 
 //
 // Maximum age of audio samples we can show at one go. Since we capture at 44.1kHz, that means 44.1k
 // OpenGL vertices or 2 88.2k floats.
 //
+static const CGFloat kXMaxMin = 0.0001;
 static const CGFloat kXMaxMax = 1.0;
+
+- (void)dealloc {
+    self.detectorController = nil;
+    [super dealloc];
+}
 
 -(void)viewDidLoad 
 {
     NSLog(@"SignalViewController.viewDidLoad");
     [super viewDidLoad];
-
+    
+    detectorController = nil;
     sampleView.delegate = self;
     self.view.autoresizesSubviews = YES;
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-
+    
     //
     // Register for notification when the DataCapture properties emittingPowerSignal and pluggedIn
     // change so we can update our display appropriately.
     //
     vertexBufferManager = appDelegate.vertexBufferManager;
-
-    [appDelegate.dataCapture addObserver:self forKeyPath:NSStringFromSelector(@selector(emittingPowerSignal)) options:0 context:nil];
-    [appDelegate.dataCapture addObserver:self forKeyPath:NSStringFromSelector(@selector(pluggedIn)) options:0 context:nil];
-
+    
+    [appDelegate.dataCapture addObserver:self forKeyPath:NSStringFromSelector(@selector(emittingPowerSignal)) 
+                                 options:0 context:nil];
+    [appDelegate.dataCapture addObserver:self forKeyPath:NSStringFromSelector(@selector(pluggedIn)) 
+                                 options:0 context:nil];
+    
     appDelegate.switchDetector.delegate = self;
-
-    self.peakFormatter = [[[NSNumberFormatter alloc] init] autorelease];
-    [peakFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
-
-    self.rpmFormatter = [[[NSNumberFormatter alloc] init] autorelease];
-    [rpmFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
-    [rpmFormatter setPositiveFormat:@"##0.0k"];
-
+    
     //
     // Set widgets so that they will appear behind the graph view when we rotate to the landscape view.
     //
     powerIndicator.layer.zPosition = -1;
     connectedIndicator.layer.zPosition = -1;
     recordIndicator.layer.zPosition = -1;
-
+    
     recordIndicator.light.onState = kYellow;
     recordIndicator.light.blinkingInterval = 0.20;
-
+    
     powerIndicator.on = NO;
     connectedIndicator.on = NO;
     recordIndicator.on = NO;
@@ -79,28 +84,27 @@ static const CGFloat kXMaxMax = 1.0;
     // Install single-tap gesture to freeze the display.
     //
     UITapGestureRecognizer* stgr = [[[UITapGestureRecognizer alloc]
-									 initWithTarget:self action:@selector(handleSingleTapGesture:)] 
-				       autorelease];
+                                     initWithTarget:self action:@selector(handleSingleTapGesture:)] 
+                                    autorelease];
     [sampleView addGestureRecognizer:stgr];
 
     //
-    // Install a 1 and 2 finger pan guesture to change the x scale (1 finger) and to change the 
-    // signal detector level (2 finger)
+    // Install a 1 finger pan guesture to change the pulse detector levels
     //
     UIPanGestureRecognizer* pgr = [[[UIPanGestureRecognizer alloc] 
-									initWithTarget:self action:@selector(handlePanGesture:)]
-				      autorelease];
+                                    initWithTarget:self action:@selector(handlePanGesture:)]
+                                   autorelease];
     pgr.minimumNumberOfTouches = 1;
     pgr.maximumNumberOfTouches = 2;
     [sampleView addGestureRecognizer:pgr];
 
     //
-    // Register for notification when the signal detector updates its rate estimates.
+    // Install a pinch gester to change xScale
     //
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-					     selector:@selector(updateSignalStats:)
-						 name:kSignalDetectorCounterUpdateNotification
-					       object:nil];
+    UIPinchGestureRecognizer* pigr = [[[UIPinchGestureRecognizer alloc]
+                                       initWithTarget:self action:@selector(handlePinchGesture:)]
+                                      autorelease];
+    [sampleView addGestureRecognizer:pigr];
 
     [self setXMax:[[NSUserDefaults standardUserDefaults] floatForKey:kSettingsXMaxKey]];
 }
@@ -109,15 +113,26 @@ static const CGFloat kXMaxMax = 1.0;
 {
     NSLog(@"SignalViewController.viewDidUnload");
     [self stop];
-    self.peakFormatter = nil;
-    self.rpmFormatter = nil;
+    self.detectorController = nil;
     [super viewDidUnload];
 }
 
-- (void)dealloc {
-    self.peakFormatter = nil;
-    self.rpmFormatter = nil;
-    [super dealloc];
+- (void)viewWillAppear:(BOOL)animated
+{
+    NSLog(@"SignalViewController.viewWillAppear");
+    [self adaptViewToOrientation];
+    [self start];
+    self.detectorController = [appDelegate.signalDetector controller];
+    self.detectorController.sampleView = sampleView;
+    [super viewWillAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    NSLog(@"SignalViewController.viewWillDisappear");
+    [self stop];
+    self.detectorController = nil;
+    [super viewWillDisappear:animated];
 }
 
 - (void)start
@@ -147,23 +162,6 @@ static const CGFloat kXMaxMax = 1.0;
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    NSLog(@"SignalViewController.viewWillAppear");
-    [self adaptViewToOrientation];
-    [self start];
-    peaks.text = [peakFormatter stringFromNumber:lastPeakValue];
-    rpms.text = [rpmFormatter stringFromNumber:lastRpmValue];
-    [super viewWillAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    NSLog(@"SignalViewController.viewWillDisappear");
-    [self stop];
-    [super viewWillDisappear:animated];
-}
-
 - (IBAction)togglePower {
     NSLog(@"togglePower");
     powerIndicator.on = ! powerIndicator.on;
@@ -184,10 +182,11 @@ static const CGFloat kXMaxMax = 1.0;
 - (void)setXMax:(GLfloat)value
 {
     xMax = value;
-    xMaxLabel.text = [NSString stringWithFormat:@"%5.4gs",value];
+    xMaxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%5.4gs", @"Format string for xMax label"), value];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change 
+                       context:(void *)context
 {
     //
     // !!! Be careful - this may be running in a thread other than the main one.
@@ -209,18 +208,7 @@ static const CGFloat kXMaxMax = 1.0;
     [super didReceiveMemoryWarning];
 }
 
-- (void)updateSignalStats:(NSNotification*)notification
-{
-    NSDictionary* userInfo = [notification userInfo];
-    self.lastPeakValue = [userInfo objectForKey:kSignalDetectorCounterKey];
-    self.lastRpmValue = [userInfo objectForKey:kSignalDetectorRPMKey];
-    if ([sampleView isAnimating]) {
-	peaks.text = [peakFormatter stringFromNumber:lastPeakValue];
-	rpms.text = [rpmFormatter stringFromNumber:lastRpmValue];
-    }
-}
-
-- (void)switchStateChanged:(SwitchDetector *)sender
+- (void)switchStateChanged:(MicSwitchDetector *)sender
 {
     [self toggleRecord];
 }
@@ -228,54 +216,51 @@ static const CGFloat kXMaxMax = 1.0;
 - (void)drawView:(SampleView*)sender
 {
     glClear(GL_COLOR_BUFFER_BIT);
-
+    
     //
     // Set scaling for the floating-point samples
     //
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrthof(0.0f, xMax, -1.0f, 1.0, -1.0f, 1.0f);
-
+    
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
-    //
-    // Draw three horizontal values at Y = -0.5, 0.0, and +0.5
-    //
-    GLfloat xAxis[ 12 ];
-    glVertexPointer(2, GL_FLOAT, 0, xAxis);
-
-    xAxis[0] = 0.0;
-    xAxis[1] = 0.0;
-    xAxis[2] = xMax;
-    xAxis[3] = 0.0;
-
-    xAxis[4] = 0.0;
-    xAxis[5] = 0.5;
-    xAxis[6] = xMax;
-    xAxis[7] = 0.5;
-
-    xAxis[8] = 0.0;
-    xAxis[9] = -0.5;
-    xAxis[10] = xMax;
-    xAxis[11] = -0.5;
-
-    glColor4f(.5, .5, .5, 1.);
-    glLineWidth(0.5);
-    glDrawArrays(GL_LINES, 0, 6);
-
+    
     glColor4f(0., 1., 0., 1.);
     glLineWidth(1.25);
     glPushMatrix();
     [vertexBufferManager drawVerticesStartingAt:xMin forSpan:xMax];
     glPopMatrix();
 
-    xAxis[1] = appDelegate.signalDetector.level;
-    xAxis[3] = xAxis[1];
-    glLineWidth(1.0);
-    glColor4f(1., 0., 0., 0.5);
-    glVertexPointer(2, GL_FLOAT, 0, xAxis);
-    glDrawArrays(GL_LINES, 0, 2);
+    //
+    // Draw three horizontal values at Y = -0.5, 0.0, and +0.5
+    //
+    GLfloat vertices[ 12 ];
+    glVertexPointer(2, GL_FLOAT, 0, vertices);
+
+    vertices[0] = 0.0;
+    vertices[1] = -0.5;
+    vertices[2] = xMax;
+    vertices[3] = -0.5;
+
+    vertices[4] = 0.0;
+    vertices[5] = 0.0;
+    vertices[6] = xMax;
+    vertices[7] = 0.0;
+
+    vertices[8] = 0.0;
+    vertices[9] = 0.5;
+    vertices[10] = xMax;
+    vertices[11] = 0.5;
+
+    glColor4f(.5, .5, .5, 1.0);
+    glLineWidth(0.5);
+    glDrawArrays(GL_LINES, 0, 6);
+
+    if (detectorController) {
+        [detectorController drawOnSampleView:vertices];
+    }
 }
 
 - (void)handleSingleTapGesture:(UITapGestureRecognizer*)recognizer
@@ -283,48 +268,89 @@ static const CGFloat kXMaxMax = 1.0;
     vertexBufferManager.frozen = ! vertexBufferManager.frozen;
 }
 
+enum GestureType {
+    kGestureUnknown,
+    kGestureScaleXMax,
+    kGestureSetMinHighLevel,
+    kGestureSetMaxLowLevel
+};
+
 - (void)handlePanGesture:(UIPanGestureRecognizer*)recognizer
 {
-    CGPoint translate = [recognizer translationInView:sampleView];
-    CGPoint velocity = [recognizer velocityInView:sampleView];
-
-    CGFloat width = sampleView.window.bounds.size.width;
-    CGFloat height = sampleView.window.bounds.size.height;
-
-    if (recognizer.state == UIGestureRecognizerStateBegan) {
-	if (recognizer.numberOfTouches == 1) {
-	    panHorizontal = YES;
-	    panStart = xMax / kXMaxMax * width;
-	}
-	else if (recognizer.numberOfTouches == 2) {
-	    panHorizontal = NO;
-	    panStart = (appDelegate.signalDetector.level) * height / 2;
-	}
-    }
-    else {
-	if (panHorizontal == YES) {
-	    GLfloat newXMax = (panStart + translate.x) / width * kXMaxMax;
-	    if (newXMax > kXMaxMax) newXMax = kXMaxMax;
-	    if (newXMax < 0.001) newXMax = 0.001;
-	    [self setXMax: newXMax];
-	    if (recognizer.state == UIGestureRecognizerStateEnded) {
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:newXMax] forKey:kSettingsXMaxKey];
-	    }
-	}
-	else {
-	    Float32 newLevel = (panStart - translate.y) / ( height / 2 );
-	    if (newLevel > 1.0) newLevel = 1.0;
-	    if (newLevel < 0.0) newLevel = 0.0;
-	    appDelegate.signalDetector.level = newLevel;
-	    if (recognizer.state == UIGestureRecognizerStateEnded) {
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:newLevel]
-							  forKey:kSettingsSignalDetectorLevelKey];
-	    }
-	}
+    if (detectorController) {
+        [detectorController handlePanGesture:recognizer];
     }
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
+#if 0
+    CGFloat height = sampleView.bounds.size.height;
+
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        gestureType = kGestureUnknown;
+        CGPoint location = [recognizer locationInView:sampleView];
+        CGFloat y = 1.0 - location.y * 2 / height;
+        CGFloat minHighLevel = appDelegate.bitDetector.minHighLevel;
+        CGFloat maxLowLevel = appDelegate.bitDetector.maxLowLevel;
+        CGFloat dMin = fabs(y - minHighLevel);
+        CGFloat dMax = fabs(y - maxLowLevel);
+        if (dMin < dMax) {
+            if (dMin < 0.10) {
+                gestureType = kGestureSetMinHighLevel;
+                gestureStart = minHighLevel;
+            }
+        }
+        else {
+            if (dMax < 0.10) {
+                gestureType = kGestureSetMaxLowLevel;
+                gestureStart = maxLowLevel;
+            }
+        }
+    }
+    else if (gestureType != kGestureUnknown) {
+        CGPoint translate = [recognizer translationInView:sampleView];
+        Float32 newLevel = gestureStart - translate.y * 2 / height;
+	if (newLevel > 1.0) newLevel = 1.0;
+	if (newLevel < -1.0) newLevel = -1.0;
+        if (gestureType == kGestureSetMinHighLevel) {
+            appDelegate.bitDetector.minHighLevel = newLevel;
+            if (recognizer.state == UIGestureRecognizerStateEnded) {
+                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:newLevel]
+                                                          forKey:kSettingsPulseDecoderMinHighLevelKey];
+            }
+        }
+        else if (gestureType == kGestureSetMaxLowLevel) {
+            appDelegate.bitDetector.maxLowLevel = newLevel;
+            if (recognizer.state == UIGestureRecognizerStateEnded) {
+                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:newLevel]
+                                                          forKey:kSettingsPulseDecoderMaxLowLevelKey];
+            }
+        }
+    }
+}
+#endif
+
+- (void)handlePinchGesture:(UIPinchGestureRecognizer*)recognizer
+{
+    CGFloat width = sampleView.bounds.size.width;
+    CGFloat height = sampleView.bounds.size.height;
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        gestureType = kGestureScaleXMax;
+        gestureStart = xMax;
+    }
+    else if (gestureType == kGestureScaleXMax && recognizer.scale != 0.0) {
+        CGFloat newXMax = gestureStart / recognizer.scale;
+        if (newXMax > kXMaxMax) newXMax = kXMaxMax;
+        if (newXMax < kXMaxMin) newXMax = kXMaxMin;
+        [self setXMax:newXMax];
+        if (recognizer.state == UIGestureRecognizerStateEnded) {
+            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:newXMax] 
+                                                      forKey:kSettingsXMaxKey];
+        }
+    }
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
+                                         duration:(NSTimeInterval)duration
 {
     [self adaptViewToOrientation];
 }
