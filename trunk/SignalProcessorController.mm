@@ -3,24 +3,26 @@
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
-#import "DetectorController.h"
+#import "SignalProcessorController.h"
 
-@implementation DetectorController
+@implementation SignalProcessorController
 
-@synthesize sampleView;
+@synthesize sampleView, infoOverlay;
 
 - (id)init
 {
     if (self = [super init]) {
         sampleView = nil;
+        infoOverlay = nil;
     }
-    
+
     return self;
 }
 
 - (void)dealloc
 {
     self.sampleView = nil;
+    self.infoOverlay = nil;
     [super dealloc];
 }
 
