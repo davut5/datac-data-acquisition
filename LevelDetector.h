@@ -4,13 +4,16 @@
 //
 
 #import <Foundation/Foundation.h>
+
 #import "SampleProcessorProtocol.h"
+#import "SignalProcessorProtocol.h"
 
 extern NSString* kLevelDetectorCounterUpdateNotification;
 extern NSString* kLevelDetectorCounterKey;
 extern NSString* kLevelDetectorRPMKey;
 
 @class LevelDetectorController;
+@class LevelDetectorInfoOverlayController;
 @class LowPassFilter;
 
 enum EdgeKind {
@@ -30,9 +33,10 @@ enum EdgeKind {
     implements the SignalMeasurementReader protocol.
 */
 
-@interface LevelDetector : NSObject <SampleProcessorProtocol> {
+@interface LevelDetector : NSObject <SampleProcessorProtocol, SignalProcessorProtocol> {
 @private
     LevelDetectorController* controller;
+    LevelDetectorInfoOverlayController* infoOverlayController;
     NSTimer* intervalTimer;
     LowPassFilter* lowPassFilter;
     LowPassFilter* counterDecayFilter;
@@ -52,7 +56,5 @@ enum EdgeKind {
 + (LevelDetector*)create;
 
 - (id)init;
-- (void)start;
-- (void)stop;
 
 @end

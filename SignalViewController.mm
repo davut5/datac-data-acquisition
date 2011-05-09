@@ -6,12 +6,12 @@
 #import "AppDelegate.h"
 #import "BitDetector.h"
 #import "DataCapture.h"
-#import "DetectorController.h"
 #import "IndicatorButton.h"
 #import "IndicatorLight.h"
 #import "LevelDetector.h"
 #import "SampleRecorder.h"
 #import "LevelDetector.h"
+#import "SignalProcessorController.h"
 #import "SignalViewController.h"
 #import "UserSettings.h"
 #import "VertexBufferManager.h"
@@ -23,13 +23,15 @@
 - (void)handlePinchGesture:(UIPinchGestureRecognizer *)recognizer;
 - (void)switchStateChanged:(MicSwitchDetector*)sender;
 - (void)adaptViewToOrientation;
+- (void)dismissInfoOverlay:(UITapGestureRecognizer*)recognizer;
 
 @end
 
 @implementation SignalViewController
 
-@synthesize appDelegate, sampleView, powerIndicator, connectedIndicator, recordIndicator;
-@synthesize xMinLabel, xMaxLabel, yPos05Label, yZeroLabel, yNeg05Label, detectorController;
+@synthesize appDelegate, sampleView, powerIndicator, connectedIndicator, recordIndicator, infoOverlay;
+@synthesize xMinLabel, xMaxLabel, yPos05Label, yZeroLabel, yNeg05Label, signalProcessorController;
+@synthesize infoOverlayController;
 
 //
 // Maximum age of audio samples we can show at one go. Since we capture at 44.1kHz, that means 44.1k
@@ -39,7 +41,8 @@ static const CGFloat kXMaxMin = 0.0001;
 static const CGFloat kXMaxMax = 1.0;
 
 - (void)dealloc {
-    self.detectorController = nil;
+    self.signalProcessorController = nil;
+    self.infoOverlayController = nil;
     [super dealloc];
 }
 
@@ -48,7 +51,7 @@ static const CGFloat kXMaxMax = 1.0;
     NSLog(@"SignalViewController.viewDidLoad");
     [super viewDidLoad];
     
-    detectorController = nil;
+    signalProcessorController = nil;
     sampleView.delegate = self;
     self.view.autoresizesSubviews = YES;
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -106,6 +109,12 @@ static const CGFloat kXMaxMax = 1.0;
                                       autorelease];
     [sampleView addGestureRecognizer:pigr];
 
+    //
+    // Install tap gesture to dismiss the info overlay
+    //
+    stgr = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissInfoOverlay:)] autorelease];
+    [infoOverlay addGestureRecognizer:stgr];
+
     [self setXMax:[[NSUserDefaults standardUserDefaults] floatForKey:kSettingsXMaxKey]];
 }
 
@@ -113,7 +122,8 @@ static const CGFloat kXMaxMax = 1.0;
 {
     NSLog(@"SignalViewController.viewDidUnload");
     [self stop];
-    self.detectorController = nil;
+    self.signalProcessorController = nil;
+    self.infoOverlayController = nil;
     [super viewDidUnload];
 }
 
@@ -122,8 +132,8 @@ static const CGFloat kXMaxMax = 1.0;
     NSLog(@"SignalViewController.viewWillAppear");
     [self adaptViewToOrientation];
     [self start];
-    self.detectorController = [appDelegate.signalDetector controller];
-    self.detectorController.sampleView = sampleView;
+    self.signalProcessorController = [appDelegate.signalDetector controller];
+    self.signalProcessorController.sampleView = sampleView;
     [super viewWillAppear:animated];
 }
 
@@ -131,7 +141,7 @@ static const CGFloat kXMaxMax = 1.0;
 {
     NSLog(@"SignalViewController.viewWillDisappear");
     [self stop];
-    self.detectorController = nil;
+    self.signalProcessorController = nil;
     [super viewWillDisappear:animated];
 }
 
@@ -258,14 +268,19 @@ static const CGFloat kXMaxMax = 1.0;
     glLineWidth(0.5);
     glDrawArrays(GL_LINES, 0, 6);
 
-    if (detectorController) {
-        [detectorController drawOnSampleView:vertices];
+    if (signalProcessorController) {
+        [signalProcessorController drawOnSampleView:vertices];
     }
 }
 
 - (void)handleSingleTapGesture:(UITapGestureRecognizer*)recognizer
 {
     vertexBufferManager.frozen = ! vertexBufferManager.frozen;
+}
+
+- (void)dismissInfoOverlay:(UITapGestureRecognizer *)recognizer
+{
+    [self toggleInfoOverlay];
 }
 
 enum GestureType {
@@ -277,8 +292,8 @@ enum GestureType {
 
 - (void)handlePanGesture:(UIPanGestureRecognizer*)recognizer
 {
-    if (detectorController) {
-        [detectorController handlePanGesture:recognizer];
+    if (signalProcessorController) {
+        [signalProcessorController handlePanGesture:recognizer];
     }
 }
 
@@ -359,9 +374,36 @@ enum GestureType {
 {
     SInt32 offset = sampleView.frame.origin.y;
     SInt32 height = sampleView.frame.size.height;
-    yPos05Label.center = CGPointMake(yPos05Label.center.x, offset + 0.25 * height + yPos05Label.bounds.size.height * 0.5 + 1);
-    yZeroLabel.center = CGPointMake(yZeroLabel.center.x, offset + 0.5 * height + yZeroLabel.bounds.size.height * 0.5 + 1);
-    yNeg05Label.center = CGPointMake(yNeg05Label.center.x, offset + 0.75 * height + yNeg05Label.bounds.size.height * 0.5 + 1);
+    yPos05Label.center = CGPointMake(yPos05Label.center.x, offset + 0.25 * height + 
+                                     yPos05Label.bounds.size.height * 0.5 + 1);
+    yZeroLabel.center = CGPointMake(yZeroLabel.center.x, offset + 0.5 * height + 
+                                    yZeroLabel.bounds.size.height * 0.5 + 1);
+    yNeg05Label.center = CGPointMake(yNeg05Label.center.x, offset + 0.75 * height + 
+                                     yNeg05Label.bounds.size.height * 0.5 + 1);
+}
+
+- (void)toggleInfoOverlay
+{
+    if (infoOverlay.hidden) {
+        infoOverlayController = [appDelegate.signalDetector infoOverlayController];
+        if (infoOverlayController) {
+            [infoOverlay addSubview:infoOverlayController.view];
+            infoOverlay.hidden = NO;
+            CGPoint toPoint = infoOverlay.center;
+            CGPoint fromPoint = toPoint;
+            fromPoint.y += infoOverlay.bounds.size.height + fromPoint.y;
+            infoOverlay.center = fromPoint;
+            [UIView beginAnimations:@"" context:nil];
+            [UIView setAnimationDelay:0.3];
+            infoOverlay.center = toPoint;
+            [UIView commitAnimations];
+        }
+    }
+    else {
+        infoOverlayController = nil;
+        [infoOverlayController.view removeFromSuperview];
+        infoOverlay.hidden = YES;
+    }
 }
 
 @end

@@ -6,6 +6,8 @@
 #import "LowPassFilter.h"
 #import "LevelDetector.h"
 #import "LevelDetectorController.h"
+#import "LevelDetectorInfoOverlayController.h"
+#import "SignalProcessorController.h"
 #import "UserSettings.h"
 
 NSString* kLevelDetectorCounterUpdateNotification = @"LevelDetectorCounterUpdateNotification";
@@ -29,6 +31,7 @@ NSString* kLevelDetectorRPMKey = @"rpm";
 {
     if ((self = [super init])) {
         controller = nil;
+        infoOverlayController = nil;
 	intervalTimer = nil;
 	lowPassFilter = nil;
         counterDecayFilter = nil;
@@ -45,6 +48,7 @@ NSString* kLevelDetectorRPMKey = @"rpm";
     self.lowPassFilter = nil;
     self.counterDecayFilter = nil;
     [controller release];
+    [infoOverlayController release];
     [super dealloc];
 }
 
@@ -52,6 +56,9 @@ NSString* kLevelDetectorRPMKey = @"rpm";
 {
     rpmScaleFactor = 1000.0 / value;
 }
+
+#pragma mark -
+#pragma mark SignalProcessorProtocol
 
 - (void)start
 {
@@ -71,15 +78,31 @@ NSString* kLevelDetectorRPMKey = @"rpm";
     self.intervalTimer = nil;
 }
 
-#pragma mark -
-#pragma mark SampleProcessorProtocol
-
 - (void)reset
 {
     counter = 0;
     currentEdge = kEdgeKindUnknown;
     [lowPassFilter reset];
     [counterDecayFilter reset];
+}
+
+- (SignalProcessorController*)controller
+{
+    if (controller == nil) {
+        controller = [[LevelDetectorController createWithLevelDetector:self] retain];
+    }
+    
+    return controller;
+}
+
+- (UIViewController*)infoOverlayController
+{
+    if (infoOverlayController == nil) {
+        infoOverlayController = [[LevelDetectorInfoOverlayController alloc] initWithNibName:@"LevelDetectorInfoOverlay"
+                                                                                     bundle:nil];
+    }
+    
+    return infoOverlayController;
 }
 
 - (void)updateFromSettings
@@ -123,14 +146,13 @@ NSString* kLevelDetectorRPMKey = @"rpm";
     }
 }
 
-- (DetectorController*)controller
+- (NSObject<SampleProcessorProtocol>*)sampleProcessor
 {
-    if (controller == nil) {
-        controller = [[LevelDetectorController createWithLevelDetector:self] retain];
-    }
-
-    return controller;
+    return self;
 }
+
+#pragma mark -
+#pragma mark SampleProcessorProtocol
 
 - (void)addSamples:(Float32*)ptr count:(UInt32)count
 {

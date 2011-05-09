@@ -67,13 +67,10 @@
 
     self.dataCapture = [DataCapture create];
     self.signalDetector = [LevelDetector create];
-
-    signalViewController.detectorController;
-
     self.switchDetector = [MicSwitchDetector createWithSampleRate:dataCapture.sampleRate];
     self.vertexBufferManager = [VertexBufferManager createForDuration:1.0 sampleRate:dataCapture.sampleRate];
 
-    dataCapture.signalProcessor = self.signalDetector;
+    dataCapture.sampleProcessor = [self.signalDetector sampleProcessor];
     dataCapture.switchDetector = switchDetector;
     dataCapture.vertexBufferManager = vertexBufferManager;
     
@@ -186,8 +183,14 @@
 
 - (BOOL)tabBarController:(UITabBarController*)sender shouldSelectViewController:(UIViewController*)viewController
 {
+    NSLog(@"AppDelegate.tabBarController:shouldSelectViewController: %@", viewController);
     UIViewController* current = [sender selectedViewController];
-    if (current != viewController) {
+    if (current == viewController) {
+        if (sender.selectedIndex == 0) {
+            [signalViewController toggleInfoOverlay];
+        }
+    }
+    else {
 	if (sender.selectedIndex == 3) {
 	    [settingsController dismiss:self];
 	}

@@ -11,6 +11,7 @@
 #import "DBLoginController.h"
 #import "IASKAppSettingsViewController.h"
 #import "SampleProcessorProtocol.h"
+#import "SignalProcessorProtocol.h"
 
 @class DataCapture;
 @class DropboxUploader;
@@ -41,7 +42,7 @@
 
     DBSession* dropboxSession;
     DataCapture* dataCapture;
-    NSObject<SampleProcessorProtocol>* signalDetector;
+    NSObject<SignalProcessorProtocol>* signalDetector;
     MicSwitchDetector* switchDetector;
     VertexBufferManager* vertexBufferManager;
     DropboxUploader* uploader;
@@ -62,7 +63,7 @@
 @property (nonatomic, retain) IBOutlet SettingsViewController* appSettingsViewController;
 @property (nonatomic, retain) DBSession* dropboxSession;
 @property (nonatomic, retain) DataCapture* dataCapture;
-@property (nonatomic, retain) NSObject<SampleProcessorProtocol>* signalDetector;
+@property (nonatomic, retain) NSObject<SignalProcessorProtocol>* signalDetector;
 @property (nonatomic, retain) MicSwitchDetector* switchDetector;
 @property (nonatomic, retain) VertexBufferManager* vertexBufferManager;
 @property (nonatomic, retain) DropboxUploader* uploader;

@@ -6,9 +6,9 @@
 #import "LowPassFilter.h"
 
 /** Variant of a LowPassFilter that uses a fixed set of weights or taps that follow the linear sequence 
- (N/2N, (N-1)/2N, (N-2)/2N, ..., 1/2N)
- The sum of the weights is always 1, and each weight is followed by a weight with 1/2N less pull in the overall
- averaging.
+    (N/2N, (N-1)/2N, (N-2)/2N, ..., 1/2N)
+    The sum of the weights is always 1, and each weight is followed by a weight with 1/2N less pull in the overall
+    averaging.
  */
 @interface WeightedAverager : LowPassFilter {
 @private

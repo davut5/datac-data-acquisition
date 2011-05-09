@@ -43,7 +43,7 @@ typedef void (*DataCaptureProcessSamplesProc)(id, SEL, AudioBufferList*, UInt32,
 }
 
 @property (nonatomic, assign, readonly) AudioUnit audioUnit;
-@property (nonatomic, retain) NSObject<SampleProcessorProtocol>* signalProcessor;
+@property (nonatomic, retain) NSObject<SampleProcessorProtocol>* sampleProcessor;
 @property (nonatomic, retain) NSObject<SampleProcessorProtocol>* switchDetector;
 @property (nonatomic, retain) VertexBufferManager* vertexBufferManager;
 @property (nonatomic, retain) SampleRecorder* sampleRecorder;

@@ -5,11 +5,11 @@
 
 #import <Foundation/Foundation.h>
 
-#import "DetectorController.h"
+#import "SignalProcessorController.h"
 
 @class BitDetector;
 
-@interface BitDetectorController : DetectorController {
+@interface BitDetectorController : SignalProcessorController {
 @private
     BitDetector* bitDetector;
     CGFloat gestureStart;

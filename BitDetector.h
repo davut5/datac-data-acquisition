@@ -4,8 +4,9 @@
 //
 
 #import <Foundation/Foundation.h>
+
 #import "BitDetectorObserver.h"
-#import "DataCapture.h"
+#import "SampleProcessorProtocol.h"
 
 extern NSString* kBitDetectorUnknownBit;
 extern NSString* kBitDetectorLowBit;
@@ -57,5 +58,9 @@ extern NSString* kBitDetectorHighBit;
 /** Initialize a new BitDetector object.
  */
 - (id)init;
+
+- (void)updateFromSettings;
+
+- (void)reset;
 
 @end

@@ -3,16 +3,15 @@
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 #import "SampleView.h"
 #import "MicSwitchDetector.h"
 
 @class AppDelegate;
-@class DetectorController;
 @class IndicatorButton;
-@class LevelDetector;
+@class SignalProcessorController;
 @class VertexBufferManager;
 
 /** Controller for the view that contains engineering data for the data capture interface.
@@ -29,8 +28,10 @@
     IBOutlet UILabel* yPos05Label;
     IBOutlet UILabel* yZeroLabel;
     IBOutlet UILabel* yNeg05Label;
+    IBOutlet UIView* infoOverlay;
     VertexBufferManager* vertexBufferManager;
-    DetectorController* detectorController;
+    SignalProcessorController* signalProcessorController;
+    UIViewController* infoOverlayController;
     GLfloat xMin;
     GLfloat xMax;
     CGFloat gestureStart;
@@ -47,7 +48,9 @@
 @property (nonatomic, retain) IBOutlet UILabel* yPos05Label;
 @property (nonatomic, retain) IBOutlet UILabel* yZeroLabel;
 @property (nonatomic, retain) IBOutlet UILabel* yNeg05Label;
-@property (nonatomic, retain) DetectorController* detectorController;
+@property (nonatomic, retain) IBOutlet UIView* infoOverlay;
+@property (nonatomic, retain) SignalProcessorController* signalProcessorController;
+@property (nonatomic, retain) UIViewController* infoOverlayController;
 
 - (IBAction)togglePower;
 - (IBAction)toggleRecord;
@@ -56,6 +59,7 @@
 - (void)start;
 - (void)stop;
 - (void)updateFromSettings;
+- (void)toggleInfoOverlay;
 
 @end
 

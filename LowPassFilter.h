@@ -42,9 +42,13 @@
 - (void)reset;
 
 /** Filter the given value and return the result.
+    \param x the value to filter
  */
 - (Float32)filter:(Float32)x;
 
+/** Obtain the number of filter taps
+    \return filter taps
+ */
 - (NSUInteger)size;
 
 @end

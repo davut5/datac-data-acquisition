@@ -72,7 +72,7 @@ static const Float32 kQ824ToFloat = Float32(1.0) / Float32(kFloatToQ824);
 
 @implementation DataCapture
 
-@synthesize audioUnit, maxAudioSampleCount, vertexBufferManager, signalProcessor, switchDetector, sampleRecorder;
+@synthesize audioUnit, maxAudioSampleCount, vertexBufferManager, sampleProcessor, switchDetector, sampleRecorder;
 @synthesize audioUnitRunning, emittingPowerSignal, pluggedIn, sampleRate, processSamplesSelector, processSamplesProc;
 
 + (DataCapture*)create
@@ -84,7 +84,7 @@ static const Float32 kQ824ToFloat = Float32(1.0) / Float32(kFloatToQ824);
 {
     if ((self = [super init])) {
 	audioUnit = nil;
-	signalProcessor = nil;
+	sampleProcessor = nil;
 	switchDetector = nil;
 	vertexBufferManager = nil;
 	sampleRecorder = nil;
@@ -111,7 +111,7 @@ static const Float32 kQ824ToFloat = Float32(1.0) / Float32(kFloatToQ824);
     delete audioUnitRenderProcContext;
 
     [self stop];
-    self.signalProcessor = nil;
+    self.sampleProcessor = nil;
     self.switchDetector = nil;
     self.vertexBufferManager = nil;
     self.sampleRecorder = nil;
@@ -410,7 +410,7 @@ audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, co
     }
 
     fptr = &sampleBuffer[0];
-    [signalProcessor addSamples:fptr count:count];
+    [sampleProcessor addSamples:fptr count:count];
     [switchDetector addSamples:fptr count:count];
 
     VertexBuffer* vertexBuffer = [vertexBufferManager getBufferForCount:count];
