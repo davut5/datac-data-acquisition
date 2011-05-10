@@ -43,6 +43,6 @@
 
 /** Obtain the low-level sample processor that will be used by the DataCapture instance to process raw audio samples.
  */
--  (NSObject<SampleProcessorProtocol>*) sampleProcessor;
+-  (NSObject<SampleProcessorProtocol>*)sampleProcessor;
 
 @end

@@ -46,6 +46,10 @@
     // First 10 bits make up the button state
     //
     buttonState = [BitFrameDecoder integerFromBits:[bits substringWithRange:NSMakeRange(0, 10)]];
+
+    //
+    // The RPM value is encoded in two bytes, MSB first.
+    //
     NSInteger msb = [BitFrameDecoder integerFromBits:[bits substringWithRange:NSMakeRange(10, 10)]];
     NSInteger lsb = [BitFrameDecoder integerFromBits:[bits substringWithRange:NSMakeRange(20, 10)]];
     frequency = msb * 256 + lsb;

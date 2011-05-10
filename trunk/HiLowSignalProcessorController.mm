@@ -3,22 +3,22 @@
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
-#import "BitDetector.h"
-#import "BitDetectorController.h"
+#import "HiLowSignalProcessor.h"
+#import "HiLowSignalProcessorController.h"
 #import "SampleView.h"
 #import "UserSettings.h"
 
-@implementation BitDetectorController
+@implementation HiLowSignalProcessorController
 
-+ (id)createWithBitDetector:(BitDetector*)theBitDetector
++ (id)createWithSignalProcessor:(HiLowSignalProcessor*)signalProcessor
 {
-    return [[[BitDetectorController alloc] initWithBitDetector:theBitDetector] autorelease];
+    return [[[HiLowSignalProcessorController alloc] initWithSignalProcessor:signalProcessor] autorelease];
 }
 
-- (id)initWithBitDetector:(BitDetector*)theBitDetector
+- (id)initWithSignalProcessor:(HiLowSignalProcessor*)theSignalProcessor
 {
     if (self = [super init]) {
-        bitDetector = theBitDetector;
+        signalProcessor = theSignalProcessor;
     }
 
     return self;
@@ -26,12 +26,13 @@
 
 - (void)dealloc
 {
-    bitDetector = nil;
+    signalProcessor = nil;
     [super dealloc];
 }
 
 - (void)drawOnSampleView:(GLfloat*)vertices
 {
+#if 0
     vertices[1] = bitDetector.maxLowLevel;
     vertices[3] = bitDetector.maxLowLevel;
     glLineWidth(2.0);
@@ -41,6 +42,7 @@
     vertices[3] = bitDetector.minHighLevel;
     glColor4f(1., 0., 1., 1.0);
     glDrawArrays(GL_LINES, 0, 2);
+#endif
 }
 
 enum GestureType {
@@ -51,6 +53,7 @@ enum GestureType {
 
 - (void)handlePanGesture:(UIPanGestureRecognizer*)recognizer
 {
+#if 0
     CGFloat height = sampleView.bounds.size.height;
     if (recognizer.state == UIGestureRecognizerStateBegan) {
         gestureType = kGestureUnknown;
@@ -93,6 +96,7 @@ enum GestureType {
             }
         }
     }
+#endif
 }
 
 @end

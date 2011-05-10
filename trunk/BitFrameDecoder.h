@@ -4,20 +4,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BitStreamFrameDetector.h"
 
-/** A protocol for observers interested in frame decoding.
- */
-@protocol BitFrameDecoderObserver
-@required
-
-/** Notification sent out when the bit frame decoder finds a valid message frame.
- \param buttonState the current button state from the external device (8 bits)
- \param frequency the current frequency (RPM) reported by the external device (16 bits)
- */
-- (void)frameButtonState:(NSInteger)buttonState frequency:(NSInteger)frequency;
-
-@end
+#import "BitStreamFrameDetectorObserver.h"
+#import "BitFrameDecoderObserver.h"
 
 /** The BitFrameDecoder accepts a string of bit values ("1" and "0") from a BitStreamFrameDetector and decodes the 
  payload values, emitting them to a registered observer via the BitFrameDecoderObserver protocol.

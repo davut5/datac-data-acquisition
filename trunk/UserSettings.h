@@ -22,6 +22,9 @@ extern NSString* kSettingsPulseDecoderSamplesPerPulseKey;
 extern NSString* kSettingsPulseDecoderMaxLowLevelKey;
 extern NSString* kSettingsPulseDecoderMinHighLevelKey;
 extern NSString* kSettingsWaveCycleDetectorNonZeroLevelKey;
+extern NSString* kSettingsBitStreamFrameDetectorPrefixKey;
+extern NSString* kSettingsBitStreamFrameDetectorSuffixKey;
+extern NSString* kSettingsBitStreamFrameDetectorContentSizeKey;
 
 @interface UserSettings : NSObject
 {

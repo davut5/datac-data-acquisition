@@ -22,15 +22,8 @@ enum EdgeKind {
     kEdgeKindFalling
 };
 
-/** Rising and falling edge detector for a low-level and high-level signals.
-    Expects the two signals to be added together with the low-level one at a
-    lower amplitude than the high-level one, and with the sum of both within
-    [0,1) range in the Q8.24 fixed-point representation
- 
-    Periodically, an internal timer fires, invoking an internal recalculate
-    method that generates a number of counts / second value for the upper and
-    lower signal. The recalculate passes these values of to a delegate that
-    implements the SignalMeasurementReader protocol.
+/** Simple signal detector that looks for and counts the rising edges of peaks above a user-settable level. Periodically
+    reports these peak counts in a notification named kLevelDetectorCounterUpdateNotification.
 */
 
 @interface LevelDetector : NSObject <SampleProcessorProtocol, SignalProcessorProtocol> {

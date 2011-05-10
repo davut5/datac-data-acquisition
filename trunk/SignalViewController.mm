@@ -22,7 +22,7 @@
 - (void)handlePanGesture:(UIPanGestureRecognizer *)recognizer;
 - (void)handlePinchGesture:(UIPinchGestureRecognizer *)recognizer;
 - (void)switchStateChanged:(MicSwitchDetector*)sender;
-- (void)adaptViewToOrientation;
+- (void)adaptViewToOrientation:(NSTimeInterval)duration;
 - (void)dismissInfoOverlay:(UITapGestureRecognizer*)recognizer;
 
 @end
@@ -130,7 +130,7 @@ static const CGFloat kXMaxMax = 1.0;
 - (void)viewWillAppear:(BOOL)animated
 {
     NSLog(@"SignalViewController.viewWillAppear");
-    [self adaptViewToOrientation];
+    [self adaptViewToOrientation:0];
     [self start];
     self.signalProcessorController = [appDelegate.signalDetector controller];
     self.signalProcessorController.sampleView = sampleView;
@@ -367,19 +367,32 @@ enum GestureType {
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
                                          duration:(NSTimeInterval)duration
 {
-    [self adaptViewToOrientation];
+    [self adaptViewToOrientation:duration];
 }
 
-- (void)adaptViewToOrientation
+- (void)adaptViewToOrientation:(NSTimeInterval)duration
 {
+    //
+    // Place the grid labels in the appropriate location after a rotation event.
+    //
     SInt32 offset = sampleView.frame.origin.y;
     SInt32 height = sampleView.frame.size.height;
+    [UIView beginAnimations:@"" context:nil];
+    [UIView setAnimationDuration:duration];
     yPos05Label.center = CGPointMake(yPos05Label.center.x, offset + 0.25 * height + 
                                      yPos05Label.bounds.size.height * 0.5 + 1);
     yZeroLabel.center = CGPointMake(yZeroLabel.center.x, offset + 0.5 * height + 
                                     yZeroLabel.bounds.size.height * 0.5 + 1);
     yNeg05Label.center = CGPointMake(yNeg05Label.center.x, offset + 0.75 * height + 
                                      yNeg05Label.bounds.size.height * 0.5 + 1);
+    [UIView commitAnimations];
+}
+
+- (void)hideInfoOverlayDone:(NSString*)animationId finished:(NSNumber*)finished context:(void*)context
+{
+    infoOverlayController = nil;
+    [infoOverlayController.view removeFromSuperview];
+    infoOverlay.hidden = YES;
 }
 
 - (void)toggleInfoOverlay
@@ -387,22 +400,41 @@ enum GestureType {
     if (infoOverlay.hidden) {
         infoOverlayController = [appDelegate.signalDetector infoOverlayController];
         if (infoOverlayController) {
+            
+            //
+            // Add the view managed by the infoOverlayController to our infoOverlay view and make them visible.
+            //
             [infoOverlay addSubview:infoOverlayController.view];
             infoOverlay.hidden = NO;
-            CGPoint toPoint = infoOverlay.center;
+
+            //
+            // Reveal the infoOverlay view by popping it up from the tab bar at the bottom of the screen. End when
+            // it is centered over the sampleView display.
+            //
+            CGPoint toPoint = sampleView.center;
             CGPoint fromPoint = toPoint;
-            fromPoint.y += infoOverlay.bounds.size.height + fromPoint.y;
+            fromPoint.y = infoOverlay.bounds.size.height / 2 + self.view.window.bounds.size.height;
             infoOverlay.center = fromPoint;
             [UIView beginAnimations:@"" context:nil];
-            [UIView setAnimationDelay:0.3];
             infoOverlay.center = toPoint;
             [UIView commitAnimations];
         }
     }
     else {
-        infoOverlayController = nil;
-        [infoOverlayController.view removeFromSuperview];
-        infoOverlay.hidden = YES;
+        if (infoOverlayController) {
+
+            //
+            // Hide the infoOverlay view by dropping it into the tab bar at the bottom of the screen. When the 
+            // animation is done, invoke hideInfoOverlayDone to remove the custom view from our infoOverlay view.
+            //
+            [UIView beginAnimations:@"" context:nil];
+            [UIView setAnimationDelegate:self];
+            [UIView setAnimationDidStopSelector:@selector(hideInfoOverlayDone:finished:context:)];
+            CGPoint toPoint = infoOverlay.center;
+            toPoint.y = infoOverlay.bounds.size.height / 2 + self.view.window.bounds.size.height;
+            infoOverlay.center = toPoint;
+            [UIView commitAnimations];
+        }
     }
 }
 

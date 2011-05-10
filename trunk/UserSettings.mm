@@ -22,6 +22,9 @@ NSString* kSettingsPulseDecoderSamplesPerPulseKey = @"samplesPerPulse";
 NSString* kSettingsPulseDecoderMaxLowLevelKey = @"maxLowLevel";
 NSString* kSettingsPulseDecoderMinHighLevelKey = @"minHighLevel";
 NSString* kSettingsWaveCycleDetectorNonZeroLevelKey = @"nonZeroLevel";
+NSString* kSettingsBitStreamFrameDetectorPrefixKey = @"bitStreamFrameDetectorPrefix";
+NSString* kSettingsBitStreamFrameDetectorSuffixKey = @"bitStreamFrameDetectorSuffix";
+NSString* kSettingsBitStreamFrameDetectorContentSizeKey = @"bitStreamFrameDetectorContentSize";
 
 @implementation UserSettings
 
@@ -42,10 +45,16 @@ NSString* kSettingsWaveCycleDetectorNonZeroLevelKey = @"nonZeroLevel";
                                 [NSNumber numberWithFloat:0.5], kSettingsMicSwitchDetectorDurationKey,
                                 [NSNumber numberWithFloat:30.0], kSettingsRpmViewDurationKey,
                                 [NSNumber numberWithBool:YES], kSettingsCloudStorageEnableKey,
+
                                 [NSNumber numberWithInt:37], kSettingsPulseDecoderSamplesPerPulseKey,
                                 [NSNumber numberWithFloat:0.33], kSettingsPulseDecoderMaxLowLevelKey,
                                 [NSNumber numberWithFloat:0.66], kSettingsPulseDecoderMinHighLevelKey,
                                 [NSNumber numberWithFloat:0.33], kSettingsWaveCycleDetectorNonZeroLevelKey,
+                                
+                                @"0010101011", kSettingsBitStreamFrameDetectorPrefixKey,
+                                @"0101010101", kSettingsBitStreamFrameDetectorSuffixKey,
+                                [NSNumber numberWithInt:30], kSettingsBitStreamFrameDetectorContentSizeKey,
+
                                 nil]];
     return defaults;
 }
