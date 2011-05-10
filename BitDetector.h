@@ -13,7 +13,7 @@ extern NSString* kBitDetectorLowBit;
 extern NSString* kBitDetectorHighBit;
 
 /** The BitDetector works on floating-point values between -1 and +1, presumably from the audio system. It detects
- transitions between a low level and high level, counts the number of samples within while at a level and periodically
+ transitions between a low level and high level, counts the number of samples while at a level and periodically
  sends a nextBitValue: to any registered observer. The detection logic works on a fixed bitrate (say 1200 bps), which it
  uses as a time reference to detect multiple occurances of a bit at the same level. For the 1200 bps case, each bit 
  signal will consist of 36.75 audio samples when sampled at 44.1 kHz. If a bit is at a level for 1.5 * 36.75 samples, 
@@ -27,8 +27,8 @@ extern NSString* kBitDetectorHighBit;
  
  It is possible that due to noise, transition detection occurs very late within a pulse (say 18 samples in), in which 
  case the induced slew might cause the detector to miss a bit. Currently, the detector fires a nextBitValue: when it 
- sees 36.75 / 2 valuid samples after the start of a bit transition. This is the center of an idealized pulse width. If
- an extreme slew occurs, it is possible that there would not be enough samples for the detector to see to fire the
+ sees 36.75 / 2 valid samples after the start of a bit transition. This is the center of an idealized pulse width. If
+ extreme slew occurs, it is possible that there would not be enough samples for the detector to see to fire the
  notification. One could make the pulse width smaller, but then one runs the risk of firing on a phantom pulse at the
  end of a string of same-value bits. Since in the current scheme, there are a maximum of 9 bits before there is a forced
  transition due to the presense of the stop/start bits in the byte frame, one could calculate the maximum drift that the

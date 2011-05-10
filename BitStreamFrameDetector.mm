@@ -3,26 +3,33 @@
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
-#import "BitDetector.h"
 #import "BitStreamFrameDetector.h"
+#import "UserSettings.h"
 
 @implementation BitStreamFrameDetector
 
-@synthesize bits, frameSize, contentSize, frameContents, observer;
+@synthesize bits, contentSize, frameContents, observer, prefix, suffix;
 
-+ (id)createWithFrameSize:(NSUInteger)size framePrefix:(NSString*)prefix frameSuffix:(NSString*)suffix
++ (id)create
 {
-    return [[[BitStreamFrameDetector alloc] initWithFrameSize:size framePrefix:prefix frameSuffix:suffix] autorelease];
+    return [[[BitStreamFrameDetector alloc] init] autorelease];
 }
 
-- (id)initWithFrameSize:(NSUInteger)theFrameSize framePrefix:(NSString*)thePrefix frameSuffix:(NSString*)theSuffix
+- (void)makeBits
+{
+    [bits release];
+    bits = [[NSMutableString stringWithCapacity:frameSize] retain];
+}
+
+- (id)init
 {
     if (self = [super init]) {
-        bits = [[NSMutableString stringWithCapacity:theFrameSize] retain];
-        prefix = [thePrefix retain];
-        suffix = [theSuffix retain];
-        frameSize = theFrameSize;
-        contentSize = theFrameSize - [prefix length] - [suffix length];
+        NSUserDefaults* settings = [NSUserDefaults standardUserDefaults];
+        prefix = [[settings stringForKey:kSettingsBitStreamFrameDetectorPrefixKey] retain];
+        suffix = [[settings stringForKey:kSettingsBitStreamFrameDetectorSuffixKey] retain];
+        contentSize = [settings integerForKey:kSettingsBitStreamFrameDetectorContentSizeKey];
+        frameSize = contentSize + [prefix length] + [suffix length];
+        [self makeBits];
         frameContents = nil;
         observer = nil;
     }
@@ -39,6 +46,29 @@
     [super dealloc];
 }
 
+- (void)setPrefix:(NSString*)value
+{
+    frameSize += ([value length] - [prefix length]);
+    [prefix release];
+    prefix = [value retain];
+    [self makeBits];
+}
+
+- (void)setSuffix:(NSString*)value
+{
+    frameSize += ([value length] - [suffix length]);
+    [suffix release];
+    suffix = [value retain];
+    [self makeBits];
+}
+
+- (void)setContentSize:(NSUInteger)value
+{
+    frameSize += (value - contentSize);
+    contentSize = value;
+    [self makeBits];
+}
+
 - (void)nextBitValue:(NSString*)bitValue
 {
     [bits appendString:bitValue];
@@ -49,9 +79,10 @@
             // Extract and save the contents of the frame. Alert observer of new frame contents.
             //
             NSLog(@"BitStreamFrameDetector: matched frame: %@", bits);
+            [frameContents release];
             frameContents = [[bits substringWithRange:NSMakeRange([prefix length], contentSize)] retain];
             if (observer != nil) {
-                [observer frameContentBitStream:self.frameContents];
+                [observer frameContentBitStream:frameContents];
             }
 
             //
@@ -66,10 +97,11 @@
             // out the accumulator and start from scratch.
             //
             NSRange found = [bits rangeOfString:prefix options:NSLiteralSearch range:NSMakeRange(1, frameSize-1)];
-            if (found.location == NSNotFound) {
-                found.location = frameSize;
+            if (found.location != NSNotFound) {
+                [bits replaceCharactersInRange:NSMakeRange(0, found.location) withString:@""];
             }
-            [bits replaceCharactersInRange:NSMakeRange(0, found.location) withString:@""];
+            else {
+            }
         }
     }
 }

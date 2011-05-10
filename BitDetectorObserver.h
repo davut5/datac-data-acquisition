@@ -16,3 +16,4 @@
 - (void)nextBitValue:(NSString*)value;
 
 @end
+

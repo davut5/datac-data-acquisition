@@ -17,9 +17,11 @@
 
 - (void)testOne
 {
-    BitStreamFrameDetector* bsd = [BitStreamFrameDetector createWithFrameSize:50 
-                                                      framePrefix:@"0010101011" 
-                                                      frameSuffix:@"0101010101"];
+    BitStreamFrameDetector* bsd = [BitStreamFrameDetector create];
+    bsd.prefix = @"0010101011";
+    bsd.suffix = @"0101010101";
+    bsd.contentSize = 30;
+
     STAssertTrue(bsd.frameContents == nil, @"");
 
     [bsd nextBitValue:kBitDetectorLowBit];
@@ -91,9 +93,11 @@
 
 - (void)testTwo
 {
-    BitStreamFrameDetector* bsd = [BitStreamFrameDetector createWithFrameSize:50 
-                                                      framePrefix:@"0010101011" 
-                                                      frameSuffix:@"0101010101"];
+    BitStreamFrameDetector* bsd = [BitStreamFrameDetector create];
+    bsd.contentSize = 30;
+    bsd.prefix = @"0010101011";
+    bsd.suffix = @"0101010101";
+    
     STAssertTrue(bsd.frameContents == nil, @"");
     
     [bsd nextBitValue:kBitDetectorLowBit];
@@ -162,10 +166,10 @@
 
 - (void)testThree
 {
-    BitStreamFrameDetector* bsd = [BitStreamFrameDetector createWithFrameSize:17
-                                                                  framePrefix:@"01010101" // 0x55
-                                                                  frameSuffix:@"10101010" // 0xAA
-                                   ];
+    BitStreamFrameDetector* bsd = [BitStreamFrameDetector create];
+    bsd.contentSize = 1;
+    bsd.prefix = @"01010101";
+    bsd.suffix = @"10101010";
 
     STAssertTrue(bsd.frameContents == nil, @"");
 

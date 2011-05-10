@@ -62,7 +62,7 @@
 		BD29187C1328456500FE5395 /* SignalView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD29187B1328456500FE5395 /* SignalView.xib */; };
 		BD2FC1B81373F643004BEA40 /* LevelDetectorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2FC1B71373F643004BEA40 /* LevelDetectorController.mm */; };
 		BD2FC23C137443AC004BEA40 /* SignalProcessorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2FC23B137443AC004BEA40 /* SignalProcessorController.mm */; };
-		BD2FC35A137483C6004BEA40 /* BitDetectorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2FC359137483C6004BEA40 /* BitDetectorController.mm */; };
+		BD2FC35A137483C6004BEA40 /* HiLowSignalProcessorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2FC359137483C6004BEA40 /* HiLowSignalProcessorController.mm */; };
 		BD5EAF311345CABC00B01DC7 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF221345CABC00B01DC7 /* AppDelegate.mm */; };
 		BD5EAF331345CABC00B01DC7 /* DataCapture.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF261345CABC00B01DC7 /* DataCapture.mm */; };
 		BD5EAF341345CABC00B01DC7 /* DropboxUploader.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF281345CABC00B01DC7 /* DropboxUploader.mm */; };
@@ -114,6 +114,11 @@
 		BDB1D9511377D12E0051F5B9 /* LevelDetectorInfoOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = BDB1D9501377D12E0051F5B9 /* LevelDetectorInfoOverlay.xib */; };
 		BDB1D9671377D69D0051F5B9 /* LevelDetectorInfoOverlayController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1D9661377D69D0051F5B9 /* LevelDetectorInfoOverlayController.mm */; };
 		BDB1D9CD1377E6EA0051F5B9 /* AFSK.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1D9CC1377E6EA0051F5B9 /* AFSK.mm */; };
+		BDB1DB3E137801CB0051F5B9 /* HiLowSignalProcessorInfoOverlayController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1DB3D137801CB0051F5B9 /* HiLowSignalProcessorInfoOverlayController.mm */; };
+		BDB1DB61137806AF0051F5B9 /* HiLowSignalProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1DB60137806AF0051F5B9 /* HiLowSignalProcessor.mm */; };
+		BDB1DC34137895850051F5B9 /* 159-voicemail.opacity in Resources */ = {isa = PBXBuildFile; fileRef = BDB1DC33137895830051F5B9 /* 159-voicemail.opacity */; };
+		BDB1DC40137897350051F5B9 /* 159-voicemail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BDB1DC3F137897350051F5B9 /* 159-voicemail@2x.png */; };
+		BDB1DC581378988B0051F5B9 /* icon.opacity in Resources */ = {isa = PBXBuildFile; fileRef = BDB1DC571378988B0051F5B9 /* icon.opacity */; };
 		BDB66E911369FE05009FF047 /* WaveCycleDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB66E901369FE05009FF047 /* WaveCycleDetector.mm */; };
 		BDB66EC1136AAED7009FF047 /* WeightedAverager.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB66EC0136AAED7009FF047 /* WeightedAverager.mm */; };
 		BDB66ED9136B17DF009FF047 /* WeightedAveragerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB66ECE136B176F009FF047 /* WeightedAveragerTests.mm */; };
@@ -272,8 +277,8 @@
 		BD2FC1B71373F643004BEA40 /* LevelDetectorController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LevelDetectorController.mm; sourceTree = "<group>"; };
 		BD2FC1B91374372D004BEA40 /* SignalProcessorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignalProcessorController.h; sourceTree = "<group>"; };
 		BD2FC23B137443AC004BEA40 /* SignalProcessorController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SignalProcessorController.mm; sourceTree = "<group>"; };
-		BD2FC358137483C6004BEA40 /* BitDetectorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitDetectorController.h; sourceTree = "<group>"; };
-		BD2FC359137483C6004BEA40 /* BitDetectorController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BitDetectorController.mm; sourceTree = "<group>"; };
+		BD2FC358137483C6004BEA40 /* HiLowSignalProcessorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HiLowSignalProcessorController.h; sourceTree = "<group>"; };
+		BD2FC359137483C6004BEA40 /* HiLowSignalProcessorController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HiLowSignalProcessorController.mm; sourceTree = "<group>"; };
 		BD5EAF211345CABC00B01DC7 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BD5EAF221345CABC00B01DC7 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; wrapsLines = 0; };
 		BD5EAF251345CABC00B01DC7 /* DataCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataCapture.h; sourceTree = "<group>"; };
@@ -350,6 +355,16 @@
 		BDB1D9CB1377E6EA0051F5B9 /* AFSK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFSK.h; sourceTree = "<group>"; };
 		BDB1D9CC1377E6EA0051F5B9 /* AFSK.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AFSK.mm; sourceTree = "<group>"; };
 		BDB1D9EB1377E92E0051F5B9 /* SignalProcessorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignalProcessorProtocol.h; sourceTree = "<group>"; };
+		BDB1DB3C137801CB0051F5B9 /* HiLowSignalProcessorInfoOverlayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HiLowSignalProcessorInfoOverlayController.h; sourceTree = "<group>"; };
+		BDB1DB3D137801CB0051F5B9 /* HiLowSignalProcessorInfoOverlayController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HiLowSignalProcessorInfoOverlayController.mm; sourceTree = "<group>"; };
+		BDB1DB5F137806AF0051F5B9 /* HiLowSignalProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HiLowSignalProcessor.h; sourceTree = "<group>"; };
+		BDB1DB60137806AF0051F5B9 /* HiLowSignalProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HiLowSignalProcessor.mm; sourceTree = "<group>"; };
+		BDB1DC33137895830051F5B9 /* 159-voicemail.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = "159-voicemail.opacity"; path = "Images/159-voicemail.opacity"; sourceTree = "<group>"; };
+		BDB1DC3F137897350051F5B9 /* 159-voicemail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "159-voicemail@2x.png"; path = "Images/159-voicemail@2x.png"; sourceTree = "<group>"; };
+		BDB1DC571378988B0051F5B9 /* icon.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = icon.opacity; path = Images/icon.opacity; sourceTree = "<group>"; };
+		BDB1DCC0137923050051F5B9 /* BitFrameDecoderObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitFrameDecoderObserver.h; sourceTree = "<group>"; };
+		BDB1DCC11379234D0051F5B9 /* BitStreamFrameDetectorObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitStreamFrameDetectorObserver.h; sourceTree = "<group>"; };
+		BDB1DCC2137923940051F5B9 /* BitDetectorObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitDetectorObserver.h; sourceTree = "<group>"; };
 		BDB66E8F1369FE05009FF047 /* WaveCycleDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaveCycleDetector.h; sourceTree = "<group>"; };
 		BDB66E901369FE05009FF047 /* WaveCycleDetector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WaveCycleDetector.mm; sourceTree = "<group>"; };
 		BDB66EBF136AAED7009FF047 /* WeightedAverager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeightedAverager.h; sourceTree = "<group>"; };
@@ -360,7 +375,6 @@
 		BDB670A7136EBBCF009FF047 /* FrequencyDetector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FrequencyDetector.mm; sourceTree = "<group>"; };
 		BDB670EE136EF90E009FF047 /* FrequencyDetectorTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FrequencyDetectorTests.mm; sourceTree = "<group>"; };
 		BDB671C2137034C2009FF047 /* AFSKInfoOverlay.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AFSKInfoOverlay.xib; sourceTree = "<group>"; };
-		BDB671E213703D2D009FF047 /* BitDetectorObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitDetectorObserver.h; sourceTree = "<group>"; };
 		BDB82FFF135991600026F11B /* BitFrameDecoderTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BitFrameDecoderTests.mm; sourceTree = "<group>"; };
 		BDB833AB135C50350026F11B /* LowPassFilterTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LowPassFilterTests.mm; sourceTree = "<group>"; };
 		BDDD46A31341DC8E001A574B /* DBAccountInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBAccountInfo.h; sourceTree = "<group>"; };
@@ -655,15 +669,6 @@
 			children = (
 				BDB1D9CB1377E6EA0051F5B9 /* AFSK.h */,
 				BDB1D9CC1377E6EA0051F5B9 /* AFSK.mm */,
-				BD14B43D13571CD400F39A4B /* BitDetector.h */,
-				BD14B43E13571CD400F39A4B /* BitDetector.mm */,
-				BD2FC358137483C6004BEA40 /* BitDetectorController.h */,
-				BD2FC359137483C6004BEA40 /* BitDetectorController.mm */,
-				BDB671E213703D2D009FF047 /* BitDetectorObserver.h */,
-				BD7E7A781358E39B00F38E0F /* BitFrameDecoder.h */,
-				BD7E7A791358E39B00F38E0F /* BitFrameDecoder.mm */,
-				BD7E79B01358D37100F38E0F /* BitStreamFrameDetector.h */,
-				BD7E79B11358D37100F38E0F /* BitStreamFrameDetector.mm */,
 				BDB66E8F1369FE05009FF047 /* WaveCycleDetector.h */,
 				BDB66E901369FE05009FF047 /* WaveCycleDetector.mm */,
 				BDB670A6136EBBCF009FF047 /* FrequencyDetector.h */,
@@ -672,7 +677,7 @@
 			name = AFSK;
 			sourceTree = "<group>";
 		};
-		BD7E79591358AA4300F38E0F /* Level Detection */ = {
+		BD7E79591358AA4300F38E0F /* Level Detector */ = {
 			isa = PBXGroup;
 			children = (
 				BD5EAF471345CADF00B01DC7 /* LevelDetector.h */,
@@ -682,7 +687,7 @@
 				BDB1D9651377D69D0051F5B9 /* LevelDetectorInfoOverlayController.h */,
 				BDB1D9661377D69D0051F5B9 /* LevelDetectorInfoOverlayController.mm */,
 			);
-			name = "Level Detection";
+			name = "Level Detector";
 			sourceTree = "<group>";
 		};
 		BD7E79751358AB6300F38E0F /* LED Indicator Button */ = {
@@ -738,7 +743,8 @@
 				BDB66EBF136AAED7009FF047 /* WeightedAverager.h */,
 				BDB66EC0136AAED7009FF047 /* WeightedAverager.mm */,
 				BD7E79881358AC9600F38E0F /* Mic Switch Detection */,
-				BD7E79591358AA4300F38E0F /* Level Detection */,
+				BD7E79591358AA4300F38E0F /* Level Detector */,
+				BDB1DB3B1378014D0051F5B9 /* Hi-Low Level Detector */,
 				BD7E79581358AA1C00F38E0F /* AFSK */,
 			);
 			name = "Signal Processors";
@@ -765,6 +771,28 @@
 				BD7FD9111316C355001D1FBF /* CAStreamBasicDescription.cpp */,
 			);
 			path = iPublicUtility;
+			sourceTree = "<group>";
+		};
+		BDB1DB3B1378014D0051F5B9 /* Hi-Low Level Detector */ = {
+			isa = PBXGroup;
+			children = (
+				BD14B43D13571CD400F39A4B /* BitDetector.h */,
+				BD14B43E13571CD400F39A4B /* BitDetector.mm */,
+				BDB1DCC2137923940051F5B9 /* BitDetectorObserver.h */,
+				BD7E7A781358E39B00F38E0F /* BitFrameDecoder.h */,
+				BD7E7A791358E39B00F38E0F /* BitFrameDecoder.mm */,
+				BDB1DCC0137923050051F5B9 /* BitFrameDecoderObserver.h */,
+				BD7E79B01358D37100F38E0F /* BitStreamFrameDetector.h */,
+				BD7E79B11358D37100F38E0F /* BitStreamFrameDetector.mm */,
+				BDB1DCC11379234D0051F5B9 /* BitStreamFrameDetectorObserver.h */,
+				BDB1DB5F137806AF0051F5B9 /* HiLowSignalProcessor.h */,
+				BDB1DB60137806AF0051F5B9 /* HiLowSignalProcessor.mm */,
+				BD2FC358137483C6004BEA40 /* HiLowSignalProcessorController.h */,
+				BD2FC359137483C6004BEA40 /* HiLowSignalProcessorController.mm */,
+				BDB1DB3C137801CB0051F5B9 /* HiLowSignalProcessorInfoOverlayController.h */,
+				BDB1DB3D137801CB0051F5B9 /* HiLowSignalProcessorInfoOverlayController.mm */,
+			);
+			name = "Hi-Low Level Detector";
 			sourceTree = "<group>";
 		};
 		BDDD46A21341DC8E001A574B /* DropboxSDK */ = {
@@ -896,6 +924,7 @@
 				BD232B5B1333FA9D006ADDC4 /* 77-ekg.png */,
 				BD232B5C1333FA9D006ADDC4 /* 81-dashboard.png */,
 				BD2647D4134B4746005CC79E /* 159-voicemail.png */,
+				BDB1DC3F137897350051F5B9 /* 159-voicemail@2x.png */,
 				BD232B5D1333FA9D006ADDC4 /* CloseButton.png */,
 				BD232B5E1333FA9D006ADDC4 /* CloseButton@2x.png */,
 				BD232B5F1333FA9D006ADDC4 /* Default.png */,
@@ -933,6 +962,8 @@
 		BDF9D8741326C926004DC652 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				BDB1DC571378988B0051F5B9 /* icon.opacity */,
+				BDB1DC33137895830051F5B9 /* 159-voicemail.opacity */,
 				BD232B801333FAC5006ADDC4 /* DimGreenButton.opacity */,
 				BD232B811333FAC5006ADDC4 /* SplashScreen.opacity */,
 				BD232B4E1333FA76006ADDC4 /* CloseButton.opacity */,
@@ -1165,6 +1196,9 @@
 				BD937542134B51D70015CC8D /* Dropbox.keys in Resources */,
 				BDB671C3137034C2009FF047 /* AFSKInfoOverlay.xib in Resources */,
 				BDB1D9511377D12E0051F5B9 /* LevelDetectorInfoOverlay.xib in Resources */,
+				BDB1DC34137895850051F5B9 /* 159-voicemail.opacity in Resources */,
+				BDB1DC40137897350051F5B9 /* 159-voicemail@2x.png in Resources */,
+				BDB1DC581378988B0051F5B9 /* icon.opacity in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1280,9 +1314,11 @@
 				BDB670A8136EBBCF009FF047 /* FrequencyDetector.mm in Sources */,
 				BD2FC1B81373F643004BEA40 /* LevelDetectorController.mm in Sources */,
 				BD2FC23C137443AC004BEA40 /* SignalProcessorController.mm in Sources */,
-				BD2FC35A137483C6004BEA40 /* BitDetectorController.mm in Sources */,
+				BD2FC35A137483C6004BEA40 /* HiLowSignalProcessorController.mm in Sources */,
 				BDB1D9671377D69D0051F5B9 /* LevelDetectorInfoOverlayController.mm in Sources */,
 				BDB1D9CD1377E6EA0051F5B9 /* AFSK.mm in Sources */,
+				BDB1DB3E137801CB0051F5B9 /* HiLowSignalProcessorInfoOverlayController.mm in Sources */,
+				BDB1DB61137806AF0051F5B9 /* HiLowSignalProcessor.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1484,7 +1520,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CURRENT_PROJECT_VERSION = 1.1;
+				CURRENT_PROJECT_VERSION = 3;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
@@ -1501,6 +1537,7 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Distribution;
 		};
@@ -1532,7 +1569,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1.1;
+				CURRENT_PROJECT_VERSION = 3;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = "CorePlot/**";
@@ -1544,6 +1581,7 @@
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
@@ -1552,7 +1590,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1.1;
+				CURRENT_PROJECT_VERSION = 3;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = s;
 				HEADER_SEARCH_PATHS = "CorePlot/**";
@@ -1566,6 +1604,7 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};

@@ -25,6 +25,10 @@
         graph = nil;
         [self updateFromSettings];
         newest = 0;
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(updateSignalStats:)
+                                                     name:kLevelDetectorCounterUpdateNotification
+                                                   object:nil];
     }
     
     return self;
@@ -127,22 +131,11 @@
 
 - (void)viewDidLoad
 {
-    //
-    // Start receiving RPM value updates
-    //
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(updateSignalStats:)
-                                                 name:kLevelDetectorCounterUpdateNotification
-                                               object:nil];
     [super viewDidLoad];
 }
 
 - (void)viewDidUnload
 {
-    //
-    // Stop receiving RPM value updates
-    //
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super viewDidUnload];
 }
 

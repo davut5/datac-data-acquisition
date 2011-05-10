@@ -2,210 +2,210 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Title</key>
-	<string>Settings</string>
-	<key>StringsTable</key>
-	<string>Root</string>
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-			<key>Title</key>
-			<string>SIGNAL_DETECTION</string>
 			<key>FooterText</key>
 			<string>SIGNAL_DETECTION_FOOTER</string>
+			<key>Title</key>
+			<string>SIGNAL_DETECTION</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
 		</dict>
 		<dict>
-			<key>Type</key>
-			<string>PSTextFieldSpecifier</string>
-			<key>Title</key>
-			<string>DETECTOR_LEVEL</string>
-			<key>Key</key>
-			<string>signalDetectorLevel</string>
+			<key>AutoCorrectionType</key>
+			<string>No</string>
 			<key>DefaultValue</key>
 			<real>0.5</real>
+			<key>Key</key>
+			<string>signalDetectorLevel</string>
 			<key>KeyboardType</key>
 			<string>NumbersAndPunctuation</string>
-			<key>AutoCorrectionType</key>
-			<string>No</string>
-		</dict>
-		<dict>
+			<key>Title</key>
+			<string>DETECTOR_LEVEL</string>
 			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
-			<key>Title</key>
-			<string>HW_FREQUENCY</string>
-			<key>Key</key>
-			<string>rpmScaleFactor</string>
-			<key>DefaultValue</key>
-			<integer>33</integer>
-			<key>KeyboardType</key>
-			<string>NumbersAndPunctuation</string>
-			<key>AutoCorrectionType</key>
-			<string>No</string>
 		</dict>
 		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
+			<key>AutoCorrectionType</key>
+			<string>No</string>
+			<key>DefaultValue</key>
+			<integer>33</integer>
+			<key>Key</key>
+			<string>rpmScaleFactor</string>
+			<key>KeyboardType</key>
+			<string>NumbersAndPunctuation</string>
 			<key>Title</key>
-			<string>USE_LOW_PASS_FILTER</string>
+			<string>HW_FREQUENCY</string>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+		</dict>
+		<dict>
 			<key>DefaultValue</key>
 			<true/>
 			<key>Key</key>
 			<string>enableLowPassFilter</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSTextFieldSpecifier</string>
 			<key>Title</key>
-			<string>TAPS_FILE_NAME</string>
-			<key>Key</key>
-			<string>tapsFileName</string>
-			<key>DefaultValue</key>
-			<string>taps</string>
-			<key>AutocorrectionType</key>
-			<string>No</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSTextFieldSpecifier</string>
-			<key>Title</key>
-			<string>COUNTS_DECAY_DURATION</string>
-			<key>Key</key>
-			<string>countsDecayDuration</string>
-			<key>DefaultValue</key>
-			<integer>4</integer>
-			<key>KeyboardType</key>
-			<string>NumbersAndPunctuation</string>
-			<key>AutocorrectionType</key>
-			<string>No</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-			<key>Title</key>
-			<string>SIGNAL_DISPLAY</string>
-			<key>FooterText</key>
-			<string>SIGNAL_DISPLAY_FOOTER</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSTextFieldSpecifier</string>
-			<key>Title</key>
-			<string>SIGNAL_DISPLAY_UPDATE_RATE</string>
-			<key>Key</key>
-			<string>signalDisplayUpdateRate</string>
-			<key>DefaultValue</key>
-			<string>20</string>
-			<key>KeyboardType</key>
-			<string>NumbersAndPunctuation</string>
-			<key>AutocorrectionType</key>
-			<string>No</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-			<key>Title</key>
-			<string>SWITCH_DETECTOR</string>
-			<key>FooterText</key>
-			<string>SWITCH_DETECTOR_FOOTER</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSTextFieldSpecifier</string>
-			<key>Title</key>
-			<string>SWITCH_DETECTOR_THRESHOLD</string>
-			<key>Key</key>
-			<string>switchDetectorThreshold</string>
-			<key>DefaultValue</key>
-			<real>0.001</real>
-			<key>KeyboardType</key>
-			<string>NumbersAndPunctuation</string>
-			<key>AutocorrectionType</key>
-			<string>No</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSTextFieldSpecifier</string>
-			<key>Title</key>
-			<string>SWITCH_DETECTOR_DURATION</string>
-			<key>Key</key>
-			<string>switchDetectorDuration</string>
-			<key>DefaultValue</key>
-			<real>0.5</real>
-			<key>KeyboardType</key>
-			<string>NumbersAndPunctuation</string>
-			<key>AutocorrectionType</key>
-			<string>No</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-			<key>Title</key>
-			<string>CLOUD_STORAGE</string>
-			<key>FooterText</key>
-			<string>CLOUD_STORAGE_FOOTER</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>IASKCustomViewSpecifier</string>
-			<key>Title</key>
-			<string>Dropbox</string>
-			<key>Key</key>
-			<string>DropBox</string>
-		</dict>
-		<dict>
+			<string>USE_LOW_PASS_FILTER</string>
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
+		</dict>
+		<dict>
+			<key>AutocorrectionType</key>
+			<string>No</string>
+			<key>DefaultValue</key>
+			<string>taps</string>
+			<key>Key</key>
+			<string>tapsFileName</string>
 			<key>Title</key>
-			<string>CLOUD_STORAGE_ENABLE</string>
+			<string>TAPS_FILE_NAME</string>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+		</dict>
+		<dict>
+			<key>AutocorrectionType</key>
+			<string>No</string>
+			<key>DefaultValue</key>
+			<integer>4</integer>
+			<key>Key</key>
+			<string>countsDecayDuration</string>
+			<key>KeyboardType</key>
+			<string>NumbersAndPunctuation</string>
+			<key>Title</key>
+			<string>COUNTS_DECAY_DURATION</string>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
+			<string>SIGNAL_DISPLAY_FOOTER</string>
+			<key>Title</key>
+			<string>SIGNAL_DISPLAY</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>AutocorrectionType</key>
+			<string>No</string>
+			<key>DefaultValue</key>
+			<string>20</string>
+			<key>Key</key>
+			<string>signalDisplayUpdateRate</string>
+			<key>KeyboardType</key>
+			<string>NumbersAndPunctuation</string>
+			<key>Title</key>
+			<string>SIGNAL_DISPLAY_UPDATE_RATE</string>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
+			<string>SWITCH_DETECTOR_FOOTER</string>
+			<key>Title</key>
+			<string>SWITCH_DETECTOR</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>AutocorrectionType</key>
+			<string>No</string>
+			<key>DefaultValue</key>
+			<real>0.001</real>
+			<key>Key</key>
+			<string>switchDetectorThreshold</string>
+			<key>KeyboardType</key>
+			<string>NumbersAndPunctuation</string>
+			<key>Title</key>
+			<string>SWITCH_DETECTOR_THRESHOLD</string>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+		</dict>
+		<dict>
+			<key>AutocorrectionType</key>
+			<string>No</string>
+			<key>DefaultValue</key>
+			<real>0.5</real>
+			<key>Key</key>
+			<string>switchDetectorDuration</string>
+			<key>KeyboardType</key>
+			<string>NumbersAndPunctuation</string>
+			<key>Title</key>
+			<string>SWITCH_DETECTOR_DURATION</string>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
+			<string>CLOUD_STORAGE_FOOTER</string>
+			<key>Title</key>
+			<string>CLOUD_STORAGE</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>Key</key>
+			<string>DropBox</string>
+			<key>Title</key>
+			<string>Dropbox</string>
+			<key>Type</key>
+			<string>IASKCustomViewSpecifier</string>
+		</dict>
+		<dict>
 			<key>DefaultValue</key>
 			<true/>
 			<key>Key</key>
 			<string>enableCloudStorage</string>
+			<key>Title</key>
+			<string>CLOUD_STORAGE_ENABLE</string>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
 		</dict>
 		<dict>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-			<key>Title</key>
-			<string>INFO</string>
 			<key>FooterText</key>
 			<string>Copyright (C) 2011 Brad Howes</string>
+			<key>Title</key>
+			<string>INFO</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
 		</dict>
 		<dict>
-			<key>Type</key>
-			<string>PSTitleValueSpecifier</string>
-			<key>Title</key>
-			<string>VERSION</string>
+			<key>DefaultValue</key>
+			<string>2.1 (10)</string>
 			<key>Key</key>
 			<string>version</string>
-			<key>DefaultValue</key>
-			<string>1.1</string>
+			<key>Title</key>
+			<string>VERSION</string>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
 		</dict>
 		<dict>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-			<key>Title</key>
-			<string>About</string>
 			<key>File</key>
 			<string>about.html</string>
 			<key>IASKViewControllerClass</key>
 			<string>IASKAppSettingsWebViewController</string>
 			<key>IASKViewControllerSelector</key>
 			<string>initWithFile:key:</string>
-		</dict>
-		<dict>
+			<key>Title</key>
+			<string>About</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
-			<key>Title</key>
-			<string>Copyrights</string>
+		</dict>
+		<dict>
 			<key>File</key>
 			<string>copyrights.html</string>
 			<key>IASKViewControllerClass</key>
 			<string>IASKAppSettingsWebViewController</string>
 			<key>IASKViewControllerSelector</key>
 			<string>initWithFile:key:</string>
+			<key>Title</key>
+			<string>Copyrights</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
 		</dict>
 	</array>
+	<key>StringsTable</key>
+	<string>Root</string>
+	<key>Title</key>
+	<string>Settings</string>
 </dict>
 </plist>
