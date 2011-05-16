@@ -38,9 +38,9 @@ NSString* kBitDetectorHighBit = @"1";
 - (void)updateFromSettings
 {
     NSUserDefaults* settings = [NSUserDefaults standardUserDefaults];
-    nominalHalfPulseWidth = [settings integerForKey:kSettingsPulseDecoderSamplesPerPulseKey] * 0.5;
-    maxLowLevel = [settings floatForKey:kSettingsPulseDecoderMaxLowLevelKey];
-    minHighLevel = [settings floatForKey:kSettingsPulseDecoderMinHighLevelKey];
+    nominalHalfPulseWidth = [settings integerForKey:kSettingsBitDetectorSamplesPerPulseKey] * 0.5;
+    maxLowLevel = [settings floatForKey:kSettingsBitDetectorMaxLowLevelKey];
+    minHighLevel = [settings floatForKey:kSettingsBitDetectorMinHighLevelKey];
     [self reset];
 }
 

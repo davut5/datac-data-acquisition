@@ -62,7 +62,7 @@ NSString* kLevelDetectorRPMKey = @"rpm";
 
 - (void)start
 {
-    Float32 interval = [[NSUserDefaults standardUserDefaults] floatForKey:kSettingsLevelDetectorUpdateRateKey];
+    Float32 interval = 1.0 / [[NSUserDefaults standardUserDefaults] floatForKey:kSettingsLevelDetectorUpdateRateKey];
     NSLog(@"start: interval = %f", interval);
     [self reset];
     self.intervalTimer = [NSTimer scheduledTimerWithTimeInterval:interval
@@ -110,7 +110,7 @@ NSString* kLevelDetectorRPMKey = @"rpm";
     NSUserDefaults* settings = [NSUserDefaults standardUserDefaults];
     
     Float32 newCountScale = 1.0 / [settings floatForKey:kSettingsLevelDetectorUpdateRateKey];
-    int decaySeconds = [settings integerForKey:kSettingsCounterDecayDurationKey] * newCountScale; 
+    int decaySeconds = [settings integerForKey:kSettingsLevelDetectorCountsDecayDurationKey] * newCountScale; 
     
     if (counterDecayFilter == nil || decaySeconds != [counterDecayFilter size]) {
         NSNumber* weight = [NSNumber numberWithFloat:1.0/decaySeconds];
@@ -123,8 +123,8 @@ NSString* kLevelDetectorRPMKey = @"rpm";
         [self reset];
     }
     
-    if ([settings boolForKey:kSettingsEnableLowPassFilterKey] == YES) {
-        NSString* fileName = [settings stringForKey:kSettingsTapsFileNameKey];
+    if ([settings boolForKey:kSettingsLevelDetectorUseLowPassFilterKey] == YES) {
+        NSString* fileName = [settings stringForKey:kSettingsLevelDetectorLowPassFilterFileNameKey];
         if (lowPassFilter == nil || [lowPassFilter.fileName isEqualToString:fileName] != YES) {
             self.lowPassFilter = [LowPassFilter createFromFile:fileName];
         }
@@ -134,7 +134,7 @@ NSString* kLevelDetectorRPMKey = @"rpm";
     }
     
     self.level = [settings floatForKey:kSettingsLevelDetectorLevelKey];
-    self.rpmScaleFactor = [settings floatForKey:kSettingsRPMScaleFactorKey];
+    self.rpmScaleFactor = [settings floatForKey:kSettingsLevelDetectorScalingKey];
     
     if (countScale != newCountScale) {
         countScale = newCountScale;

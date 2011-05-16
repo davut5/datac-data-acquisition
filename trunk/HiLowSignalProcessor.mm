@@ -44,10 +44,14 @@
 
 - (void)reset
 {
+    [bitDetector reset];
+    
 }
 
 - (void)updateFromSettings
 {
+    [bitDetector updateFromSettings];
+    [bitStreamFrameDetector updateFromSettings];
 }
 
 - (SignalProcessorController*)controller

@@ -31,12 +31,12 @@
  */
 - (void)updateFromSettings;
 
-/** Obtain a SignalProcessorController object that the SignalViewController can use show and modify state within the
+/** Obtain a SignalProcessorController object that the SampleViewController can use show and modify state within the
     signal processor. Implementations must return nil if there is no SignalProcessorController to use.
  */
 - (SignalProcessorController*)controller;
 
-/** Obtain a UIViewController object that will update the info overlay view of the SignalViewController. Implementations
+/** Obtain a UIViewController object that will update the info overlay view of the SampleViewController. Implementations
     should return nil if there is nothing to display in the info overlay view.
  */
 - (UIViewController*)infoOverlayController;

@@ -25,6 +25,12 @@
     STAssertEquals(value, 0xFF, @"Failed 0xFF conversion");
     value = [BitFrameDecoder integerFromBits:@"0000000001"];
     STAssertEquals(value, 0x00, @"Failed 0x00 conversion");
+    value = [BitFrameDecoder integerFromBits:@"1000000000"];
+    STAssertEquals(value, 0x00, @"Failed 0x00 conversion");
+    value = [BitFrameDecoder integerFromBits:@"1100000000"];
+    STAssertEquals(value, 0x01, @"Failed 0x01 conversion");
+    value = [BitFrameDecoder integerFromBits:@"1010000000"];
+    STAssertEquals(value, 0x02, @"Failed 0x02 conversion");
 }
 
 @end

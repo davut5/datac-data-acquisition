@@ -5,26 +5,33 @@
 
 #import "UserSettings.h"
 
-NSString* kSettingsLevelDetectorLevelKey = @"signalDetectorLevel";
-NSString* kSettingsLevelDetectorUpdateRateKey = @"signalDetectorUpdateRate";
-NSString* kSettingsEnableLowPassFilterKey = @"enableLowPassFilter";
-NSString* kSettingsTapsFileNameKey = @"tapsFileName";
-NSString* kSettingsXMinKey = @"xMin";
-NSString* kSettingsXMaxKey = @"xMax";
-NSString* kSettingsRPMScaleFactorKey = @"rpmScaleFactor";
-NSString* kSettingsCounterDecayDurationKey = @"counterDecayDuration";
-NSString* kSettingsSignalDisplayUpdateRateKey = @"signalDisplayUpdateRate";
-NSString* kSettingsMicSwitchDetectorThresholdKey = @"switchDetectorThreshold";
-NSString* kSettingsMicSwitchDetectorDurationKey = @"switchDetectorDuration";
-NSString* kSettingsRpmViewDurationKey = @"rpmViewDuration";
-NSString* kSettingsCloudStorageEnableKey = @"enableCloudStorage";
-NSString* kSettingsPulseDecoderSamplesPerPulseKey = @"samplesPerPulse";
-NSString* kSettingsPulseDecoderMaxLowLevelKey = @"maxLowLevel";
-NSString* kSettingsPulseDecoderMinHighLevelKey = @"minHighLevel";
+NSString* kSettingsInputDisplayUpdateRateKey = @"INPUT_DISPLAY_UPDATE_RATE";
+NSString* kSettingsInputDisplayXMinKey = @"INPUT_DISPLAY_XMIN";
+NSString* kSettingsInputDisplayXMaxKey = @"INPUT_DISPLAY_XMAX";
+
+NSString* kSettingsDetectionsViewDurationKey = @"DETECTIONS_VIEW_DURATION";
+
+NSString* kSettingsLevelDetectorLevelKey = @"LEVEL_DETECTOR_LEVEL";
+NSString* kSettingsLevelDetectorUpdateRateKey = @"LEVEL_DETECTOR_UPDATE_RATE";
+NSString* kSettingsLevelDetectorUseLowPassFilterKey = @"LEVEL_DETECTOR_USE_LOW_PASS_FILTER";
+NSString* kSettingsLevelDetectorLowPassFilterFileNameKey = @"LEVEL_DETECTOR_LOW_PASS_FILTER_FILENAME";
+NSString* kSettingsLevelDetectorCountsDecayDurationKey = @"LEVEL_DETECTOR_COUNTS_DECAY_DURATION";
+NSString* kSettingsLevelDetectorScalingKey = @"LEVEL_DETECTOR_SCALING";
+
+NSString* kSettingsBitDetectorMaxLowLevelKey = @"BIT_DETECTOR_MAX_LOW_LEVEL";
+NSString* kSettingsBitDetectorMinHighLevelKey = @"BIT_DETECTOR_MIN_HIGH_LEVEL";
+NSString* kSettingsBitDetectorSamplesPerPulseKey = @"BIT_DETECTOR_SAMPLES_PER_PULSE";
+
+NSString* kSettingsBitStreamFrameDetectorPrefixKey = @"BIT_STREAM_FRAME_DETECTOR_PREFIX";
+NSString* kSettingsBitStreamFrameDetectorSuffixKey = @"BIT_STREAM_FRAME_DETECTOR_SUFFIX";
+NSString* kSettingsBitStreamFrameDetectorContentSizeKey = @"BIT_STREAM_FRAME_DETECTOR_CONTENT_SIZE";
+
+NSString* kSettingsMicSwitchDetectorThresholdKey = @"MIC_SWITCH_DETECTOR_THRESHOLD";
+NSString* kSettingsMicSwitchDetectorDurationKey = @"MIC_SWITCH_DETECTOR_DURATION";
+
+NSString* kSettingsCloudStorageEnableKey = @"CLOUD_STORAGE_ENABLE";
+
 NSString* kSettingsWaveCycleDetectorNonZeroLevelKey = @"nonZeroLevel";
-NSString* kSettingsBitStreamFrameDetectorPrefixKey = @"bitStreamFrameDetectorPrefix";
-NSString* kSettingsBitStreamFrameDetectorSuffixKey = @"bitStreamFrameDetectorSuffix";
-NSString* kSettingsBitStreamFrameDetectorContentSizeKey = @"bitStreamFrameDetectorContentSize";
 
 @implementation UserSettings
 
@@ -32,29 +39,35 @@ NSString* kSettingsBitStreamFrameDetectorContentSizeKey = @"bitStreamFrameDetect
 {
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     [defaults registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
-                                [NSNumber numberWithBool:YES], kSettingsEnableLowPassFilterKey,
-                                @"taps", kSettingsTapsFileNameKey,
-                                [NSNumber numberWithFloat:0.33], kSettingsLevelDetectorLevelKey,
-                                [NSNumber numberWithFloat:0.25], kSettingsLevelDetectorUpdateRateKey,
-                                [NSNumber numberWithFloat:0.0], kSettingsXMinKey,
-                                [NSNumber numberWithFloat:1.0], kSettingsXMaxKey,
-                                [NSNumber numberWithFloat:33.0], kSettingsRPMScaleFactorKey,
-                                [NSNumber numberWithInt:4], kSettingsCounterDecayDurationKey,
-                                [NSNumber numberWithFloat:20.0], kSettingsSignalDisplayUpdateRateKey,
-                                [NSNumber numberWithFloat:0.0001], kSettingsMicSwitchDetectorThresholdKey,
-                                [NSNumber numberWithFloat:0.5], kSettingsMicSwitchDetectorDurationKey,
-                                [NSNumber numberWithFloat:30.0], kSettingsRpmViewDurationKey,
-                                [NSNumber numberWithBool:YES], kSettingsCloudStorageEnableKey,
 
-                                [NSNumber numberWithInt:37], kSettingsPulseDecoderSamplesPerPulseKey,
-                                [NSNumber numberWithFloat:0.33], kSettingsPulseDecoderMaxLowLevelKey,
-                                [NSNumber numberWithFloat:0.66], kSettingsPulseDecoderMinHighLevelKey,
-                                [NSNumber numberWithFloat:0.33], kSettingsWaveCycleDetectorNonZeroLevelKey,
-                                
+                                [NSNumber numberWithFloat:20.0], kSettingsInputDisplayUpdateRateKey,
+                                [NSNumber numberWithFloat:0.0], kSettingsInputDisplayXMinKey,
+                                [NSNumber numberWithFloat:1.0], kSettingsInputDisplayXMaxKey,
+
+                                [NSNumber numberWithFloat:30.0], kSettingsDetectionsViewDurationKey,
+
+                                [NSNumber numberWithFloat:0.3333], kSettingsLevelDetectorLevelKey,
+                                [NSNumber numberWithFloat:4], kSettingsLevelDetectorUpdateRateKey,
+                                [NSNumber numberWithBool:YES], kSettingsLevelDetectorUseLowPassFilterKey,
+                                @"taps", kSettingsLevelDetectorLowPassFilterFileNameKey,
+                                [NSNumber numberWithInt:4], kSettingsLevelDetectorCountsDecayDurationKey,
+                                [NSNumber numberWithFloat:33.0], kSettingsLevelDetectorScalingKey,
+
+                                [NSNumber numberWithFloat:0.33], kSettingsBitDetectorMaxLowLevelKey,
+                                [NSNumber numberWithFloat:0.66], kSettingsBitDetectorMinHighLevelKey,
+                                [NSNumber numberWithInt:37], kSettingsBitDetectorSamplesPerPulseKey,
+
                                 @"0010101011", kSettingsBitStreamFrameDetectorPrefixKey,
                                 @"0101010101", kSettingsBitStreamFrameDetectorSuffixKey,
                                 [NSNumber numberWithInt:30], kSettingsBitStreamFrameDetectorContentSizeKey,
+                                
+                                [NSNumber numberWithFloat:0.0001], kSettingsMicSwitchDetectorThresholdKey,
+                                [NSNumber numberWithFloat:0.5], kSettingsMicSwitchDetectorDurationKey,
 
+                                [NSNumber numberWithBool:YES], kSettingsCloudStorageEnableKey,
+
+                                [NSNumber numberWithFloat:0.33], kSettingsWaveCycleDetectorNonZeroLevelKey,
+                                
                                 nil]];
     return defaults;
 }
@@ -90,23 +103,24 @@ NSString* kSettingsBitStreamFrameDetectorContentSizeKey = @"bitStreamFrameDetect
 + (NSUserDefaults*)validate
 {
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    [UserSettings validateFloatNamed:kSettingsLevelDetectorLevelKey minValue:0.0 maxValue:1.0];
-    [UserSettings validateFloatNamed:kSettingsXMinKey minValue:0.0 maxValue:1.0];
-    [UserSettings validateFloatNamed:kSettingsXMaxKey minValue:0.0 maxValue:1.0];
-    [UserSettings validateFloatNamed:kSettingsRPMScaleFactorKey minValue:0.1 maxValue:10000.0];
-    [UserSettings validateFloatNamed:kSettingsSignalDisplayUpdateRateKey minValue:1.0 maxValue:60.0];
-    [UserSettings validateIntegerNamed:kSettingsCounterDecayDurationKey minValue:0 maxValue:10];
+    [UserSettings validateFloatNamed:kSettingsInputDisplayUpdateRateKey minValue:1.0 maxValue:60.0];
+    [UserSettings validateFloatNamed:kSettingsInputDisplayXMinKey minValue:0.0 maxValue:1.0];
+    [UserSettings validateFloatNamed:kSettingsInputDisplayXMaxKey minValue:0.0 maxValue:1.0];
 
-    Float32 maxLowValue = [defaults floatForKey:kSettingsPulseDecoderMaxLowLevelKey];
+    [UserSettings validateFloatNamed:kSettingsLevelDetectorLevelKey minValue:0.0 maxValue:1.0];
+    [UserSettings validateFloatNamed:kSettingsLevelDetectorScalingKey minValue:0.1 maxValue:10000.0];
+    [UserSettings validateIntegerNamed:kSettingsLevelDetectorCountsDecayDurationKey minValue:0 maxValue:10];
+
+    Float32 maxLowValue = [defaults floatForKey:kSettingsBitDetectorMaxLowLevelKey];
     if (maxLowValue < -0.99) maxLowValue = -0.99;
 
-    Float32 minHighValue = [defaults floatForKey:kSettingsPulseDecoderMinHighLevelKey];
+    Float32 minHighValue = [defaults floatForKey:kSettingsBitDetectorMinHighLevelKey];
     if (minHighValue > 0.99) minHighValue = 0.99;
 
     if (maxLowValue > minHighValue) maxLowValue = minHighValue;
 
-    [defaults setFloat:maxLowValue forKey:kSettingsPulseDecoderMaxLowLevelKey];
-    [defaults setFloat:minHighValue forKey:kSettingsPulseDecoderMinHighLevelKey];
+    [defaults setFloat:maxLowValue forKey:kSettingsBitDetectorMaxLowLevelKey];
+    [defaults setFloat:minHighValue forKey:kSettingsBitDetectorMinHighLevelKey];
 
     [defaults synchronize];
 

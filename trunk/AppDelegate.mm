@@ -19,7 +19,7 @@
 #import "SampleRecorder.h"
 #import "LevelDetector.h"
 #import "LevelDetectorController.h"
-#import "SignalViewController.h"
+#import "SampleViewController.h"
 #import "SettingsViewController.h"
 #import "UserSettings.h"
 #import "VertexBufferManager.h"

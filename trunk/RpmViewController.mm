@@ -41,7 +41,7 @@
 
 - (void)makeGraph
 {
-    Float32 maxX = [[NSUserDefaults standardUserDefaults] floatForKey:kSettingsRpmViewDurationKey];
+    Float32 maxX = [[NSUserDefaults standardUserDefaults] floatForKey:kSettingsDetectionsViewDurationKey];
 	
     self.graph = [[[CPXYGraph alloc] initWithFrame:CGRectZero] autorelease];
     [graph applyTheme:[CPTheme themeNamed:kCPDarkGradientTheme]];
@@ -164,7 +164,7 @@
     NSLog(@"RpmViewController.updateFromSettings");
     NSUserDefaults* settings = [UserSettings registerDefaults];
 
-    Float32 maxX = [settings floatForKey:kSettingsRpmViewDurationKey];
+    Float32 maxX = [settings floatForKey:kSettingsDetectionsViewDurationKey];
     xScale = [settings floatForKey:kSettingsLevelDetectorUpdateRateKey];
 
     UInt32 count = maxX / xScale + 0.5 + 1;
