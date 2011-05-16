@@ -21,7 +21,7 @@
 @class RpmViewController;
 @class SettingsViewController;
 @class LevelDetector;
-@class SignalViewController;
+@class SampleViewController;
 @class MicSwitchDetector;
 @class VertexBufferManager;
 @class WaveCycleDetector;
@@ -35,7 +35,7 @@
 @private
     IBOutlet UIWindow *window;
     IBOutlet UITabBarController* tabBarController;
-    IBOutlet SignalViewController* signalViewController;
+    IBOutlet SampleViewController* signalViewController;
     IBOutlet RpmViewController* rpmViewController;
     IBOutlet RecordingsViewController* recordingsViewController;
     IBOutlet SettingsViewController* settingsController;
@@ -57,7 +57,7 @@
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet UITabBarController* tabBarController;
-@property (nonatomic, retain) IBOutlet SignalViewController* signalViewController;
+@property (nonatomic, retain) IBOutlet SampleViewController* signalViewController;
 @property (nonatomic, retain) IBOutlet RpmViewController* rpmViewController;
 @property (nonatomic, retain) IBOutlet RecordingsViewController* recordingsViewController;
 @property (nonatomic, retain) IBOutlet SettingsViewController* appSettingsViewController;

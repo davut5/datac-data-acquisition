@@ -780,7 +780,7 @@
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>SignalViewController</string>
+					<string>SampleViewController</string>
 					<string>UIResponder</string>
 					<string>{{365, 676}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -901,7 +901,7 @@
 							<string>RecordingsViewController</string>
 							<string>RpmViewController</string>
 							<string>SettingsViewController</string>
-							<string>SignalViewController</string>
+							<string>SampleViewController</string>
 							<string>UITabBarController</string>
 							<string>UIWindow</string>
 						</object>
@@ -938,7 +938,7 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">signalViewController</string>
-								<string key="candidateClassName">SignalViewController</string>
+								<string key="candidateClassName">SampleViewController</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">tabBarController</string>
@@ -1115,26 +1115,7 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">SettingsViewController</string>
-					<string key="superclassName">IASKAppSettingsViewController</string>
-					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">appDelegate</string>
-						<string key="NS.object.0">AppDelegate</string>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<string key="NS.key.0">appDelegate</string>
-						<object class="IBToOneOutletInfo" key="NS.object.0">
-							<string key="name">appDelegate</string>
-							<string key="candidateClassName">AppDelegate</string>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">SettingsViewController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">SignalViewController</string>
+					<string key="className">SampleViewController</string>
 					<string key="superclassName">UIViewController</string>
 					<object class="NSMutableDictionary" key="actions">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1265,7 +1246,26 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">SignalViewController.h</string>
+						<string key="minorKey">SampleViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SettingsViewController</string>
+					<string key="superclassName">IASKAppSettingsViewController</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">appDelegate</string>
+						<string key="NS.object.0">AppDelegate</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">appDelegate</string>
+						<object class="IBToOneOutletInfo" key="NS.object.0">
+							<string key="name">appDelegate</string>
+							<string key="candidateClassName">AppDelegate</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">SettingsViewController.h</string>
 					</object>
 				</object>
 			</object>

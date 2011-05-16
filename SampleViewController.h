@@ -16,7 +16,7 @@
 
 /** Controller for the view that contains engineering data for the data capture interface.
  */
-@interface SignalViewController : UIViewController <SampleViewDelegate, MicSwitchDetectorDelegate> {
+@interface SampleViewController : UIViewController <SampleViewDelegate, MicSwitchDetectorDelegate> {
 @private
     IBOutlet AppDelegate* appDelegate;
     IBOutlet SampleView* sampleView;

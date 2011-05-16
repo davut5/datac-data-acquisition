@@ -40,4 +40,8 @@
  */
 - (id)init;
 
+- (void)reset;
+
+- (void)updateFromSettings;
+
 @end

@@ -5,22 +5,28 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString* kSettingsInputDisplayUpdateRateKey;
+extern NSString* kSettingsInputDisplayXMinKey;
+extern NSString* kSettingsInputDisplayXMaxKey;
+
+extern NSString* kSettingsDetectionsViewDurationKey;
+
 extern NSString* kSettingsLevelDetectorLevelKey;
 extern NSString* kSettingsLevelDetectorUpdateRateKey;
-extern NSString* kSettingsEnableLowPassFilterKey;
-extern NSString* kSettingsTapsFileNameKey;
-extern NSString* kSettingsXMinKey;
-extern NSString* kSettingsXMaxKey;
-extern NSString* kSettingsRPMScaleFactorKey;
-extern NSString* kSettingsCounterDecayDurationKey;
-extern NSString* kSettingsSignalDisplayUpdateRateKey;
+extern NSString* kSettingsLevelDetectorUseLowPassFilterKey;
+extern NSString* kSettingsLevelDetectorLowPassFilterFileNameKey;
+extern NSString* kSettingsLevelDetectorCountsDecayDurationKey;
+extern NSString* kSettingsLevelDetectorScalingKey;
+
+extern NSString* kSettingsBitDetectorMaxLowLevelKey;
+extern NSString* kSettingsBitDetectorMinHighLevelKey;
+extern NSString* kSettingsBitDetectorSamplesPerPulseKey;
+
 extern NSString* kSettingsMicSwitchDetectorThresholdKey;
 extern NSString* kSettingsMicSwitchDetectorDurationKey;
-extern NSString* kSettingsRpmViewDurationKey;
+
 extern NSString* kSettingsCloudStorageEnableKey;
-extern NSString* kSettingsPulseDecoderSamplesPerPulseKey;
-extern NSString* kSettingsPulseDecoderMaxLowLevelKey;
-extern NSString* kSettingsPulseDecoderMinHighLevelKey;
+
 extern NSString* kSettingsWaveCycleDetectorNonZeroLevelKey;
 extern NSString* kSettingsBitStreamFrameDetectorPrefixKey;
 extern NSString* kSettingsBitStreamFrameDetectorSuffixKey;

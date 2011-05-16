@@ -12,11 +12,11 @@
 #import "SampleRecorder.h"
 #import "LevelDetector.h"
 #import "SignalProcessorController.h"
-#import "SignalViewController.h"
+#import "SampleViewController.h"
 #import "UserSettings.h"
 #import "VertexBufferManager.h"
 
-@interface SignalViewController(Private)
+@interface SampleViewController(Private)
 
 - (void)handleSingleTapGesture:(UITapGestureRecognizer*)recognizer;
 - (void)handlePanGesture:(UIPanGestureRecognizer *)recognizer;
@@ -27,7 +27,7 @@
 
 @end
 
-@implementation SignalViewController
+@implementation SampleViewController
 
 @synthesize appDelegate, sampleView, powerIndicator, connectedIndicator, recordIndicator, infoOverlay;
 @synthesize xMinLabel, xMaxLabel, yPos05Label, yZeroLabel, yNeg05Label, signalProcessorController;
@@ -48,7 +48,7 @@ static const CGFloat kXMaxMax = 1.0;
 
 -(void)viewDidLoad 
 {
-    NSLog(@"SignalViewController.viewDidLoad");
+    NSLog(@"SampleViewController.viewDidLoad");
     [super viewDidLoad];
     
     signalProcessorController = nil;
@@ -115,12 +115,12 @@ static const CGFloat kXMaxMax = 1.0;
     stgr = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissInfoOverlay:)] autorelease];
     [infoOverlay addGestureRecognizer:stgr];
 
-    [self setXMax:[[NSUserDefaults standardUserDefaults] floatForKey:kSettingsXMaxKey]];
+    [self setXMax:[[NSUserDefaults standardUserDefaults] floatForKey:kSettingsInputDisplayXMaxKey]];
 }
 
 - (void)viewDidUnload
 {
-    NSLog(@"SignalViewController.viewDidUnload");
+    NSLog(@"SampleViewController.viewDidUnload");
     [self stop];
     self.signalProcessorController = nil;
     self.infoOverlayController = nil;
@@ -129,7 +129,7 @@ static const CGFloat kXMaxMax = 1.0;
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    NSLog(@"SignalViewController.viewWillAppear");
+    NSLog(@"SampleViewController.viewWillAppear");
     [self adaptViewToOrientation:0];
     [self start];
     self.signalProcessorController = [appDelegate.signalDetector controller];
@@ -139,7 +139,7 @@ static const CGFloat kXMaxMax = 1.0;
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    NSLog(@"SignalViewController.viewWillDisappear");
+    NSLog(@"SampleViewController.viewWillDisappear");
     [self stop];
     self.signalProcessorController = nil;
     [super viewWillDisappear:animated];
@@ -162,7 +162,7 @@ static const CGFloat kXMaxMax = 1.0;
 
 - (void)updateFromSettings
 {
-    Float32 rate = 1.0 / [[NSUserDefaults standardUserDefaults] floatForKey:kSettingsSignalDisplayUpdateRateKey];
+    Float32 rate = 1.0 / [[NSUserDefaults standardUserDefaults] floatForKey:kSettingsInputDisplayUpdateRateKey];
     if (rate != sampleView.animationInterval) {
 	sampleView.animationInterval = rate;
 	if (sampleView.animationTimer != nil) {
@@ -359,7 +359,7 @@ enum GestureType {
         [self setXMax:newXMax];
         if (recognizer.state == UIGestureRecognizerStateEnded) {
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:newXMax] 
-                                                      forKey:kSettingsXMaxKey];
+                                                      forKey:kSettingsInputDisplayXMaxKey];
         }
     }
 }
