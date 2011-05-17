@@ -6,6 +6,7 @@
 #import <AudioUnit/AudioUnit.h>
 #import <vector>
 
+#import "CAStreamBasicDescription.h"
 #import "SampleProcessorProtocol.h"
 
 struct AudioUnitRenderProcContext;
@@ -40,6 +41,7 @@ typedef void (*DataCaptureProcessSamplesProc)(id, SEL, AudioBufferList*, UInt32,
     BOOL pluggedIn;
     std::vector<Float32> sampleBuffer;
     struct AudioUnitRenderProcContext* audioUnitRenderProcContext;
+    CAStreamBasicDescription streamFormat;
 }
 
 @property (nonatomic, assign, readonly) AudioUnit audioUnit;
@@ -59,7 +61,11 @@ typedef void (*DataCaptureProcessSamplesProc)(id, SEL, AudioBufferList*, UInt32,
 + (DataCapture*)create;
 
 - (id)init;
+
 - (void)start;
+
 - (void)stop;
+
+- (CAStreamBasicDescription*)streamFormat;
 
 @end

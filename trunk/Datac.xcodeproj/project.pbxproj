@@ -28,6 +28,16 @@
 		BD14B43F13571CD400F39A4B /* BitDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD14B43E13571CD400F39A4B /* BitDetector.mm */; };
 		BD14B4CC1357298100F39A4B /* SampleCircularBufferTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD14B4CA1357296E00F39A4B /* SampleCircularBufferTests.mm */; };
 		BD14B5441357357400F39A4B /* SampleCircularBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD14B4701357247000F39A4B /* SampleCircularBuffer.mm */; };
+		BD14DFFA1381E8E80007F4B9 /* DimRedButton.png in Resources */ = {isa = PBXBuildFile; fileRef = BD14DFF91381E8E70007F4B9 /* DimRedButton.png */; };
+		BD14DFFC1381E8EF0007F4B9 /* DimRedButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BD14DFFB1381E8ED0007F4B9 /* DimRedButton@2x.png */; };
+		BD14E00B1381E92C0007F4B9 /* 77-ekg.opacity in Resources */ = {isa = PBXBuildFile; fileRef = BD14E0031381E92B0007F4B9 /* 77-ekg.opacity */; };
+		BD14E00C1381E92C0007F4B9 /* detections.opacity in Resources */ = {isa = PBXBuildFile; fileRef = BD14E0041381E92B0007F4B9 /* detections.opacity */; };
+		BD14E00D1381E92C0007F4B9 /* DimRedButton.opacity in Resources */ = {isa = PBXBuildFile; fileRef = BD14E0051381E92B0007F4B9 /* DimRedButton.opacity */; };
+		BD14E00E1381E92C0007F4B9 /* help.opacity in Resources */ = {isa = PBXBuildFile; fileRef = BD14E0061381E92B0007F4B9 /* help.opacity */; };
+		BD14E00F1381E92C0007F4B9 /* input.opacity in Resources */ = {isa = PBXBuildFile; fileRef = BD14E0071381E92B0007F4B9 /* input.opacity */; };
+		BD14E0101381E92C0007F4B9 /* rpm.opacity in Resources */ = {isa = PBXBuildFile; fileRef = BD14E0081381E92B0007F4B9 /* rpm.opacity */; };
+		BD14E0111381E92C0007F4B9 /* settings.opacity in Resources */ = {isa = PBXBuildFile; fileRef = BD14E0091381E92B0007F4B9 /* settings.opacity */; };
+		BD14E0121381E92C0007F4B9 /* SplashScreen iPad.opacity in Resources */ = {isa = PBXBuildFile; fileRef = BD14E00A1381E92B0007F4B9 /* SplashScreen iPad.opacity */; };
 		BD2303741331FCBA006ADDC4 /* taps.txt in Resources */ = {isa = PBXBuildFile; fileRef = BD2303731331FCBA006ADDC4 /* taps.txt */; };
 		BD230B891333A366006ADDC4 /* RpmView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD230B881333A366006ADDC4 /* RpmView.xib */; };
 		BD230CCE1333BADB006ADDC4 /* caution.png in Resources */ = {isa = PBXBuildFile; fileRef = BD230CCD1333BADB006ADDC4 /* caution.png */; };
@@ -252,6 +262,16 @@
 		BD14B4A9135728D500F39A4B /* LogicTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LogicTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD14B4AA135728D500F39A4B /* LogicTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LogicTests-Info.plist"; sourceTree = "<group>"; };
 		BD14B4CA1357296E00F39A4B /* SampleCircularBufferTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SampleCircularBufferTests.mm; sourceTree = "<group>"; };
+		BD14DFF91381E8E70007F4B9 /* DimRedButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DimRedButton.png; path = Images/DimRedButton.png; sourceTree = "<group>"; };
+		BD14DFFB1381E8ED0007F4B9 /* DimRedButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DimRedButton@2x.png"; path = "Images/DimRedButton@2x.png"; sourceTree = "<group>"; };
+		BD14E0031381E92B0007F4B9 /* 77-ekg.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = "77-ekg.opacity"; path = "Images/77-ekg.opacity"; sourceTree = "<group>"; };
+		BD14E0041381E92B0007F4B9 /* detections.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = detections.opacity; path = Images/detections.opacity; sourceTree = "<group>"; };
+		BD14E0051381E92B0007F4B9 /* DimRedButton.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = DimRedButton.opacity; path = Images/DimRedButton.opacity; sourceTree = "<group>"; };
+		BD14E0061381E92B0007F4B9 /* help.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = help.opacity; path = Images/help.opacity; sourceTree = "<group>"; };
+		BD14E0071381E92B0007F4B9 /* input.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = input.opacity; path = Images/input.opacity; sourceTree = "<group>"; };
+		BD14E0081381E92B0007F4B9 /* rpm.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = rpm.opacity; path = Images/rpm.opacity; sourceTree = "<group>"; };
+		BD14E0091381E92B0007F4B9 /* settings.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = settings.opacity; path = Images/settings.opacity; sourceTree = "<group>"; };
+		BD14E00A1381E92B0007F4B9 /* SplashScreen iPad.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SplashScreen iPad.opacity"; path = "Images/SplashScreen iPad.opacity"; sourceTree = "<group>"; };
 		BD2303731331FCBA006ADDC4 /* taps.txt */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text; path = taps.txt; sourceTree = "<group>"; };
 		BD230B881333A366006ADDC4 /* RpmView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RpmView.xib; sourceTree = "<group>"; };
 		BD230CCD1333BADB006ADDC4 /* caution.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = caution.png; path = Images/caution.png; sourceTree = "<group>"; };
@@ -660,9 +680,9 @@
 		BD5EAF391345CAC200B01DC7 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				BD7E79761358AB9100F38E0F /* Recordings Tab */,
 				BD7E79861358AC1F00F38E0F /* Sample Tab */,
 				BD7E79871358AC5E00F38E0F /* Signal Processors */,
-				BD7E79761358AB9100F38E0F /* Recordings Tab */,
 				BD7E79751358AB6300F38E0F /* LED Indicator Button */,
 				BD5EAF211345CABC00B01DC7 /* AppDelegate.h */,
 				BD5EAF221345CABC00B01DC7 /* AppDelegate.mm */,
@@ -990,6 +1010,8 @@
 				BDBA13BE137B1E0C00AD9A95 /* input@2x.png */,
 				BDBA13D3137B240A00AD9A95 /* detections.png */,
 				BDBA13D5137B240F00AD9A95 /* detections@2x.png */,
+				BD14DFF91381E8E70007F4B9 /* DimRedButton.png */,
+				BD14DFFB1381E8ED0007F4B9 /* DimRedButton@2x.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -997,6 +1019,14 @@
 		BDF9D8741326C926004DC652 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				BD14E0031381E92B0007F4B9 /* 77-ekg.opacity */,
+				BD14E0041381E92B0007F4B9 /* detections.opacity */,
+				BD14E0051381E92B0007F4B9 /* DimRedButton.opacity */,
+				BD14E0061381E92B0007F4B9 /* help.opacity */,
+				BD14E0071381E92B0007F4B9 /* input.opacity */,
+				BD14E0081381E92B0007F4B9 /* rpm.opacity */,
+				BD14E0091381E92B0007F4B9 /* settings.opacity */,
+				BD14E00A1381E92B0007F4B9 /* SplashScreen iPad.opacity */,
 				BDB1DC571378988B0051F5B9 /* icon.opacity */,
 				BDB1DC33137895830051F5B9 /* 159-voicemail.opacity */,
 				BD232B801333FAC5006ADDC4 /* DimGreenButton.opacity */,
@@ -1244,6 +1274,16 @@
 				BDBA13BF137B1E0E00AD9A95 /* input@2x.png in Resources */,
 				BDBA13D4137B240B00AD9A95 /* detections.png in Resources */,
 				BDBA13D6137B241100AD9A95 /* detections@2x.png in Resources */,
+				BD14DFFA1381E8E80007F4B9 /* DimRedButton.png in Resources */,
+				BD14DFFC1381E8EF0007F4B9 /* DimRedButton@2x.png in Resources */,
+				BD14E00B1381E92C0007F4B9 /* 77-ekg.opacity in Resources */,
+				BD14E00C1381E92C0007F4B9 /* detections.opacity in Resources */,
+				BD14E00D1381E92C0007F4B9 /* DimRedButton.opacity in Resources */,
+				BD14E00E1381E92C0007F4B9 /* help.opacity in Resources */,
+				BD14E00F1381E92C0007F4B9 /* input.opacity in Resources */,
+				BD14E0101381E92C0007F4B9 /* rpm.opacity in Resources */,
+				BD14E0111381E92C0007F4B9 /* settings.opacity in Resources */,
+				BD14E0121381E92C0007F4B9 /* SplashScreen iPad.opacity in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,13 +7,14 @@
 
 @implementation IndicatorLight
 
-@synthesize state, blinker, blinkingInterval, onState;
+@synthesize state, blinker, blinkingInterval, onState, blankedState;
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
 	onState = kGreen;
+        blankedState = kOff;
 	blinker = nil;
 	blanked = NO;
 	blinkingInterval = 0.0;
@@ -27,6 +28,7 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
 	onState = kGreen;
+        blankedState = kOff;
 	blinker = nil;
 	blanked = NO;
 	blinkingInterval = 0.0;
@@ -68,23 +70,27 @@
 - (void)setState:(IndicatorState)value
 {
     state = value;
-    if (blanked == YES) value = kOff;
+    if (blanked == YES) value = blankedState;
     switch (value) {
-    case kGreen:
-	[self setImage:[UIImage imageNamed:@"GreenButton.png"]];
-	break;
-    case kDimGreen:
-	[self setImage:[UIImage imageNamed:@"DimGreenButton.png"]];
-	break;
-    case kYellow:
-	[self setImage:[UIImage imageNamed:@"YellowButton.png"]];
-	break;
-    case kRed:
-	[self setImage:[UIImage imageNamed:@"RedButton.png"]];
-	break;
-    default:
-	[self setImage:[UIImage imageNamed:@"OffButton.png"]];
-	break;
+        case kGreen:
+            [self setImage:[UIImage imageNamed:@"GreenButton.png"]];
+            break;
+        case kDimGreen:
+            [self setImage:[UIImage imageNamed:@"DimGreenButton.png"]];
+            break;
+        case kYellow:
+        case kDimYellow:
+            [self setImage:[UIImage imageNamed:@"YellowButton.png"]];
+            break;
+        case kRed:
+            [self setImage:[UIImage imageNamed:@"RedButton.png"]];
+            break;
+        case kDimRed:
+            [self setImage:[UIImage imageNamed:@"DimRedButton.png"]];
+            break;
+        default:
+            [self setImage:[UIImage imageNamed:@"OffButton.png"]];
+            break;
     }	
 }
 

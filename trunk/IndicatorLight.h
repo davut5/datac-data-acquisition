@@ -10,7 +10,9 @@ enum IndicatorState {
     kGreen,
     kDimGreen,
     kYellow,
+    kDimYellow,
     kRed,
+    kDimRed
 };
 
 /** A simple on/off indicator light.
@@ -20,6 +22,7 @@ enum IndicatorState {
 @private
     IndicatorState state;
     IndicatorState onState;
+    IndicatorState blankedState;
     NSTimer* blinker;
     NSTimeInterval blinkingInterval;
     BOOL blanked;
@@ -29,6 +32,7 @@ enum IndicatorState {
 @property (nonatomic, assign) BOOL illuminated;
 @property (nonatomic, retain) NSTimer* blinker;
 @property (nonatomic, assign) IndicatorState onState;
+@property (nonatomic, assign) IndicatorState blankedState;
 @property (nonatomic, assign) NSTimeInterval blinkingInterval;
 
 @end

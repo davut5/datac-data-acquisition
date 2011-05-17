@@ -47,9 +47,6 @@
 {
     NSLog(@"AppDelegate.application:didFinishLaunchingWithOptions:");
 
-    NSUserDefaults* settings = [UserSettings registerDefaults];
-    NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
-
     managedObjectModel = nil;
     managedObjectContext = nil;
     persistentStoreCoordinator = nil;
@@ -74,6 +71,8 @@
     dataCapture.switchDetector = switchDetector;
     dataCapture.vertexBufferManager = vertexBufferManager;
     
+    self.rpmViewController.detector = self.signalDetector;
+
     application.idleTimerDisabled = YES;
 
     NSError* error;
@@ -291,14 +290,15 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForSpecifier:(IASKSpecifier*)specifier {
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:specifier.key];
     if (!cell) {
-	cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:specifier.key] autorelease];
+	cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault 
+                                       reuseIdentifier:specifier.key] autorelease];
     }
     [self updateDropboxCell:cell];
     return cell;
 }
 
 #pragma mark -
-#pragma mark Recording Control
+#pragma mark Recording Management
 
 - (void)startRecording
 {
@@ -381,10 +381,11 @@
     NSString* storePath = [self.applicationDocumentsDirectory stringByAppendingPathComponent: @"Recordings.sqlite"];
     NSURL* storeUrl = [NSURL fileURLWithPath:storePath];
     NSDictionary* options = [NSDictionary dictionaryWithObjectsAndKeys:
-					      [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
-					      [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption,
-					  nil];
-    persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
+                             [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
+                             [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption,
+                             nil];
+    persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] 
+                                  initWithManagedObjectModel:self.managedObjectModel];
     NSError* error;
     if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType 
 						  configuration:nil 

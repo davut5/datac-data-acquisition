@@ -11,30 +11,30 @@
 @interface RpmViewController(Private)
 
 - (void)makeGraph;
-- (void)updateSignalStats:(NSNotification*)notification;
+- (void)pullValue;
 
 @end
 
 @implementation RpmViewController
 
-@synthesize points, graph;
+@synthesize points, graph, detector;
 
 - (id)initWithCoder:(NSCoder*)decoder
 {
     if (self = [super initWithCoder:decoder]) {
         graph = nil;
+        detector = nil;
         [self updateFromSettings];
         newest = 0;
-        [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(updateSignalStats:)
-                                                     name:kLevelDetectorCounterUpdateNotification
-                                                   object:nil];
     }
     
     return self;
 }
 
 - (void)dealloc {
+    [updateTimer invalidate];
+    [updateTimer release];
+    updateTimer = nil;
     self.graph = nil;
     [super dealloc];
 }
@@ -129,6 +129,44 @@
     hostingView.hostedGraph = graph;
 }
 
+- (void)updateFromSettings
+{
+    NSLog(@"RpmViewController.updateFromSettings");
+    NSUserDefaults* settings = [UserSettings registerDefaults];
+    
+    Float32 maxX = [settings floatForKey:kSettingsDetectionsViewDurationKey];
+    xScale = 1.0 / [settings floatForKey:kSettingsDetectionsViewUpdateRateKey];
+
+    if (updateTimer != nil) {
+        [updateTimer invalidate];
+        [updateTimer release];
+    }
+    
+    updateTimer = [[NSTimer scheduledTimerWithTimeInterval:xScale
+                                                   target:self
+                                                 selector:@selector(pullValue)
+                                                 userInfo:nil 
+                                                  repeats:YES] retain];
+    
+    UInt32 count = maxX / xScale + 0.5 + 1;
+    if (points == nil || count != [points count]) {
+        self.points = [NSMutableArray arrayWithCapacity:count];
+        while ([points count] < count) {
+            [points addObject:[NSNumber numberWithFloat:0.0]];
+        }
+        newest = 0;
+    }
+    
+    if (graph != nil) {
+        CPXYPlotSpace* plotSpace = static_cast<CPXYPlotSpace*>(graph.defaultPlotSpace);
+        NSDecimal oldMaxX = plotSpace.xRange.length;
+        NSDecimal newMaxX = CPDecimalFromFloat(maxX);
+        if (NSDecimalCompare(&oldMaxX, &newMaxX) != NSOrderedSame) {
+            plotSpace.xRange = [CPPlotRange plotRangeWithLocation:CPDecimalFromInt(0) length:newMaxX];
+        }
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -157,33 +195,6 @@
     CPGraphHostingView* hostingView = (CPGraphHostingView*)self.view;
     hostingView.hostedGraph = nil;
     [super viewDidDisappear:animated];
-}
-
-- (void)updateFromSettings
-{
-    NSLog(@"RpmViewController.updateFromSettings");
-    NSUserDefaults* settings = [UserSettings registerDefaults];
-
-    Float32 maxX = [settings floatForKey:kSettingsDetectionsViewDurationKey];
-    xScale = [settings floatForKey:kSettingsLevelDetectorUpdateRateKey];
-
-    UInt32 count = maxX / xScale + 0.5 + 1;
-    if (points == nil || count != [points count]) {
-        self.points = [NSMutableArray arrayWithCapacity:count];
-        while ([points count] < count) {
-            [points addObject:[NSNumber numberWithFloat:0.0]];
-        }
-        newest = 0;
-    }
-
-    if (graph != nil) {
-        CPXYPlotSpace* plotSpace = static_cast<CPXYPlotSpace*>(graph.defaultPlotSpace);
-        NSDecimal oldMaxX = plotSpace.xRange.length;
-        NSDecimal newMaxX = CPDecimalFromFloat(maxX);
-        if (NSDecimalCompare(&oldMaxX, &newMaxX) != NSOrderedSame) {
-            plotSpace.xRange = [CPPlotRange plotRangeWithLocation:CPDecimalFromInt(0) length:newMaxX];
-        }
-    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -217,15 +228,16 @@
     }
 }
 
-- (void)updateSignalStats:(NSNotification*)notification
+- (void)pullValue
 {
-    if (newest == 0) newest = [points count];
-    newest -= 1;
-    NSDictionary* userInfo = [notification userInfo];
-    NSNumber* rpmValue = [userInfo objectForKey:kLevelDetectorRPMKey];
-    [points replaceObjectAtIndex:newest withObject:rpmValue];
-    if (graph != nil) {
-        [graph reloadData];
+    if (detector) {
+        if (newest == 0) newest = [points count];
+        newest -= 1;
+        Float32 detection = [detector lastDetectionValue];
+        [points replaceObjectAtIndex:newest withObject:[NSNumber numberWithFloat:detection]];
+        if (graph != nil) {
+            [graph reloadData];
+        }
     }
 }
 
