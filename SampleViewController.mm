@@ -76,7 +76,8 @@ static const CGFloat kXMaxMax = 1.0;
     connectedIndicator.layer.zPosition = -1;
     recordIndicator.layer.zPosition = -1;
     
-    recordIndicator.light.onState = kYellow;
+    recordIndicator.light.onState = kRed;
+    recordIndicator.light.blankedState = kDimRed;
     recordIndicator.light.blinkingInterval = 0.20;
     
     powerIndicator.on = NO;
@@ -115,7 +116,7 @@ static const CGFloat kXMaxMax = 1.0;
     stgr = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissInfoOverlay:)] autorelease];
     [infoOverlay addGestureRecognizer:stgr];
 
-    [self setXMax:[[NSUserDefaults standardUserDefaults] floatForKey:kSettingsInputDisplayXMaxKey]];
+    [self setXMax:[[NSUserDefaults standardUserDefaults] floatForKey:kSettingsInputViewXMaxKey]];
 }
 
 - (void)viewDidUnload
@@ -162,7 +163,7 @@ static const CGFloat kXMaxMax = 1.0;
 
 - (void)updateFromSettings
 {
-    Float32 rate = 1.0 / [[NSUserDefaults standardUserDefaults] floatForKey:kSettingsInputDisplayUpdateRateKey];
+    Float32 rate = 1.0 / [[NSUserDefaults standardUserDefaults] floatForKey:kSettingsInputViewUpdateRateKey];
     if (rate != sampleView.animationInterval) {
 	sampleView.animationInterval = rate;
 	if (sampleView.animationTimer != nil) {
@@ -359,7 +360,7 @@ enum GestureType {
         [self setXMax:newXMax];
         if (recognizer.state == UIGestureRecognizerStateEnded) {
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:newXMax] 
-                                                      forKey:kSettingsInputDisplayXMaxKey];
+                                                      forKey:kSettingsInputViewXMaxKey];
         }
     }
 }

@@ -7,7 +7,6 @@
 #import <AudioUnit/AudioUnitProperties.h>
 #import <AudioToolbox/AudioServices.h>
 
-#import "CAStreamBasicDescription.h"
 #import "CAXException.h"
 #import "DataCapture.h"
 #import "SampleRecorder.h"
@@ -26,7 +25,6 @@ static const SInt32 kFloatToQ824 = 1 << 24;
 static const Float32 kQ824ToFloat = Float32(1.0) / Float32(kFloatToQ824);
 
 #define Q824_TO_FLOAT(V) ((V) * kQ824ToFloat);
-#define FLOAT_TO_Q824(V) ((V) * kFloatToQ824);
 
 @interface DataCapture(Private)
 
@@ -143,6 +141,11 @@ static const Float32 kQ824ToFloat = Float32(1.0) / Float32(kFloatToQ824);
     }
 }
 
+- (CAStreamBasicDescription*)streamFormat
+{
+    return &streamFormat;
+}
+
 @end // public interface
 
 static void 
@@ -223,8 +226,12 @@ audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, co
 	//
 	AudioUnitElement bus = 1;
 	UInt32 value = 1;
-	XThrowIfError(AudioUnitSetProperty(audioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Input, bus,
-					   &value, sizeof(value)), "failed to enable mic");
+	XThrowIfError(AudioUnitSetProperty(audioUnit, 
+                                           kAudioOutputUnitProperty_EnableIO, 
+                                           kAudioUnitScope_Input, 
+                                           bus,
+					   &value, 
+                                           sizeof(value)), "failed to enable mic");
 
 	//
 	// Install render callback so we can muck with input samples. (Bus 0 of remote I/O for speakers, headphones).
@@ -237,37 +244,52 @@ audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, co
 	audioUnitRenderProcContext->processSamplesProc = processSamplesProc;
         renderCallback.inputProc = audioUnitRenderProc;
         renderCallback.inputProcRefCon = audioUnitRenderProcContext;
-	XThrowIfError(AudioUnitSetProperty(audioUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, bus, 
-					   &renderCallback, sizeof(renderCallback)), "failed to set render callback");
+	XThrowIfError(AudioUnitSetProperty(audioUnit,
+                                           kAudioUnitProperty_SetRenderCallback, 
+                                           kAudioUnitScope_Input, 
+                                           bus, 
+					   &renderCallback, 
+                                           sizeof(renderCallback)), "failed to set render callback");
 
 	//
-	// Set our required format - Canonical AU format: LPCM non-interleaved 8.24 fixed point
+	// Set our required format - Canonical AU format: LPCM non-interleaved 8.24 fixed point (1 channel)
 	//
-	CAStreamBasicDescription streamFormat;
-	streamFormat.SetAUCanonical(2, false);
+	streamFormat.SetAUCanonical(1, false);
 
 	//
 	// Set format for input to speakers/headphones
 	//
 	bus = 0;
-	XThrowIfError(AudioUnitSetProperty(audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, bus,
-					   &streamFormat, sizeof(streamFormat)), "failed to set speaker input format");
+	XThrowIfError(AudioUnitSetProperty(audioUnit, 
+                                           kAudioUnitProperty_StreamFormat, 
+                                           kAudioUnitScope_Input, 
+                                           bus,
+					   &streamFormat, 
+                                           sizeof(streamFormat)), "failed to set speaker input format");
 
 	//
 	// Set format for output from mic.
 	//
 	bus = 1;
-	XThrowIfError(AudioUnitSetProperty(audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, bus,
-					   &streamFormat, sizeof(streamFormat)), "failed to set mic output format");
+	XThrowIfError(AudioUnitSetProperty(audioUnit, 
+                                           kAudioUnitProperty_StreamFormat, 
+                                           kAudioUnitScope_Output, 
+                                           bus,
+					   &streamFormat, 
+                                           sizeof(streamFormat)), "failed to set mic output format");
 	XThrowIfError(AudioUnitInitialize(audioUnit), "failed to initialize the remote I/O unit");
 
 	UInt32 size = sizeof(maxAudioSampleCount);
-	XThrowIfError(AudioUnitGetProperty(audioUnit, kAudioUnitProperty_MaximumFramesPerSlice, kAudioUnitScope_Global, 0,
-					   &maxAudioSampleCount, &size), "failed to get max sample count");
+	XThrowIfError(AudioUnitGetProperty(audioUnit,
+                                           kAudioUnitProperty_MaximumFramesPerSlice, 
+                                           kAudioUnitScope_Global, 
+                                           0,
+					   &maxAudioSampleCount, 
+                                           &size), "failed to get max sample count");
 	NSLog(@"maxAudioSampleCount: %d", maxAudioSampleCount);
 
         sampleBuffer.clear();
-        sampleBuffer.resize(maxAudioSampleCount, 0.0);
+        sampleBuffer.resize(maxAudioSampleCount, 0.0f);
 
 	//
 	// 8.24 fixed-point representation
@@ -394,6 +416,10 @@ audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, co
     UInt32 count = frameCount;
     SInt32* sptr = static_cast<SInt32*>(ioData->mBuffers[0].mData); 
 
+    if (sampleBuffer.size() < frameCount) {
+        sampleBuffer.resize(frameCount, 0.0f);
+    }
+
     //
     // Save samples if recording
     //
@@ -414,7 +440,8 @@ audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, co
     [switchDetector addSamples:fptr count:count];
 
     VertexBuffer* vertexBuffer = [vertexBufferManager getBufferForCount:count];
-    [vertexBuffer addSamples:fptr count:count];
+    if (vertexBuffer)
+        [vertexBuffer addSamples:fptr count:count];
 
     if (emittingPowerSignal == YES) {
 	for (UInt32 buffer = 0; buffer < ioData->mNumberBuffers; ++buffer ) {

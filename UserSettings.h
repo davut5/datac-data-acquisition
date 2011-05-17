@@ -5,14 +5,14 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString* kSettingsInputDisplayUpdateRateKey;
-extern NSString* kSettingsInputDisplayXMinKey;
-extern NSString* kSettingsInputDisplayXMaxKey;
+extern NSString* kSettingsInputViewUpdateRateKey;
+extern NSString* kSettingsInputViewXMinKey;
+extern NSString* kSettingsInputViewXMaxKey;
 
 extern NSString* kSettingsDetectionsViewDurationKey;
+extern NSString* kSettingsDetectionsViewUpdateRateKey;
 
 extern NSString* kSettingsLevelDetectorLevelKey;
-extern NSString* kSettingsLevelDetectorUpdateRateKey;
 extern NSString* kSettingsLevelDetectorUseLowPassFilterKey;
 extern NSString* kSettingsLevelDetectorLowPassFilterFileNameKey;
 extern NSString* kSettingsLevelDetectorCountsDecayDurationKey;

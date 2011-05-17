@@ -10,6 +10,8 @@
 #import "BitFrameDecoder.h"
 #import "BitStreamFrameDetector.h"
 #import "HiLowSignalProcessor.h"
+#import "HiLowSignalProcessorController.h"
+#import "UserSettings.h"
 
 @implementation HiLowSignalProcessor
 
@@ -29,13 +31,22 @@
         bitDetector.observer = bitStreamFrameDetector;
         bitStreamFrameDetector.observer = bitFrameDecoder;
         bitFrameDecoder.observer = self;
+        controller = nil;
+        frequency = 0.0;
     }
 
     return self;
 }
 
+- (void)dealloc
+{
+    [controller release];
+    [super dealloc];
+}
+
 - (void)start
 {
+    [self reset];
 }
 
 - (void)stop
@@ -45,7 +56,8 @@
 - (void)reset
 {
     [bitDetector reset];
-    
+    [bitStreamFrameDetector reset];
+    frequency = 0.0;
 }
 
 - (void)updateFromSettings
@@ -56,7 +68,11 @@
 
 - (SignalProcessorController*)controller
 {
-    return nil;
+    if (controller == nil) {
+        controller = [[HiLowSignalProcessorController createWithSignalProcessor:self] retain];
+    }
+    
+    return controller;
 }
 
 - (UIViewController*)infoOverlayController
@@ -69,8 +85,14 @@
     return bitDetector;
 }
 
-- (void)frameButtonState:(NSInteger)buttonState frequency:(NSInteger)frequency
+- (void)frameButtonState:(NSInteger)buttonState frequency:(NSInteger)theFrequency
 {
+    frequency = theFrequency;
+}
+
+- (Float32)lastDetectionValue
+{
+    return frequency;
 }
 
 @end

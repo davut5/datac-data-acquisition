@@ -9,10 +9,6 @@
 
 @synthesize vertices, count;
 
-//
-// NOTE: this constant should come from the DataCapture component after it connects to Core Audio.
-//
-static const double kXScale = 1.0 / 44.1e3;
 static const int kValuesPerVertex = 2;
 
 + (id)bufferWithCapacity:(UInt32)theCapacity sampleRate:(Float64)sampleRate
@@ -37,7 +33,7 @@ static const int kValuesPerVertex = 2;
 	    *ptr++ = xScale * (index - 1);
 	    *ptr++ = 0.0;
 	}
-		
+
 	[self clear];
     }
     return self;
@@ -58,15 +54,19 @@ static const int kValuesPerVertex = 2;
 
 - (void)clear
 {
-    vptr = &vertices[ 3 ];
     count = 0;
 }
 
 - (void)addSamples:(Float32*)ptr count:(UInt32)numSamples
 {
+    //
+    // Incoming samples are in the order of oldest to newest. We want to plot newest to oldest, so reverse the order.
+    //
     count = numSamples;
+    vptr = &vertices[ 3 ];
+    ptr += numSamples;
     while (numSamples-- > 0) {
-        *vptr = *ptr++;
+        *vptr = *--ptr;
         vptr += 2;
     }
 }
@@ -82,7 +82,6 @@ static const int kValuesPerVertex = 2;
 	vertices[1] = [previousBuffer lastValue];
 	glVertexPointer(2, GL_FLOAT, 0, &vertices[0]);
 	glDrawArrays(GL_LINE_STRIP, 0, count+1);
-		
     }
     else {
 	glVertexPointer(2, GL_FLOAT, 0, &vertices[2]);

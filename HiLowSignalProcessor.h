@@ -13,12 +13,15 @@
 @class BitDetector;
 @class BitFrameDecoder;
 @class BitStreamFrameDetector;
+@class HiLowSignalProcessorController;
 
 @interface HiLowSignalProcessor : NSObject<SignalProcessorProtocol, BitFrameDecoderObserver> {
 @private
     BitDetector* bitDetector;
     BitStreamFrameDetector* bitStreamFrameDetector;
     BitFrameDecoder* bitFrameDecoder;
+    HiLowSignalProcessorController* controller;
+    Float32 frequency;
 }
 
 @property (nonatomic, retain) BitDetector* bitDetector;

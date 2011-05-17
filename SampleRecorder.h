@@ -5,10 +5,13 @@
 
 #import <Foundation/Foundation.h>
 
+#import "CAStreamBasicDescription.h"
+
 @class RecordingInfo;
 
 @interface SampleRecorder : NSObject {
 @private
+    CAStreamBasicDescription recordFormat;
     RecordingInfo* recording;
     NSOutputStream* outputStream;
     UInt32 runningSize;

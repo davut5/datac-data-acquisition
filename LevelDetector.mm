@@ -14,13 +14,9 @@ NSString* kLevelDetectorCounterUpdateNotification = @"LevelDetectorCounterUpdate
 NSString* kLevelDetectorCounterKey = @"counter";
 NSString* kLevelDetectorRPMKey = @"rpm";
 
-@interface LevelDetector(Private)
-- (void)calculatePerSecondRates;
-@end
-
 @implementation LevelDetector
 
-@synthesize intervalTimer, lowPassFilter, counterDecayFilter, level, rpmScaleFactor;
+@synthesize lowPassFilter, counterDecayFilter, level, rpmScaleFactor;
 
 + (id)create
 {
@@ -32,7 +28,6 @@ NSString* kLevelDetectorRPMKey = @"rpm";
     if ((self = [super init])) {
         controller = nil;
         infoOverlayController = nil;
-	intervalTimer = nil;
 	lowPassFilter = nil;
         counterDecayFilter = nil;
         countScale = -1.0;
@@ -43,8 +38,6 @@ NSString* kLevelDetectorRPMKey = @"rpm";
 
 - (void)dealloc
 {
-    [intervalTimer invalidate];
-    self.intervalTimer = nil;
     self.lowPassFilter = nil;
     self.counterDecayFilter = nil;
     [controller release];
@@ -62,20 +55,10 @@ NSString* kLevelDetectorRPMKey = @"rpm";
 
 - (void)start
 {
-    Float32 interval = 1.0 / [[NSUserDefaults standardUserDefaults] floatForKey:kSettingsLevelDetectorUpdateRateKey];
-    NSLog(@"start: interval = %f", interval);
-    [self reset];
-    self.intervalTimer = [NSTimer scheduledTimerWithTimeInterval:interval
-                                                          target:self
-                                                        selector:@selector(calculatePerSecondRates)
-                                                        userInfo:nil 
-                                                         repeats:YES];
 }
 
 - (void)stop
 {
-    [intervalTimer invalidate];
-    self.intervalTimer = nil;
 }
 
 - (void)reset
@@ -109,7 +92,7 @@ NSString* kLevelDetectorRPMKey = @"rpm";
 {
     NSUserDefaults* settings = [NSUserDefaults standardUserDefaults];
     
-    Float32 newCountScale = 1.0 / [settings floatForKey:kSettingsLevelDetectorUpdateRateKey];
+    Float32 newCountScale = 1.0 / [settings floatForKey:kSettingsDetectionsViewUpdateRateKey];
     int decaySeconds = [settings integerForKey:kSettingsLevelDetectorCountsDecayDurationKey] * newCountScale; 
     
     if (counterDecayFilter == nil || decaySeconds != [counterDecayFilter size]) {
@@ -139,16 +122,19 @@ NSString* kLevelDetectorRPMKey = @"rpm";
     if (countScale != newCountScale) {
         countScale = newCountScale;
         NSLog(@"countScale: %f", countScale);
-        if (intervalTimer) {
-            [self stop];
-            [self start];
-        }
     }
 }
 
 - (NSObject<SampleProcessorProtocol>*)sampleProcessor
 {
     return self;
+}
+
+- (Float32)lastDetectionValue
+{
+    Float32 filteredCounter = [counterDecayFilter filter:(counter * countScale)];
+    counter = 0;
+    return filteredCounter * rpmScaleFactor / 1000.0;
 }
 
 #pragma mark -
@@ -174,24 +160,6 @@ NSString* kLevelDetectorRPMKey = @"rpm";
             }
         }
     }
-}
-
-@end
-
-@implementation LevelDetector(Private)
-
-- (void)calculatePerSecondRates
-{
-    if (intervalTimer == nil) return;
-    Float32 filteredCounter = [counterDecayFilter filter:(counter * countScale)];
-    counter = 0;
-    NSDictionary* userDict = [NSDictionary dictionaryWithObjectsAndKeys:
-                              [NSNumber numberWithFloat:filteredCounter], kLevelDetectorCounterKey,
-                              [NSNumber numberWithFloat:(filteredCounter * rpmScaleFactor)/1000.0], 
-                              kLevelDetectorRPMKey, nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kLevelDetectorCounterUpdateNotification
-							object:self 
-						      userInfo:userDict];
 }
 
 @end

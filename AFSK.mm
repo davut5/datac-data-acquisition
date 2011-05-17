@@ -51,4 +51,9 @@
     return nil;
 }
 
+- (Float32)lastDetectionValue
+{
+    return 0.0;
+}
+
 @end

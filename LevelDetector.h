@@ -30,7 +30,6 @@ enum EdgeKind {
 @private
     LevelDetectorController* controller;
     LevelDetectorInfoOverlayController* infoOverlayController;
-    NSTimer* intervalTimer;
     LowPassFilter* lowPassFilter;
     LowPassFilter* counterDecayFilter;
     Float32 level;
@@ -40,7 +39,6 @@ enum EdgeKind {
     Float32 countScale;
 }
 
-@property (nonatomic, retain) NSTimer* intervalTimer;
 @property (nonatomic, retain) LowPassFilter* lowPassFilter;
 @property (nonatomic, retain) LowPassFilter* counterDecayFilter;
 @property (nonatomic, assign) Float32 level;

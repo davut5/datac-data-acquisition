@@ -5,14 +5,14 @@
 
 #import "UserSettings.h"
 
-NSString* kSettingsInputDisplayUpdateRateKey = @"INPUT_DISPLAY_UPDATE_RATE";
-NSString* kSettingsInputDisplayXMinKey = @"INPUT_DISPLAY_XMIN";
-NSString* kSettingsInputDisplayXMaxKey = @"INPUT_DISPLAY_XMAX";
+NSString* kSettingsInputViewUpdateRateKey = @"INPUT_VIEW_UPDATE_RATE";
+NSString* kSettingsInputViewXMinKey = @"INPUT_VIEW_XMIN";
+NSString* kSettingsInputViewXMaxKey = @"INPUT_VIEW_XMAX";
 
 NSString* kSettingsDetectionsViewDurationKey = @"DETECTIONS_VIEW_DURATION";
+NSString* kSettingsDetectionsViewUpdateRateKey = @"DETECTIONS_VIEW_UPDATE_RATE";
 
 NSString* kSettingsLevelDetectorLevelKey = @"LEVEL_DETECTOR_LEVEL";
-NSString* kSettingsLevelDetectorUpdateRateKey = @"LEVEL_DETECTOR_UPDATE_RATE";
 NSString* kSettingsLevelDetectorUseLowPassFilterKey = @"LEVEL_DETECTOR_USE_LOW_PASS_FILTER";
 NSString* kSettingsLevelDetectorLowPassFilterFileNameKey = @"LEVEL_DETECTOR_LOW_PASS_FILTER_FILENAME";
 NSString* kSettingsLevelDetectorCountsDecayDurationKey = @"LEVEL_DETECTOR_COUNTS_DECAY_DURATION";
@@ -40,14 +40,14 @@ NSString* kSettingsWaveCycleDetectorNonZeroLevelKey = @"nonZeroLevel";
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     [defaults registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
 
-                                [NSNumber numberWithFloat:20.0], kSettingsInputDisplayUpdateRateKey,
-                                [NSNumber numberWithFloat:0.0], kSettingsInputDisplayXMinKey,
-                                [NSNumber numberWithFloat:1.0], kSettingsInputDisplayXMaxKey,
+                                [NSNumber numberWithFloat:20.0], kSettingsInputViewUpdateRateKey,
+                                [NSNumber numberWithFloat:0.0], kSettingsInputViewXMinKey,
+                                [NSNumber numberWithFloat:1.0], kSettingsInputViewXMaxKey,
 
                                 [NSNumber numberWithFloat:30.0], kSettingsDetectionsViewDurationKey,
+                                [NSNumber numberWithFloat:4], kSettingsDetectionsViewUpdateRateKey,
 
                                 [NSNumber numberWithFloat:0.3333], kSettingsLevelDetectorLevelKey,
-                                [NSNumber numberWithFloat:4], kSettingsLevelDetectorUpdateRateKey,
                                 [NSNumber numberWithBool:YES], kSettingsLevelDetectorUseLowPassFilterKey,
                                 @"taps", kSettingsLevelDetectorLowPassFilterFileNameKey,
                                 [NSNumber numberWithInt:4], kSettingsLevelDetectorCountsDecayDurationKey,
@@ -103,9 +103,11 @@ NSString* kSettingsWaveCycleDetectorNonZeroLevelKey = @"nonZeroLevel";
 + (NSUserDefaults*)validate
 {
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    [UserSettings validateFloatNamed:kSettingsInputDisplayUpdateRateKey minValue:1.0 maxValue:60.0];
-    [UserSettings validateFloatNamed:kSettingsInputDisplayXMinKey minValue:0.0 maxValue:1.0];
-    [UserSettings validateFloatNamed:kSettingsInputDisplayXMaxKey minValue:0.0 maxValue:1.0];
+    [UserSettings validateFloatNamed:kSettingsInputViewUpdateRateKey minValue:1.0 maxValue:60.0];
+    [UserSettings validateFloatNamed:kSettingsInputViewXMinKey minValue:0.0 maxValue:1.0];
+    [UserSettings validateFloatNamed:kSettingsInputViewXMaxKey minValue:0.0 maxValue:1.0];
+
+    [UserSettings validateFloatNamed:kSettingsDetectionsViewUpdateRateKey minValue:0.1 maxValue:60.0];
 
     [UserSettings validateFloatNamed:kSettingsLevelDetectorLevelKey minValue:0.0 maxValue:1.0];
     [UserSettings validateFloatNamed:kSettingsLevelDetectorScalingKey minValue:0.1 maxValue:10000.0];
