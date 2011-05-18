@@ -4,8 +4,7 @@
 //
 
 #import "RecordingInfo.h"
-
-NSString* kFileSuffix = @"raw";
+#import "UserSettings.h"
 
 @interface RecordingInfo (PrimitiveAccessors)
 
@@ -89,16 +88,36 @@ NSString* kFileSuffix = @"raw";
                 ((float)bytes/1048576)];
 }
 
+static AudioFileTypeID currentAudioFileType;
+
 + (NSString*)generateRecordingPath
 {
+    NSString* suffix = [[NSUserDefaults standardUserDefaults] stringForKey:kSettingsRecordingsFileFormatKey];
+    if ([suffix isEqualToString:@"caf"] == YES) {
+        currentAudioFileType = kAudioFileCAFType;
+    }
+    else if ([suffix isEqualToString:@"wav"] == YES) {
+        currentAudioFileType = kAudioFileWAVEType;
+    }
+    else if ([suffix isEqualToString:@"aiff"] == YES) {
+        currentAudioFileType = kAudioFileAIFFType;
+    }
+
     NSDateFormatter* dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
     [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
-    NSString* path = [dateFormatter stringFromDate:[NSDate date]];
+
+    NSString* name = [[dateFormatter stringFromDate:[NSDate date]] stringByAppendingPathExtension:suffix];
     NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString* documentsDirectory = [paths objectAtIndex:0];
-    path = [NSString stringWithFormat:@"%@/%@.%@", documentsDirectory, path, kFileSuffix];
+    NSString* path = [documentsDirectory stringByAppendingPathComponent:name];
     NSLog(@"path: %@", path);
+
     return path;
+}
+
++ (AudioFileTypeID)getCurrentAudioFileType
+{
+    return currentAudioFileType;
 }
 
 - (void)awakeFromFetch
@@ -117,11 +136,10 @@ NSString* kFileSuffix = @"raw";
 
 - (void)initialize
 {
-    self.filePath = [RecordingInfo generateRecordingPath];
-    NSURL* fileUrl = [NSURL fileURLWithPath:self.filePath];
-    NSString* name = [fileUrl lastPathComponent];
-    NSArray* bits = [name componentsSeparatedByString:@"."];
-    self.name = [bits objectAtIndex:0];
+    NSString* path = [RecordingInfo generateRecordingPath];
+    self.filePath = path;
+    NSURL* fileUrl = [NSURL fileURLWithPath:path];
+    self.name = [[fileUrl lastPathComponent] stringByDeletingPathExtension];
     self.size = [RecordingInfo niceSizeOfFileString:0];
     self.uploaded = NO;
     self.uploading = NO;

@@ -167,7 +167,7 @@
 	}
 	return;
     }
-	
+
     if (restClient == nil) {
 	return;
     }
@@ -181,7 +181,7 @@
 
     NSLog(@"DropboxUploader - uploading file: %@", uploadingFile.filePath);
 
-    [restClient uploadFile:uploadingFile.name
+    [restClient uploadFile:[uploadingFile.filePath lastPathComponent]
 		    toPath:@"/Datac"
 		  fromPath:uploadingFile.filePath];
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
@@ -211,7 +211,7 @@
 - (void)restClient:(DBRestClient*)client uploadProgress:(CGFloat)progress 
 	   forFile:(NSString*)destPath from:(NSString*)srcPath;
 {
-    NSLog(@"DropboxUploader.restClient:uploadProgress");
+    // NSLog(@"DropboxUploader.restClient:uploadProgress");
     uploadingFile.progress = progress;
 }
 

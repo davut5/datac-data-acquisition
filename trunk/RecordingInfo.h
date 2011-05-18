@@ -3,8 +3,9 @@
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <AudioToolbox/AudioFile.h>
 #import <CoreData/CoreData.h>
+#import <Foundation/Foundation.h>
 
 @interface RecordingInfo : NSManagedObject {
 }
@@ -19,6 +20,8 @@
 + (NSString*)generateRecordingPath;
 
 + (NSString*)niceSizeOfFileString:(int)bytes;
+
++ (AudioFileTypeID)getCurrentAudioFileType;
 
 - (void)initialize;
 

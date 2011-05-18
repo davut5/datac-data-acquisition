@@ -8,12 +8,13 @@
 #import <AudioUnit/AudioUnitProperties.h>
 #import <AudioToolbox/AudioServices.h>
 
+#import "CAStreamBasicDescription.h"
+#import "AUOutputBL.h"
 #import "RecordingInfo.h"
 #import "SampleRecorder.h"
+#import "UserSettings.h"
 
-@interface SampleRecorder ()
-
-- (void)setupAudioFormat:(UInt32)format;
+@interface SampleRecorder (Private)
 
 - (void)updateSize;
 
@@ -21,22 +22,72 @@
 
 @implementation SampleRecorder
 
-@synthesize outputStream, recording;
+@synthesize recording, file;
 
-+ (id)createRecording:(RecordingInfo*)recording
++ (id)createRecording:(RecordingInfo*)recording withFormat:(CAStreamBasicDescription*)format
 {
-    return [[[SampleRecorder alloc] initRecording:recording] autorelease];
+    return [[[SampleRecorder alloc] initRecording:recording withFormat:format] autorelease];
 }
 
-- (id)initRecording:(RecordingInfo*)theRecording
+- (id)initRecording:(RecordingInfo*)theRecording withFormat:(CAStreamBasicDescription*)inputFormat
 {
     if (self = [super init]) {
-	self.recording = theRecording;
-        [self setupAudioFormat:kAudioFormatLinearPCM];
-	self.outputStream = [NSOutputStream outputStreamToFileAtPath:recording.filePath append:NO];
+        self.recording = theRecording;
 	runningSize = 0;
 	updateCounter = 0;
-	[self.outputStream open];
+
+        AudioFileTypeID audioFileType = [RecordingInfo getCurrentAudioFileType];
+
+        //
+        // Create format to use for the file. We base it off of the given AudioUnit format, but we make it a normal
+        // PCM file.
+        //
+        CAStreamBasicDescription outputFormat;
+        outputFormat.mSampleRate = inputFormat->mSampleRate;
+        outputFormat.mFormatID = kAudioFormatLinearPCM;
+        outputFormat.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsPacked;
+        if (audioFileType == kAudioFileAIFFType) {
+            outputFormat.mFormatFlags |= kAudioFormatFlagIsBigEndian;
+        }
+
+        outputFormat.mBytesPerPacket = outputFormat.mBytesPerFrame = 2 * inputFormat->mChannelsPerFrame;
+        outputFormat.mChannelsPerFrame = inputFormat->mChannelsPerFrame;
+        outputFormat.mFramesPerPacket = 1;
+        outputFormat.mBitsPerChannel = 16;
+
+        NSLog(@"initRecording: path: %@", theRecording.filePath);
+        NSLog(@"initRecording: input format: %s", inputFormat->toString().c_str());
+        NSLog(@"initRecording: output format: %s", outputFormat.toString().c_str());
+
+        OSStatus err = ExtAudioFileCreateWithURL((CFURLRef)[NSURL fileURLWithPath:theRecording.filePath],
+                                                 //kAudioFileCAFType,
+                                                 audioFileType,
+                                                 &outputFormat,
+                                                 NULL,
+                                                 kAudioFileFlags_EraseFile,
+                                                 &file);
+        err = ExtAudioFileSetProperty(file, 
+                                      kExtAudioFileProperty_ClientDataFormat, 
+                                      sizeof(*inputFormat), 
+                                      inputFormat);
+
+        if (err) {
+            NSLog(@"failed ExtAudioFileCreateWithURL: %d", err);
+        }
+        else {
+            err = ExtAudioFileWriteAsync(file, 0, 0);
+            if (err) {
+                NSLog(@"failed ExtAudioFileWriteAsync: %d", err);
+            }
+        }
+
+        //
+        // Allocate some buffers to use to hold sample values while ExtAudioFileWriteAsync runs.
+        //
+        for (int index = 0; index < 4; ++index) {
+            AUOutputBL* buffer = new AUOutputBL(*inputFormat);
+            buffers.push_back(buffer);
+        }
     }
 
     return self;
@@ -44,57 +95,58 @@
 
 - (void)dealloc
 {
+    while (! buffers.empty()) {
+        delete buffers.back();
+        buffers.pop_back();
+    }
+
     [self close];
     [super dealloc];
 }
 
-- (void)setupAudioFormat:(UInt32)format
-{
-    memset(&recordFormat, 0, sizeof(recordFormat));
-    UInt32 size = sizeof(recordFormat.mSampleRate);
-    AudioSessionGetProperty(kAudioSessionProperty_CurrentHardwareSampleRate, &size, &recordFormat.mSampleRate);
-    
-    size = sizeof(recordFormat.mChannelsPerFrame);
-    AudioSessionGetProperty(kAudioSessionProperty_CurrentHardwareInputNumberChannels, &size, 
-                            &recordFormat.mChannelsPerFrame);
-
-    recordFormat.mFormatID = format;
-    if (format == kAudioFormatLinearPCM) {
-        // if we want pcm, default to signed 16-bit little-endian
-        recordFormat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked;
-        recordFormat.mBitsPerChannel = 16;
-        recordFormat.mBytesPerPacket = recordFormat.mBytesPerFrame = (recordFormat.mBitsPerChannel / 8) * 
-        recordFormat.mChannelsPerFrame;
-        recordFormat.mFramesPerPacket = 1;
-    }
-}
-
 - (void)close
 {
-    if (outputStream) {
-	[outputStream close];
-	self.outputStream = nil;
-	[recording finalizeSize];
-	self.recording = nil;
+    ExtAudioFileDispose(file);
+    [recording finalizeSize];
+    self.recording = nil;
+    file = nil;
+}
+
+- (void)writeData:(AudioBufferList *)ioData frameCount:(UInt32)frameCount
+{
+    //
+    // Grab the oldest buffer in our list and copy over the incoming AudioBufferList data so we don't have to worry 
+    // about it getting changed before it is written to disk.
+    //
+    AUOutputBL* buffer = buffers.back();
+    buffers.pop_back();
+    buffers.push_front(buffer);
+
+    buffer->Allocate(frameCount);
+    buffer->Prepare(frameCount);
+    AudioBufferList* abl = buffer->ABL();
+
+    AudioBuffer& from = ioData->mBuffers[0];
+    AudioBuffer& to = abl->mBuffers[0];
+    memcpy(to.mData, from.mData, from.mDataByteSize);
+    to.mDataByteSize = from.mDataByteSize;
+    runningSize += to.mDataByteSize;
+
+    ExtAudioFileWriteAsync(file, frameCount, abl);
+    
+    if (++updateCounter == 100) {
+        updateCounter = 0;
+        [self performSelectorOnMainThread:@selector(updateSize) withObject:nil waitUntilDone:NO];
     }
 }
+
+@end
+
+@implementation SampleRecorder (Private)
 
 - (void)updateSize
 {
     [recording updateSizeWith:runningSize];
-}
-
-- (void)write:(const SInt32*)ptr maxLength:(UInt32)count
-{
-    if (outputStream != nil) {
-	count *= sizeof(SInt32);
-	[outputStream write:reinterpret_cast<const uint8_t*>(ptr) maxLength:count];
-	runningSize += count;
-	if (++updateCounter == 100) {
-	    updateCounter = 0;
-	    [self performSelectorOnMainThread:@selector(updateSize) withObject:nil waitUntilDone:NO];
-	}
-    }
 }
 
 @end

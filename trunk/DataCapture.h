@@ -48,7 +48,6 @@ typedef void (*DataCaptureProcessSamplesProc)(id, SEL, AudioBufferList*, UInt32,
 @property (nonatomic, retain) NSObject<SampleProcessorProtocol>* sampleProcessor;
 @property (nonatomic, retain) NSObject<SampleProcessorProtocol>* switchDetector;
 @property (nonatomic, retain) VertexBufferManager* vertexBufferManager;
-@property (nonatomic, retain) SampleRecorder* sampleRecorder;
 @property (nonatomic, assign, readonly) UInt32 maxAudioSampleCount;
 @property (nonatomic, assign, readonly) BOOL audioUnitRunning;
 @property (nonatomic, assign) BOOL emittingPowerSignal;
@@ -57,6 +56,8 @@ typedef void (*DataCaptureProcessSamplesProc)(id, SEL, AudioBufferList*, UInt32,
 @property (nonatomic, assign, readonly) Float64 sampleRate;
 @property (nonatomic, assign, readonly) SEL processSamplesSelector;
 @property (nonatomic, assign, readonly) DataCaptureProcessSamplesProc processSamplesProc;
+@property (nonatomic, retain) SampleRecorder* sampleRecorder;
+@property (nonatomic, assign, readonly) CAStreamBasicDescription* streamFormat;
 
 + (DataCapture*)create;
 
@@ -66,6 +67,5 @@ typedef void (*DataCaptureProcessSamplesProc)(id, SEL, AudioBufferList*, UInt32,
 
 - (void)stop;
 
-- (CAStreamBasicDescription*)streamFormat;
 
 @end

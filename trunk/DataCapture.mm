@@ -64,7 +64,7 @@ static const Float32 kQ824ToFloat = Float32(1.0) / Float32(kFloatToQ824);
 
 /** Callback invoked when the audio system has incoming samples to process.
  */
-- (void)processSamples:(AudioBufferList*)ioData frameCount:(UInt32)frameCount atTime:(const AudioTimeStamp*)timeStamp;
+- (void)processSamples:(AudioBufferList*)ioData frameCount:(UInt32)frameCount;
 
 @end
 
@@ -94,7 +94,7 @@ static const Float32 kQ824ToFloat = Float32(1.0) / Float32(kFloatToQ824);
 	pluggedIn = NO;
         sampleBuffer.clear();
 
-	processSamplesSelector = @selector(processSamples:frameCount:atTime:);
+	processSamplesSelector = @selector(processSamples:frameCount:);
 	processSamplesProc = (DataCaptureProcessSamplesProc)[self methodForSelector:processSamplesSelector];
 
 	audioUnitRenderProcContext = new AudioUnitRenderProcContext;
@@ -112,7 +112,7 @@ static const Float32 kQ824ToFloat = Float32(1.0) / Float32(kFloatToQ824);
     self.sampleProcessor = nil;
     self.switchDetector = nil;
     self.vertexBufferManager = nil;
-    self.sampleRecorder = nil;
+
     [super dealloc];
 }
 
@@ -254,6 +254,7 @@ audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, co
 	//
 	// Set our required format - Canonical AU format: LPCM non-interleaved 8.24 fixed point (1 channel)
 	//
+        // streamFormat.mSampleRate = 44100;
 	streamFormat.SetAUCanonical(1, false);
 
 	//
@@ -279,7 +280,22 @@ audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, co
                                            sizeof(streamFormat)), "failed to set mic output format");
 	XThrowIfError(AudioUnitInitialize(audioUnit), "failed to initialize the remote I/O unit");
 
-	UInt32 size = sizeof(maxAudioSampleCount);
+        UInt32 size = sizeof(streamFormat);
+	XThrowIfError(AudioUnitGetProperty(audioUnit, 
+                                           kAudioUnitProperty_StreamFormat, 
+                                           kAudioUnitScope_Output, 
+                                           bus,
+					   &streamFormat,
+                                           &size), "failed to get mic output format");
+	size = sizeof(streamFormat.mSampleRate);
+	XThrowIfError(AudioSessionGetProperty(kAudioSessionProperty_CurrentHardwareSampleRate,
+                                              &size, 
+                                              &streamFormat.mSampleRate),
+                      "couldn't get hardware sample rate");
+        
+        NSLog(@"mic format: %s", streamFormat.toString().c_str());
+
+	size = sizeof(maxAudioSampleCount);
 	XThrowIfError(AudioUnitGetProperty(audioUnit,
                                            kAudioUnitProperty_MaximumFramesPerSlice, 
                                            kAudioUnitScope_Global, 
@@ -411,20 +427,20 @@ audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, co
     }
 }
 
-- (void)processSamples:(AudioBufferList*)ioData frameCount:(UInt32)frameCount atTime:(const AudioTimeStamp*)timeStamp
+- (void)processSamples:(AudioBufferList*)ioData frameCount:(UInt32)frameCount
 {
     UInt32 count = frameCount;
     SInt32* sptr = static_cast<SInt32*>(ioData->mBuffers[0].mData); 
 
-    if (sampleBuffer.size() < frameCount) {
-        sampleBuffer.resize(frameCount, 0.0f);
-    }
-
     //
     // Save samples if recording
     //
-    if (sampleRecorder != nil) {
-	[sampleRecorder write:sptr maxLength:count];
+    if (sampleRecorder) {
+        [sampleRecorder writeData:ioData frameCount:frameCount];
+    }
+
+    if (sampleBuffer.size() < frameCount) {
+        sampleBuffer.resize(frameCount, 0.0f);
     }
 
     //

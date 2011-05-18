@@ -51,7 +51,6 @@
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController*)controller
 {
-    NSLog(@"controllerWillChangeContent");
     [self.tableView beginUpdates];
 }
 
@@ -96,7 +95,6 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController*)controller
 {
-    NSLog(@"controllerDidChangeContent");
     [self.tableView endUpdates];
 }
 
@@ -152,12 +150,11 @@
     if (recording.uploaded == NO && recording.uploading == YES) {
 	UIProgressView* accessoryView = (UIProgressView*)[cell accessoryView];
 	if (accessoryView == nil) {
-	    accessoryView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
+	    accessoryView = [[[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault] autorelease];
 	    CGRect bounds = accessoryView.bounds;
 	    bounds.size.width = 100;
 	    accessoryView.bounds = bounds;
 	    [cell setAccessoryView:accessoryView];
-	    // [accessoryView release];
 	}
 	[accessoryView setProgress:recording.progress];
     }
