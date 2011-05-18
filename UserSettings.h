@@ -32,6 +32,8 @@ extern NSString* kSettingsBitStreamFrameDetectorPrefixKey;
 extern NSString* kSettingsBitStreamFrameDetectorSuffixKey;
 extern NSString* kSettingsBitStreamFrameDetectorContentSizeKey;
 
+extern NSString* kSettingsRecordingsFileFormatKey;
+
 @interface UserSettings : NSObject
 {
 }

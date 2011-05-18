@@ -70,6 +70,7 @@
 		BD232B831333FAC5006ADDC4 /* SplashScreen.opacity in Resources */ = {isa = PBXBuildFile; fileRef = BD232B811333FAC5006ADDC4 /* SplashScreen.opacity */; };
 		BD2647D5134B4746005CC79E /* 159-voicemail.png in Resources */ = {isa = PBXBuildFile; fileRef = BD2647D4134B4746005CC79E /* 159-voicemail.png */; };
 		BD29187C1328456500FE5395 /* SampleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD29187B1328456500FE5395 /* SampleView.xib */; };
+		BD2F285C1383B613000E69AE /* AUOutputBL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD2F285A1383B613000E69AE /* AUOutputBL.cpp */; };
 		BD2FC1B81373F643004BEA40 /* LevelDetectorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2FC1B71373F643004BEA40 /* LevelDetectorController.mm */; };
 		BD2FC23C137443AC004BEA40 /* SignalProcessorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2FC23B137443AC004BEA40 /* SignalProcessorController.mm */; };
 		BD2FC35A137483C6004BEA40 /* HiLowSignalProcessorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2FC359137483C6004BEA40 /* HiLowSignalProcessorController.mm */; };
@@ -272,6 +273,8 @@
 		BD14E0081381E92B0007F4B9 /* rpm.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = rpm.opacity; path = Images/rpm.opacity; sourceTree = "<group>"; };
 		BD14E0091381E92B0007F4B9 /* settings.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = settings.opacity; path = Images/settings.opacity; sourceTree = "<group>"; };
 		BD14E00A1381E92B0007F4B9 /* SplashScreen iPad.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SplashScreen iPad.opacity"; path = "Images/SplashScreen iPad.opacity"; sourceTree = "<group>"; };
+		BD14E12613825C8E0007F4B9 /* InputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputManager.h; sourceTree = "<group>"; };
+		BD14E12713825C8E0007F4B9 /* InputManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = InputManager.mm; sourceTree = "<group>"; };
 		BD2303731331FCBA006ADDC4 /* taps.txt */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text; path = taps.txt; sourceTree = "<group>"; };
 		BD230B881333A366006ADDC4 /* RpmView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RpmView.xib; sourceTree = "<group>"; };
 		BD230CCD1333BADB006ADDC4 /* caution.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = caution.png; path = Images/caution.png; sourceTree = "<group>"; };
@@ -304,6 +307,8 @@
 		BD232B811333FAC5006ADDC4 /* SplashScreen.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = SplashScreen.opacity; path = Images/SplashScreen.opacity; sourceTree = "<group>"; };
 		BD2647D4134B4746005CC79E /* 159-voicemail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "159-voicemail.png"; path = "Images/159-voicemail.png"; sourceTree = "<group>"; };
 		BD29187B1328456500FE5395 /* SampleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SampleView.xib; sourceTree = "<group>"; };
+		BD2F285A1383B613000E69AE /* AUOutputBL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AUOutputBL.cpp; sourceTree = "<group>"; };
+		BD2F285B1383B613000E69AE /* AUOutputBL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AUOutputBL.h; sourceTree = "<group>"; };
 		BD2FC1B61373F643004BEA40 /* LevelDetectorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelDetectorController.h; sourceTree = "<group>"; };
 		BD2FC1B71373F643004BEA40 /* LevelDetectorController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LevelDetectorController.mm; sourceTree = "<group>"; };
 		BD2FC1B91374372D004BEA40 /* SignalProcessorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignalProcessorController.h; sourceTree = "<group>"; };
@@ -688,6 +693,8 @@
 				BD5EAF221345CABC00B01DC7 /* AppDelegate.mm */,
 				BD5EAF251345CABC00B01DC7 /* DataCapture.h */,
 				BD5EAF261345CABC00B01DC7 /* DataCapture.mm */,
+				BD14E12613825C8E0007F4B9 /* InputManager.h */,
+				BD14E12713825C8E0007F4B9 /* InputManager.mm */,
 				BDBA134B137A7E4500AD9A95 /* GuideViewController.h */,
 				BDBA134C137A7E4500AD9A95 /* GuideViewController.mm */,
 				BD937577134B53000015CC8D /* IASKAppSettingsWebViewController+Customizations.h */,
@@ -809,6 +816,8 @@
 		BD7FD90A1316C355001D1FBF /* iPublicUtility */ = {
 			isa = PBXGroup;
 			children = (
+				BD2F285A1383B613000E69AE /* AUOutputBL.cpp */,
+				BD2F285B1383B613000E69AE /* AUOutputBL.h */,
 				BD7FD90B1316C355001D1FBF /* CADebugMacros.h */,
 				BD7FD90C1316C355001D1FBF /* CADebugMacros.cpp */,
 				BD7FD90D1316C355001D1FBF /* CAMath.h */,
@@ -1405,6 +1414,7 @@
 				BDB1DB3E137801CB0051F5B9 /* HiLowSignalProcessorInfoOverlayController.mm in Sources */,
 				BDB1DB61137806AF0051F5B9 /* HiLowSignalProcessor.mm in Sources */,
 				BDBA134D137A7E4500AD9A95 /* GuideViewController.mm in Sources */,
+				BD2F285C1383B613000E69AE /* AUOutputBL.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

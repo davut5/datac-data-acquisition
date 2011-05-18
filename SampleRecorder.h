@@ -3,27 +3,35 @@
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
+#import <deque>
+
+#import <AudioToolbox/ExtendedAudioFile.h>
 #import <Foundation/Foundation.h>
 
-#import "CAStreamBasicDescription.h"
+class CAStreamBasicDescription;
+class AUOutputBL;
 
 @class RecordingInfo;
 
 @interface SampleRecorder : NSObject {
 @private
-    CAStreamBasicDescription recordFormat;
+    ExtAudioFileRef file;
     RecordingInfo* recording;
-    NSOutputStream* outputStream;
     UInt32 runningSize;
     int updateCounter;
+    std::deque<AUOutputBL*> buffers;
 }
 
-@property (retain, nonatomic) NSOutputStream* outputStream;
-@property (retain, nonatomic) RecordingInfo* recording;
+@property (nonatomic, retain) RecordingInfo* recording;
+@property (nonatomic, assign, readonly) ExtAudioFileRef file;
 
-+ (id)createRecording:(RecordingInfo*)recording;
-- (id)initRecording:(RecordingInfo*)recording;
++ (id)createRecording:(RecordingInfo*)recording withFormat:(CAStreamBasicDescription*)format;
+
+- (id)initRecording:(RecordingInfo*)recording withFormat:(CAStreamBasicDescription*)format;
+
 - (void)close;
-- (void)write:(const SInt32*)ptr maxLength:(UInt32)count;
+
+- (void)writeData:(AudioBufferList*)ioData frameCount:(UInt32)frameCount;
 
 @end
+

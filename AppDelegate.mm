@@ -305,7 +305,7 @@
     RecordingInfo* recording = [NSEntityDescription insertNewObjectForEntityForName:@"RecordingInfo"
 							     inManagedObjectContext:self.managedObjectContext];
     [recording initialize];
-    dataCapture.sampleRecorder = [SampleRecorder createRecording:recording];
+    dataCapture.sampleRecorder = [SampleRecorder createRecording:recording withFormat:dataCapture.streamFormat];
 }
 
 - (void)stopRecording

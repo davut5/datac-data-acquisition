@@ -31,6 +31,8 @@ NSString* kSettingsMicSwitchDetectorDurationKey = @"MIC_SWITCH_DETECTOR_DURATION
 
 NSString* kSettingsCloudStorageEnableKey = @"CLOUD_STORAGE_ENABLE";
 
+NSString* kSettingsRecordingsFileFormatKey = @"RECORDINGS_FILE_FORMAT";
+
 NSString* kSettingsWaveCycleDetectorNonZeroLevelKey = @"nonZeroLevel";
 
 @implementation UserSettings
@@ -65,6 +67,8 @@ NSString* kSettingsWaveCycleDetectorNonZeroLevelKey = @"nonZeroLevel";
                                 [NSNumber numberWithFloat:0.5], kSettingsMicSwitchDetectorDurationKey,
 
                                 [NSNumber numberWithBool:YES], kSettingsCloudStorageEnableKey,
+
+                                @"caf", kSettingsRecordingsFileFormatKey,
 
                                 [NSNumber numberWithFloat:0.33], kSettingsWaveCycleDetectorNonZeroLevelKey,
                                 

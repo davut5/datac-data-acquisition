@@ -322,6 +322,7 @@
 	<key>FooterText</key>
 	<string>CLOUD_STORAGE_FOOTER</string>
       </dict>
+
       <dict>
 	<key>Type</key>
 	<string>IASKCustomViewSpecifier</string>
@@ -330,6 +331,7 @@
 	<key>Key</key>
 	<string>DropBox</string>
       </dict>
+
       <dict>
 	<key>Type</key>
 	<string>PSToggleSwitchSpecifier</string>
@@ -339,6 +341,39 @@
 	<string>CLOUD_STORAGE_ENABLE</string>
 	<key>DefaultValue</key>
 	<true/>
+      </dict>
+
+      <!-- Recordings -->
+      <dict>
+	<key>Type</key>
+	<string>PSGroupSpecifier</string>
+	<key>Title</key>
+	<string>RECORDINGS</string>
+	<key>FooterText</key>
+	<string>RECORDINGS_FOOTER</string>
+      </dict>
+
+      <dict>
+	<key>Type</key>
+	<string>PSMultiValueSpecifier</string>
+	<key>Title</key>
+	<string>RECORDINGS_FILE_FORMAT</string>
+	<key>Key</key>
+	<string>RECORDINGS_FILE_FORMAT</string>
+	<key>DefaultValue</key>
+	<string>caf</string>
+	<key>Values</key>
+	<array>
+	  <string>caf</string>
+	  <string>wav</string>
+	  <string>aiff</string>
+	</array>
+	<key>Titles</key>
+	<array>
+	  <string>Apple CoreAudio</string>
+	  <string>Microsoft WAV</string>
+	  <string>AIFF</string>
+	</array>
       </dict>
 
     </array>
