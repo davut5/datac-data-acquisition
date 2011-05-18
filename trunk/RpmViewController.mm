@@ -21,6 +21,7 @@
 
 - (id)initWithCoder:(NSCoder*)decoder
 {
+    NSLog(@"RpmViewController.initWithCoder");
     if (self = [super initWithCoder:decoder]) {
         graph = nil;
         detector = nil;
@@ -169,11 +170,13 @@
 
 - (void)viewDidLoad
 {
+    NSLog(@"RpmViewController.viewDidLoad");
     [super viewDidLoad];
 }
 
 - (void)viewDidUnload
 {
+    NSLog(@"RpmViewController.viewDidUnload");
     [super viewDidUnload];
 }
 

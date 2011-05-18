@@ -3,35 +3,29 @@
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
-#import <CoreData/CoreData.h>
 #import <UIKit/UIKit.h>
 
-#import "CorePlot-CocoaTouch.h"
 #import "DBSession.h"
-#import "DBLoginController.h"
 #import "IASKAppSettingsViewController.h"
 #import "SampleProcessorProtocol.h"
 #import "SignalProcessorProtocol.h"
 
 @class DataCapture;
-@class DropboxUploader;
 @class BitDetector;
+@class LevelDetector;
+@class MicSwitchDetector;
 @class RecordingInfo;
 @class RecordingsViewController;
 @class RpmViewController;
-@class SettingsViewController;
-@class LevelDetector;
 @class SampleViewController;
-@class MicSwitchDetector;
+@class SettingsViewController;
 @class VertexBufferManager;
 @class WaveCycleDetector;
 
 /** Application delegate that manages the various view controllers of the application, and the application-wide
  services such as data capture and signal detection.
  */
-@interface AppDelegate : NSObject <UIApplicationDelegate, IASKSettingsDelegate, UITabBarControllerDelegate, 
-                                   DBSessionDelegate, DBLoginControllerDelegate, 
-                                   UIActionSheetDelegate> {
+@interface AppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate, DBSessionDelegate> {
 @private
     IBOutlet UIWindow *window;
     IBOutlet UITabBarController* tabBarController;
@@ -39,20 +33,11 @@
     IBOutlet RpmViewController* rpmViewController;
     IBOutlet RecordingsViewController* recordingsViewController;
     IBOutlet SettingsViewController* settingsController;
-
     DBSession* dropboxSession;
     DataCapture* dataCapture;
     NSObject<SignalProcessorProtocol>* signalDetector;
     MicSwitchDetector* switchDetector;
     VertexBufferManager* vertexBufferManager;
-    DropboxUploader* uploader;
-    NSTimer* uploadChecker;
-                                       
-    // CoreData stuff
-    NSManagedObjectModel* managedObjectModel;
-    NSManagedObjectContext* managedObjectContext;
-    NSPersistentStoreCoordinator* persistentStoreCoordinator;
-    NSFetchedResultsController* fetchedResultsController;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
@@ -66,14 +51,8 @@
 @property (nonatomic, retain) NSObject<SignalProcessorProtocol>* signalDetector;
 @property (nonatomic, retain) MicSwitchDetector* switchDetector;
 @property (nonatomic, retain) VertexBufferManager* vertexBufferManager;
-@property (nonatomic, retain) DropboxUploader* uploader;
-@property (nonatomic, retain) NSTimer* uploadChecker;
 
-@property (nonatomic, retain, readonly) NSManagedObjectModel* managedObjectModel;
-@property (nonatomic, retain, readonly) NSManagedObjectContext* managedObjectContext;
-@property (nonatomic, retain, readonly) NSPersistentStoreCoordinator* persistentStoreCoordinator;
-@property (nonatomic, retain, readonly) NSFetchedResultsController* fetchedResultsController;
-@property (nonatomic, readonly) NSString* applicationDocumentsDirectory;
+// @property (nonatomic, readonly) NSString* applicationDocumentsDirectory;
 
 /** Start the data capturing and signal processing components.
  */
@@ -83,11 +62,6 @@
     components.
 */
 - (void)stop;
-
-/** Setup the Dropbox SDK components in order to support automatic uploads of
-    recorded data.
-*/
-- (void)setupDropbox;
 
 /** Start recording of incoming sample data.
  */
@@ -109,6 +83,8 @@
     \param indexPath the location of the recording data in our managed object
     model.
 */
-- (void)removeRecordingAt:(NSIndexPath*)indexPath;
+- (void)recordingDeleted:(RecordingInfo*)recording;
+
+- (void)updateFromSettings;
 
 @end

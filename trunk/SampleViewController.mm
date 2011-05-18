@@ -29,7 +29,7 @@
 
 @implementation SampleViewController
 
-@synthesize appDelegate, sampleView, powerIndicator, connectedIndicator, recordIndicator, infoOverlay;
+@synthesize sampleView, powerIndicator, connectedIndicator, recordIndicator, infoOverlay;
 @synthesize xMinLabel, xMaxLabel, yPos05Label, yZeroLabel, yNeg05Label, signalProcessorController;
 @synthesize infoOverlayController;
 
@@ -40,6 +40,16 @@
 static const CGFloat kXMaxMin = 0.0001;
 static const CGFloat kXMaxMax = 1.0;
 
+- (id)initWithCoder:(NSCoder*)decoder
+{
+    NSLog(@"SampleViewController.initWithCoder");
+    if (self = [super initWithCoder:decoder]) {
+        appDelegate = nil;
+    }
+    
+    return self;
+}
+
 - (void)dealloc {
     self.signalProcessorController = nil;
     self.infoOverlayController = nil;
@@ -49,8 +59,8 @@ static const CGFloat kXMaxMax = 1.0;
 -(void)viewDidLoad 
 {
     NSLog(@"SampleViewController.viewDidLoad");
-    [super viewDidLoad];
-    
+    appDelegate = static_cast<AppDelegate*>([[UIApplication sharedApplication] delegate]);
+
     signalProcessorController = nil;
     sampleView.delegate = self;
     self.view.autoresizesSubviews = YES;
@@ -117,6 +127,8 @@ static const CGFloat kXMaxMax = 1.0;
     [infoOverlay addGestureRecognizer:stgr];
 
     [self setXMax:[[NSUserDefaults standardUserDefaults] floatForKey:kSettingsInputViewXMaxKey]];
+    
+    [super viewDidLoad];
 }
 
 - (void)viewDidUnload
