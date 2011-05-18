@@ -18,7 +18,7 @@
  */
 @interface SampleViewController : UIViewController <SampleViewDelegate, MicSwitchDetectorDelegate> {
 @private
-    IBOutlet AppDelegate* appDelegate;
+    AppDelegate* appDelegate;
     IBOutlet SampleView* sampleView;
     IBOutlet IndicatorButton* powerIndicator;
     IBOutlet IndicatorButton* connectedIndicator;
@@ -38,7 +38,6 @@
     int gestureType;
 }
 
-@property (nonatomic, retain) IBOutlet AppDelegate* appDelegate;
 @property (nonatomic, retain) IBOutlet SampleView* sampleView;
 @property (nonatomic, retain) IBOutlet IndicatorButton* powerIndicator;
 @property (nonatomic, retain) IBOutlet IndicatorButton* connectedIndicator;

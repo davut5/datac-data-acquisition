@@ -4,13 +4,19 @@
 //
 
 #import <UIKit/UIKit.h>
+
+#import "DBLoginController.h"
+#import "DBSession.h"
 #import "IASKAppSettingsViewController.h"
 
 @class AppDelegate;
 
-@interface SettingsViewController : IASKAppSettingsViewController {
-    IBOutlet AppDelegate* appDelegate;
+@interface SettingsViewController : IASKAppSettingsViewController <IASKSettingsDelegate, DBLoginControllerDelegate, 
+                                                                    UIActionSheetDelegate> {
+@private
+    AppDelegate* appDelegate;
     UITableViewCell* dropboxCell;
+    DBSession* dropboxSession;
 }
 
 @property (nonatomic, retain) UITableViewCell* dropboxCell;

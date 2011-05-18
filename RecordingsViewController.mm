@@ -4,32 +4,68 @@
 //
 
 #import "AppDelegate.h"
+#import "DropboxUploader.h"
 #import "RecordingInfo.h"
 #import "RecordingsViewController.h"
+#import "UserSettings.h"
 
 @interface RecordingsViewController ()
 
 - (void)configureCell:(UITableViewCell*)cell withRecordingInfo:(RecordingInfo*)recordingInfo;
+- (void)uploaderCheck:(NSNotification*)notification;
+- (void)updateDropboxUploader;
+- (RecordingInfo*)nextToUpload;
 
 @end
 
 @implementation RecordingsViewController
 
-@synthesize uploadingFilePath;
-
 #pragma mark -
 #pragma mark View lifecycle
 
+- (id)initWithCoder:(NSCoder*)decoder
+{
+    NSLog(@"RecordingsViewController.initWithCoder");
+    if (self = [super initWithCoder:decoder]) {
+        appDelegate = nil;
+        managedObjectModel = nil;
+        managedObjectContext = nil;
+        persistentStoreCoordinator = nil;
+        fetchedResultsController = nil;
+        activeRecording = nil;
+        uploadChecker = [[NSTimer scheduledTimerWithTimeInterval:5.0 
+                                                          target:self
+                                                        selector:@selector(uploaderCheck:)
+                                                        userInfo:nil 
+                                                         repeats:YES] retain];
+    }
+
+    return self;
+}
+
+#pragma mark -
+#pragma mark Memory management
+
+- (void)dealloc
+{
+    [uploadChecker invalidate];
+    [uploadChecker release];
+    [super dealloc];
+}
+
 - (void)viewDidLoad {
     NSLog(@"RecordingsViewController.viewDidLoad");
-    [super viewDidLoad];
+    appDelegate = static_cast<AppDelegate*>([[UIApplication sharedApplication] delegate]);
+
     self.title = NSLocalizedString(@"Recordings", @"Recordings view title");
     self.tableView.allowsSelection = NO;
+    [super viewDidLoad];
 }
 
 - (void)viewDidUnload
 {
     NSLog(@"RecordingsViewController.viewDidUnload");
+    appDelegate = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -49,14 +85,54 @@
     return YES;
 }
 
+- (void)updateFromSettings
+{
+    [self updateDropboxUploader];
+}
+
+- (void)updateDropboxUploader
+{
+    //
+    // Only carry around a DropboxUploader if configured to use Dropbox.
+    //
+    DBSession* dropboxSession = [DBSession sharedSession];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kSettingsCloudStorageEnableKey] == YES &&
+	[dropboxSession isLinked] == YES) {
+	if (uploader == nil) {
+	    uploader = [[DropboxUploader createWithSession:dropboxSession] retain];
+	}
+    }
+    else {
+	if (uploader != nil) {
+            [uploader release];
+	    uploader = nil;
+	}
+    }
+}
+
+- (void)uploaderCheck:(NSNotification*)notification
+{
+    [self updateDropboxUploader];
+    if (uploader != nil && uploader.uploadingFile == nil) {
+        RecordingInfo* recordingInfo = [self nextToUpload];
+        if (recordingInfo != nil) {
+            uploader.uploadingFile = recordingInfo;
+        }
+    }
+}
+
 - (void)controllerWillChangeContent:(NSFetchedResultsController*)controller
 {
-    [self.tableView beginUpdates];
+    if (appDelegate != nil) {
+        [self.tableView beginUpdates];
+    }
 }
 
 - (void)controller:(NSFetchedResultsController*)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath*)indexPath 
      forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath*)newIndexPath 
 {
+    if (appDelegate == nil) return;
+
     UITableView* tableView = self.tableView;
     switch(type) {
     case NSFetchedResultsChangeInsert:
@@ -81,6 +157,8 @@
 - (void)controller:(NSFetchedResultsController*)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
 	   atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type 
 {
+    if (appDelegate == nil) return;
+
     switch(type) {
     case NSFetchedResultsChangeInsert:
 	[self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]
@@ -95,18 +173,20 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController*)controller
 {
-    [self.tableView endUpdates];
+    if (appDelegate != nil) {
+        [self.tableView endUpdates];
+    }
 }
 
 #pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [[appDelegate.fetchedResultsController sections] count];
+    return [[self.fetchedResultsController sections] count];
 }
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[appDelegate.fetchedResultsController sections] objectAtIndex:section];
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
     return [sectionInfo numberOfObjects];
 }
 
@@ -118,7 +198,7 @@
 				       reuseIdentifier:kCellIdentifier] autorelease];
     }
 
-    RecordingInfo* recording = [appDelegate.fetchedResultsController objectAtIndexPath:indexPath];
+    RecordingInfo* recording = [self.fetchedResultsController objectAtIndexPath:indexPath];
     [self configureCell:cell withRecordingInfo:recording];
 
     return cell;
@@ -135,7 +215,7 @@
     else if (recording.uploading == YES) {
 	status = NSLocalizedString(@"uploading", @"Status tag for uploading files");
     }
-    else if ([appDelegate isRecordingInto:recording]) {
+    else if (recording == activeRecording) {
 	status = NSLocalizedString(@"recording", @"Status tag for active recording file");
     }
     else {
@@ -163,10 +243,29 @@
     }
 }
 
-- (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath 
+- (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle 
+forRowAtIndexPath:(NSIndexPath *)indexPath 
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-	[appDelegate removeRecordingAt:indexPath];
+        RecordingInfo* recordingInfo = [fetchedResultsController objectAtIndexPath:indexPath];
+        NSLog(@"deleting file '%@'", recordingInfo.filePath);
+
+        [appDelegate recordingDeleted:recordingInfo];
+        
+        if (uploader != nil && uploader.uploadingFile == recordingInfo)
+            [uploader cancelUploads];
+
+        NSError* error;
+        if ([[NSFileManager defaultManager] removeItemAtPath:recordingInfo.filePath error:&error] == NO) {
+            NSLog(@"failed to remove file at '%@' - %@, %@", recordingInfo.filePath, error, [error userInfo]);
+        }
+            
+        [managedObjectContext deleteObject:recordingInfo];
+        if (![managedObjectContext save:&error]) {
+            // Update to handle the error appropriately.
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
+
 	if ([tableView numberOfRowsInSection:0] == 0) {
 	    [self setEditing:NO animated:YES];
 	    self.navigationItem.rightBarButtonItem = nil;
@@ -183,12 +282,114 @@
 }
 
 #pragma mark -
-#pragma mark Memory management
+#pragma mark CoreData
 
-- (void)dealloc
+- (NSManagedObjectModel*)managedObjectModel
 {
-    self.uploadingFilePath = nil;
-    [super dealloc];
+    if (managedObjectModel != nil) return managedObjectModel;
+    managedObjectModel = [[NSManagedObjectModel mergedModelFromBundles:nil] retain];
+    return managedObjectModel;
+}
+
+- (NSPersistentStoreCoordinator*)persistentStoreCoordinator
+{
+    if (persistentStoreCoordinator != nil) return persistentStoreCoordinator;
+
+    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString* basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
+
+    NSString* storePath = [basePath stringByAppendingPathComponent: @"Recordings.sqlite"];
+    NSURL* storeUrl = [NSURL fileURLWithPath:storePath];
+    NSDictionary* options = [NSDictionary dictionaryWithObjectsAndKeys:
+                             [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
+                             [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption,
+                             nil];
+    persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] 
+                                  initWithManagedObjectModel:self.managedObjectModel];
+    NSError* error;
+    if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType 
+						  configuration:nil 
+							    URL:storeUrl 
+							options:options 
+							  error:&error]) {
+        // Update to handle the error appropriately.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        exit(-1);  // Fail
+    }    
+    
+    return persistentStoreCoordinator;
+}
+
+- (NSManagedObjectContext*)managedObjectContext
+{
+    if (managedObjectContext != nil) return managedObjectContext;
+
+    NSPersistentStoreCoordinator* coordinator = self.persistentStoreCoordinator;
+    if (coordinator != nil) {
+        managedObjectContext = [[NSManagedObjectContext alloc] init];
+        [managedObjectContext setPersistentStoreCoordinator: coordinator];
+    }
+    
+    return managedObjectContext;
+}
+
+- (NSFetchedResultsController*)fetchedResultsController
+{
+    if (fetchedResultsController != nil) return fetchedResultsController;
+    
+    NSFetchRequest*fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"RecordingInfo" 
+					      inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    NSSortDescriptor* nameDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:nameDescriptor]];
+    
+    fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest 
+								   managedObjectContext:self.managedObjectContext
+								     sectionNameKeyPath:nil 
+									      cacheName:@"RecordingInfo"];
+    fetchedResultsController.delegate = self;
+
+    NSError* error;
+    if (![self.fetchedResultsController performFetch:&error]) {
+	NSLog(@"unresolved error %@, %@", error, [error userInfo]);
+    }
+
+    return fetchedResultsController;
+}
+
+- (RecordingInfo*)makeRecording
+{
+    RecordingInfo* recording = [NSEntityDescription insertNewObjectForEntityForName:@"RecordingInfo"
+							     inManagedObjectContext:self.managedObjectContext];
+    [recording initialize];
+    activeRecording = recording;
+    return recording;
+}
+
+- (void)saveContext
+{
+    NSError* error;
+    if (managedObjectContext != nil && [managedObjectContext hasChanges] && [managedObjectContext save:&error] != YES) {
+	NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+    activeRecording = nil;
+}
+
+- (RecordingInfo*)nextToUpload
+{
+    NSArray* recordings = [self.fetchedResultsController fetchedObjects];
+    UInt32 count = [recordings count];
+    for (int index = 0; index < count; ++index) {
+        RecordingInfo* recording = [recordings objectAtIndex:index];
+        if (recording.uploaded == NO && recording != activeRecording) {
+            NSLog(@"nextToUpload: %@", recording.name);
+            return recording;
+        }
+    }
+
+    return nil;
 }
 
 @end

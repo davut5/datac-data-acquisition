@@ -25,20 +25,11 @@
 #import "VertexBufferManager.h"
 #import "WaveCycleDetector.h"
 
-@interface AppDelegate ()
-
-- (void)uploaderCheck:(NSNotification*)notification;
-- (void)updateDropboxUploader;
-- (void)updateDropboxCell:(UITableViewCell*)cell;
-- (void)sessionDidReceiveAuthorizationFailure:(DBSession*)session;
-
-@end
-
 @implementation AppDelegate
 
 @synthesize window, tabBarController, signalViewController, appSettingsViewController, recordingsViewController;
-@synthesize rpmViewController, dropboxSession, fetchedResultsController;
-@synthesize dataCapture, signalDetector, switchDetector, vertexBufferManager, uploader, uploadChecker;
+@synthesize rpmViewController, dropboxSession;
+@synthesize dataCapture, signalDetector, switchDetector, vertexBufferManager;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -47,18 +38,14 @@
 {
     NSLog(@"AppDelegate.application:didFinishLaunchingWithOptions:");
 
-    managedObjectModel = nil;
-    managedObjectContext = nil;
-    persistentStoreCoordinator = nil;
-
     //
     // Dropbox SDK initialization
     //
     NSString* consumerKey = DROPBOX_KEY;
     NSString* consumerSecret = DROPBOX_SECRET;
     dropboxSession = [[[DBSession alloc] initWithConsumerKey:consumerKey consumerSecret:consumerSecret] autorelease];
-    [DBSession setSharedSession:dropboxSession];
     dropboxSession.delegate = self;
+    [DBSession setSharedSession:dropboxSession];
 
     [application setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
 
@@ -75,19 +62,8 @@
 
     application.idleTimerDisabled = YES;
 
-    NSError* error;
-    if (![self.fetchedResultsController performFetch:&error]) {
-	NSLog(@"unresolved error %@, %@", error, [error userInfo]);
-    }
-
     [self.window addSubview:tabBarController.view];
     [self.window makeKeyAndVisible];
-
-    self.uploadChecker = [NSTimer scheduledTimerWithTimeInterval:1.0 
-                                                            target:self
-                                                          selector:@selector(uploaderCheck:)
-                                                          userInfo:nil 
-                                                           repeats:YES];
 
     return YES;
 }
@@ -111,7 +87,6 @@
 {
     [dataCapture start];
     [signalDetector start];
-    [self updateDropboxUploader];
 }
 
 - (void)stop
@@ -119,12 +94,7 @@
     [self stopRecording];
     [signalDetector stop];
     [dataCapture stop];
-    self.uploader = nil;
-
-    NSError* error;
-    if (managedObjectContext != nil && [managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-	NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
+    [recordingsViewController saveContext];
 }
 
 #pragma mark -
@@ -141,40 +111,19 @@
     self.signalDetector = nil;
     self.switchDetector = nil;
     self.vertexBufferManager = nil;
-    self.uploader = nil;
     [super dealloc];
 }
 
 #pragma mark -
-#pragma mark IASKAppSettingsViewControllerDelegate protocol
+#pragma mark DBSession Delegate Protocol
 
-- (void)settingsViewControllerDidEnd:(IASKAppSettingsViewController*)sender
+- (void)sessionDidReceiveAuthorizationFailure:(DBSession*)session
 {
-    [settingsController synchronizeSettings];
-    [rpmViewController updateFromSettings];
-    [signalDetector updateFromSettings];
-    [signalViewController updateFromSettings];
-    [switchDetector updateFromSettings];
-    [settingsController synchronizeSettings];
-    [self updateDropboxUploader];
-}
-
-#pragma mark -
-#pragma mark Periodic Updates
-
-- (void)uploaderCheck:(NSNotification*)notification
-{
-    if (uploader != nil && fetchedResultsController != nil && ! [self isRecording]) {
-	NSArray* recordings = [fetchedResultsController fetchedObjects];
-	UInt32 count = [recordings count];
-	for (int index = 0; index < count; ++index) {
-	    RecordingInfo* recording = [recordings objectAtIndex:index];
-	    if (recording.uploaded == NO) {
-		uploader.uploadingFile = recording;
-		break;
-	    }
-	}
-    }
+    NSLog(@"failed to receive authorization");
+    [[[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Dropbox Authorization", @"Dropbox authorization failure alert title.")
+                                 message:NSLocalizedString(@"Failed to access configured Dropbox account.",
+                                                           @"Dropbox authorization failure alert text.")
+                                delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
 }
 
 #pragma mark -
@@ -202,109 +151,11 @@
 }
 
 #pragma mark -
-#pragma mark Dropbox Management and Settings Display
-
-- (void)updateDropboxCell:(UITableViewCell*)cell
-{
-    cell.textLabel.text = NSLocalizedString(@"Dropbox", @"Name of the Dropbox button shown in the Settings Display");
-    if ([dropboxSession isLinked]) {
-	cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    }
-    else {
-	cell.accessoryType = UITableViewCellAccessoryNone;
-    }
-    [cell setNeedsDisplay];
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == [actionSheet destructiveButtonIndex]) {
-        [dropboxSession unlink];
-	[self updateDropboxCell:settingsController.dropboxCell];
-    }
-}
-
-- (void)setupDropbox
-{
-    if (![dropboxSession isLinked]) {
-        DBLoginController* controller = [[DBLoginController new] autorelease];
-        controller.delegate = self;
-        [controller presentFromController:settingsController];
-    }
-    else {
-	NSString* cancel = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? @"No" : nil;
-	UIActionSheet* actionSheet = [[UIActionSheet alloc] 
-                                      initWithTitle:NSLocalizedString(@"Really unlink Dropbox account?",
-                                                                      @"Prompt to show before unlinking account")
-                                            delegate:self cancelButtonTitle:nil
-                                      destructiveButtonTitle:NSLocalizedString(@"Unlink", @"Unlink button title")
-                                      otherButtonTitles:nil];
-			
-	[actionSheet setDelegate:self];
-	[actionSheet showFromTabBar:[tabBarController tabBar]];
-    }
-}
-
-- (void)updateDropboxUploader
-{
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kSettingsCloudStorageEnableKey] == YES &&
-	[dropboxSession isLinked] == YES) {
-	if (uploader == nil) {
-	    self.uploader = [DropboxUploader createWithSession:dropboxSession];
-	}
-    }
-    else {
-	if (uploader != nil) {
-	    self.uploader = nil;
-	}
-    }
-}
-
-- (void)sessionDidReceiveAuthorizationFailure:(DBSession*)session
-{
-    self.uploader = nil;
-    NSLog(@"failed to receive authorization");
-    [[[[UIAlertView alloc] 
-	   initWithTitle:NSLocalizedString(@"Dropbox Authorization", @"Dropbox authorization failure alert title.")
-		 message:NSLocalizedString(@"Failed to access configured Dropbox account.",
-                                           @"Dropbox authorization failure alert text.")
-		delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]
-	 autorelease]
-	show];
-}
-
-- (void)loginControllerDidLogin:(DBLoginController *)controller
-{
-    [self updateDropboxCell:settingsController.dropboxCell];
-}
-
-- (void)loginControllerDidCancel:(DBLoginController *)controller
-{
-    ;
-}
-
-- (CGFloat)tableView:(UITableView*)tableView heightForSpecifier:(IASKSpecifier*)specifier {
-    return 44;
-}
-
-- (UITableViewCell*)tableView:(UITableView*)tableView cellForSpecifier:(IASKSpecifier*)specifier {
-    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:specifier.key];
-    if (!cell) {
-	cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault 
-                                       reuseIdentifier:specifier.key] autorelease];
-    }
-    [self updateDropboxCell:cell];
-    return cell;
-}
-
-#pragma mark -
 #pragma mark Recording Management
 
 - (void)startRecording
 {
-    RecordingInfo* recording = [NSEntityDescription insertNewObjectForEntityForName:@"RecordingInfo"
-							     inManagedObjectContext:self.managedObjectContext];
-    [recording initialize];
+    RecordingInfo* recording = [recordingsViewController makeRecording];
     dataCapture.sampleRecorder = [SampleRecorder createRecording:recording withFormat:dataCapture.streamFormat];
 }
 
@@ -312,10 +163,7 @@
 {
     signalViewController.recordIndicator.on = NO;
     dataCapture.sampleRecorder = nil;
-    NSError* error;
-    if ([self.managedObjectContext save:&error] != YES) {
-	NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
+    [recordingsViewController saveContext];
 }
 
 - (BOOL)isRecording
@@ -328,114 +176,18 @@
     return [self isRecording] && dataCapture.sampleRecorder.recording == recording;
 }
 
-- (void)removeRecordingAt:(NSIndexPath *)indexPath
+- (void)recordingDeleted:(RecordingInfo*)recording
 {
-    RecordingInfo* recordingInfo = [fetchedResultsController objectAtIndexPath:indexPath];
-    NSLog(@"deleting file '%@'", recordingInfo.filePath);
-	
-    if ([self isRecordingInto:recordingInfo]) {
-	[self stopRecording];
-    }
-	
-    if (uploader != nil && uploader.uploadingFile == recordingInfo) {
-	[self.uploader cancelUploads];
-    }
-    NSError* error;
-    if ([[NSFileManager defaultManager] removeItemAtPath:recordingInfo.filePath error:&error] == NO) {
-	NSLog(@"failed to remove file at '%@' - %@, %@", recordingInfo.filePath, error, [error userInfo]);
-    }
-	
-    [managedObjectContext deleteObject:recordingInfo];
-    if (![managedObjectContext save:&error]) {
-	// Update to handle the error appropriately.
-	NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
+    if ([self isRecordingInto:recording]) [self stopRecording];
 }
 
-#pragma mark -
-#pragma mark CoreData
-
-- (NSString*)applicationDocumentsDirectory
+- (void)updateFromSettings
 {
-    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString* basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
-    return basePath;
-}
-
-- (NSManagedObjectModel*)managedObjectModel
-{
-    if (managedObjectModel != nil) {
-        return managedObjectModel;
-    }
-
-    managedObjectModel = [[NSManagedObjectModel mergedModelFromBundles:nil] retain];
-    return managedObjectModel;
-}
-
-- (NSPersistentStoreCoordinator*)persistentStoreCoordinator
-{
-    if (persistentStoreCoordinator != nil) {
-        return persistentStoreCoordinator;
-    }
-
-    NSString* storePath = [self.applicationDocumentsDirectory stringByAppendingPathComponent: @"Recordings.sqlite"];
-    NSURL* storeUrl = [NSURL fileURLWithPath:storePath];
-    NSDictionary* options = [NSDictionary dictionaryWithObjectsAndKeys:
-                             [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
-                             [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption,
-                             nil];
-    persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] 
-                                  initWithManagedObjectModel:self.managedObjectModel];
-    NSError* error;
-    if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType 
-						  configuration:nil 
-							    URL:storeUrl 
-							options:options 
-							  error:&error]) {
-        // Update to handle the error appropriately.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        exit(-1);  // Fail
-    }    
-    
-    return persistentStoreCoordinator;
-}
-
-- (NSManagedObjectContext*)managedObjectContext
-{
-    if (managedObjectContext != nil) {
-        return managedObjectContext;
-    }
-
-    NSPersistentStoreCoordinator* coordinator = self.persistentStoreCoordinator;
-    if (coordinator != nil) {
-        managedObjectContext = [[NSManagedObjectContext alloc] init];
-        [managedObjectContext setPersistentStoreCoordinator: coordinator];
-    }
-
-    return managedObjectContext;
-}
-
-- (NSFetchedResultsController*)fetchedResultsController
-{
-    if (fetchedResultsController != nil) {
-        return fetchedResultsController;
-    }
-
-    NSFetchRequest*fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"RecordingInfo" 
-					      inManagedObjectContext:self.managedObjectContext];
-    [fetchRequest setEntity:entity];
-
-    NSSortDescriptor* nameDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
-    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:nameDescriptor]];
-	
-    fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest 
-								   managedObjectContext:self.managedObjectContext
-								     sectionNameKeyPath:nil 
-									      cacheName:@"RecordingInfo"];
-    fetchedResultsController.delegate = recordingsViewController;
-
-    return fetchedResultsController;
+    [recordingsViewController updateFromSettings];
+    [rpmViewController updateFromSettings];
+    [signalDetector updateFromSettings];
+    [signalViewController updateFromSettings];
+    [switchDetector updateFromSettings];
 }
 
 @end

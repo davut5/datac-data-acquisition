@@ -273,8 +273,6 @@
 		BD14E0081381E92B0007F4B9 /* rpm.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = rpm.opacity; path = Images/rpm.opacity; sourceTree = "<group>"; };
 		BD14E0091381E92B0007F4B9 /* settings.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = settings.opacity; path = Images/settings.opacity; sourceTree = "<group>"; };
 		BD14E00A1381E92B0007F4B9 /* SplashScreen iPad.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SplashScreen iPad.opacity"; path = "Images/SplashScreen iPad.opacity"; sourceTree = "<group>"; };
-		BD14E12613825C8E0007F4B9 /* InputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputManager.h; sourceTree = "<group>"; };
-		BD14E12713825C8E0007F4B9 /* InputManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = InputManager.mm; sourceTree = "<group>"; };
 		BD2303731331FCBA006ADDC4 /* taps.txt */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text; path = taps.txt; sourceTree = "<group>"; };
 		BD230B881333A366006ADDC4 /* RpmView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RpmView.xib; sourceTree = "<group>"; };
 		BD230CCD1333BADB006ADDC4 /* caution.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = caution.png; path = Images/caution.png; sourceTree = "<group>"; };
@@ -693,8 +691,6 @@
 				BD5EAF221345CABC00B01DC7 /* AppDelegate.mm */,
 				BD5EAF251345CABC00B01DC7 /* DataCapture.h */,
 				BD5EAF261345CABC00B01DC7 /* DataCapture.mm */,
-				BD14E12613825C8E0007F4B9 /* InputManager.h */,
-				BD14E12713825C8E0007F4B9 /* InputManager.mm */,
 				BDBA134B137A7E4500AD9A95 /* GuideViewController.h */,
 				BDBA134C137A7E4500AD9A95 /* GuideViewController.mm */,
 				BD937577134B53000015CC8D /* IASKAppSettingsWebViewController+Customizations.h */,

@@ -39,7 +39,6 @@
 
 - (void)setProgress:(float)value 
 {
-    NSLog(@"setProgress: %f", value);
     [self willChangeValueForKey:@"progress"];
     [self setPrimitiveProgress:[NSNumber numberWithFloat:value]];
     [self didChangeValueForKey:@"progress"];
@@ -110,7 +109,6 @@ static AudioFileTypeID currentAudioFileType;
     NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString* documentsDirectory = [paths objectAtIndex:0];
     NSString* path = [documentsDirectory stringByAppendingPathComponent:name];
-    NSLog(@"path: %@", path);
 
     return path;
 }
@@ -123,15 +121,18 @@ static AudioFileTypeID currentAudioFileType;
 - (void)awakeFromFetch
 {
     [super awakeFromFetch];
-    self.uploading = NO;
-    self.progress = 0.0;
-}
-
-- (void)awakeFromInsert
-{
-    [super awakeFromFetch];
-    self.uploading = NO;
-    self.progress = 0.0;
+    
+    //
+    // Uploading state is temporary and is always reset when reloaded.
+    //
+    if ([[self primitiveUploading] boolValue] == YES) {
+        NSLog(@"RecordingInfo.awakeFromFetch: resetting self.uploading");
+        self.uploading = NO;
+    }
+    if ([[self primitiveProgress] floatValue] != 0.0) {
+        NSLog(@"RecordingInfo.awakeFromFetch: resetting self.progress");
+        self.progress = 0.0;
+    }
 }
 
 - (void)initialize
