@@ -11,6 +11,7 @@
 
 @class AppDelegate;
 @class IndicatorButton;
+@class InfoOverlayViewController;
 @class SignalProcessorController;
 @class VertexBufferManager;
 
@@ -28,10 +29,9 @@
     IBOutlet UILabel* yPos05Label;
     IBOutlet UILabel* yZeroLabel;
     IBOutlet UILabel* yNeg05Label;
-    IBOutlet UIView* infoOverlay;
+    IBOutlet UITextView* infoOverlay;
     VertexBufferManager* vertexBufferManager;
     SignalProcessorController* signalProcessorController;
-    UIViewController* infoOverlayController;
     GLfloat xMin;
     GLfloat xMax;
     CGFloat gestureStart;
@@ -49,7 +49,6 @@
 @property (nonatomic, retain) IBOutlet UILabel* yNeg05Label;
 @property (nonatomic, retain) IBOutlet UIView* infoOverlay;
 @property (nonatomic, retain) SignalProcessorController* signalProcessorController;
-@property (nonatomic, retain) UIViewController* infoOverlayController;
 
 - (IBAction)togglePower;
 - (IBAction)toggleRecord;

@@ -105,10 +105,24 @@ static AudioFileTypeID currentAudioFileType;
     NSDateFormatter* dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
     [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
 
-    NSString* name = [[dateFormatter stringFromDate:[NSDate date]] stringByAppendingPathExtension:suffix];
     NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString* documentsDirectory = [paths objectAtIndex:0];
-    NSString* path = [documentsDirectory stringByAppendingPathComponent:name];
+    NSString* path = [documentsDirectory stringByAppendingPathComponent:NSLocalizedString(@"Recordings",
+                                                                                          @"Recordings directory")];
+    NSFileManager* fileManager = [[[NSFileManager alloc] init] autorelease];
+    if ([fileManager fileExistsAtPath:path] == NO) {
+        NSError* err = nil;
+        if ([fileManager createDirectoryAtPath:path
+                   withIntermediateDirectories:YES
+                                    attributes:nil
+                                         error:&err] == NO) {;
+            NSLog(@"RecordingInfo.generateRecordingPath: failed to create Recordings directory! - %@", err);
+            path = [path stringByDeletingLastPathComponent];
+        }
+    }
+
+    NSString* name = [[dateFormatter stringFromDate:[NSDate date]] stringByAppendingPathExtension:suffix];
+    path = [path stringByAppendingPathComponent:name];
 
     return path;
 }

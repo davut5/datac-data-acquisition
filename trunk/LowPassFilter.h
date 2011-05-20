@@ -51,4 +51,6 @@
  */
 - (NSUInteger)size;
 
+- (NSString*)description;
+
 @end

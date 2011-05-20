@@ -11,6 +11,7 @@
 @interface SampleView (Private)
 
 - (void)setupView;
+- (void)drawView:(NSTimer*)timer;
 - (BOOL)createFramebuffer;
 - (void)destroyFramebuffer;
 
@@ -87,7 +88,8 @@
 - (void)startAnimation
 {
     self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:animationInterval
-							   target:self selector:@selector(drawView) 
+							   target:self 
+                                                         selector:@selector(drawView:) 
 							 userInfo:nil
 							  repeats:YES];
 }
@@ -106,7 +108,7 @@
     glEnableClientState(GL_VERTEX_ARRAY);
 }
 
-- (void)drawView
+- (void)drawView:(NSTimer*)timer
 {
     if (animationTimer == nil) return;
     if (applicationResignedActive) return;

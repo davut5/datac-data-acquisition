@@ -12,11 +12,11 @@
 
 @class DataCapture;
 @class BitDetector;
+@class DetectionsViewController;
 @class LevelDetector;
 @class MicSwitchDetector;
 @class RecordingInfo;
 @class RecordingsViewController;
-@class RpmViewController;
 @class SampleViewController;
 @class SettingsViewController;
 @class VertexBufferManager;
@@ -29,8 +29,8 @@
 @private
     IBOutlet UIWindow *window;
     IBOutlet UITabBarController* tabBarController;
-    IBOutlet SampleViewController* signalViewController;
-    IBOutlet RpmViewController* rpmViewController;
+    IBOutlet SampleViewController* samplesViewController;
+    IBOutlet DetectionsViewController* detectionsViewController;
     IBOutlet RecordingsViewController* recordingsViewController;
     IBOutlet SettingsViewController* settingsController;
     DBSession* dropboxSession;
@@ -42,8 +42,8 @@
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet UITabBarController* tabBarController;
-@property (nonatomic, retain) IBOutlet SampleViewController* signalViewController;
-@property (nonatomic, retain) IBOutlet RpmViewController* rpmViewController;
+@property (nonatomic, retain) IBOutlet SampleViewController* samplesViewController;
+@property (nonatomic, retain) IBOutlet DetectionsViewController* detectionsViewController;
 @property (nonatomic, retain) IBOutlet RecordingsViewController* recordingsViewController;
 @property (nonatomic, retain) IBOutlet SettingsViewController* appSettingsViewController;
 @property (nonatomic, retain) DBSession* dropboxSession;

@@ -4,18 +4,18 @@
 //
 
 #import "AppDelegate.h"
-#import "RpmViewController.h"
+#import "DetectionsViewController.h"
 #import "LevelDetector.h"
 #import "UserSettings.h"
 
-@interface RpmViewController(Private)
+@interface DetectionsViewController(Private)
 
 - (void)makeGraph;
-- (void)pullValue;
+- (void)pullValue:(NSTimer*)timer;
 
 @end
 
-@implementation RpmViewController
+@implementation DetectionsViewController
 
 @synthesize points, graph, detector;
 
@@ -38,134 +38,6 @@
     updateTimer = nil;
     self.graph = nil;
     [super dealloc];
-}
-
-- (void)makeGraph
-{
-    Float32 maxX = [[NSUserDefaults standardUserDefaults] floatForKey:kSettingsDetectionsViewDurationKey];
-	
-    self.graph = [[[CPXYGraph alloc] initWithFrame:CGRectZero] autorelease];
-    [graph applyTheme:[CPTheme themeNamed:kCPDarkGradientTheme]];
-
-    graph.paddingLeft = 0.0f;
-    graph.paddingRight = 0.0f;
-    graph.paddingTop = 0.0f;
-    graph.paddingBottom = 0.0f;
-    
-    graph.plotAreaFrame.borderLineStyle = nil;
-    graph.plotAreaFrame.cornerRadius = 0.0f;
-    graph.plotAreaFrame.paddingLeft = 40.0;
-    graph.plotAreaFrame.paddingTop = 8.0;
-    graph.plotAreaFrame.paddingRight = 10.0;
-    graph.plotAreaFrame.paddingBottom = 35.0;
-
-    CPMutableLineStyle* majorGridLineStyle = [CPMutableLineStyle lineStyle];
-    majorGridLineStyle.lineWidth = 0.75;
-    majorGridLineStyle.lineColor = [[CPColor colorWithGenericGray:0.5] colorWithAlphaComponent:0.75];
-	
-    CPMutableLineStyle *minorGridLineStyle = [CPMutableLineStyle lineStyle];
-    minorGridLineStyle.lineWidth = 0.25;
-    minorGridLineStyle.lineColor = [[CPColor whiteColor] colorWithAlphaComponent:0.1];
-	
-    CPMutableLineStyle *redLineStyle = [CPMutableLineStyle lineStyle];
-    redLineStyle.lineWidth = 10.0;
-    redLineStyle.lineColor = [[CPColor redColor] colorWithAlphaComponent:0.5];
-
-    CPMutableTextStyle *textStyle = [CPTextStyle textStyle];
-    textStyle.color = [CPColor colorWithGenericGray:0.75];
-    textStyle.fontSize = 12.0f;
-
-    CPXYPlotSpace *plotSpace = (CPXYPlotSpace *)graph.defaultPlotSpace;
-    plotSpace.allowsUserInteraction = NO;
-    plotSpace.xRange = [CPPlotRange plotRangeWithLocation:CPDecimalFromInt(0) length:CPDecimalFromFloat(maxX)];
-    plotSpace.yRange = [CPPlotRange plotRangeWithLocation:CPDecimalFromFloat(0.0f) length:CPDecimalFromFloat(12.0f)];
-
-    CPXYAxisSet* axisSet = (CPXYAxisSet *)graph.axisSet;
-    CPXYAxis* x = axisSet.xAxis;
-    x.titleTextStyle = textStyle;
-    x.labelTextStyle = textStyle;
-    x.majorIntervalLength = CPDecimalFromInt(5);
-    x.minorTicksPerInterval = 5;
-    x.majorGridLineStyle = majorGridLineStyle;
-    x.minorGridLineStyle = minorGridLineStyle;
-    NSNumberFormatter* formatter = [[[NSNumberFormatter alloc] init] autorelease]; 
-    [formatter setMaximumFractionDigits:0];
-    x.labelFormatter = formatter;
-    x.title = NSLocalizedString(@"Seconds Past", @"X axis label for RPM plot");
-    x.titleOffset = 18.0f;
-
-    CPXYAxis* y = axisSet.yAxis;
-    y.titleTextStyle = textStyle;
-    y.labelTextStyle = textStyle;
-    y.majorIntervalLength = CPDecimalFromInt(2);
-    y.minorTicksPerInterval = 5;
-    y.majorGridLineStyle = majorGridLineStyle;
-    y.minorGridLineStyle = minorGridLineStyle;
-    formatter = [[[NSNumberFormatter alloc] init] autorelease];
-    [formatter setMaximumFractionDigits:0];
-    [formatter setPositiveSuffix:NSLocalizedString(@"k",@"1000's units designator for RPM ticks")];
-    y.labelFormatter = formatter;
-    y.title = NSLocalizedString(@"RPM", @"Y axis label for RPM plot");
-    y.titleOffset = 20.0f;
-
-    CPScatterPlot* plot = [[[CPScatterPlot alloc] init] autorelease];
-    CPMutableLineStyle* lineStyle = [CPMutableLineStyle lineStyle];
-    lineStyle.lineJoin = kCGLineJoinRound;
-    lineStyle.lineCap = kCGLineCapRound;
-    lineStyle.lineWidth = 3.0f;
-    lineStyle.lineColor = [CPColor cyanColor];
-
-    plot.dataLineStyle = lineStyle;
-
-    CPFill* fill = [CPFill fillWithColor:[[CPColor cyanColor] colorWithAlphaComponent:0.3]];
-    plot.areaFill = fill;
-    plot.areaBaseValue = CPDecimalFromInt(0);
-    plot.dataSource = self;
-
-    [graph addPlot:plot toPlotSpace:plotSpace];
-
-    CPGraphHostingView* hostingView = (CPGraphHostingView*)self.view;
-    hostingView.backgroundColor = [UIColor blackColor];
-    hostingView.collapsesLayers = YES;
-    hostingView.hostedGraph = graph;
-}
-
-- (void)updateFromSettings
-{
-    NSLog(@"RpmViewController.updateFromSettings");
-    NSUserDefaults* settings = [UserSettings registerDefaults];
-    
-    Float32 maxX = [settings floatForKey:kSettingsDetectionsViewDurationKey];
-    xScale = 1.0 / [settings floatForKey:kSettingsDetectionsViewUpdateRateKey];
-
-    if (updateTimer != nil) {
-        [updateTimer invalidate];
-        [updateTimer release];
-    }
-    
-    updateTimer = [[NSTimer scheduledTimerWithTimeInterval:xScale
-                                                   target:self
-                                                 selector:@selector(pullValue)
-                                                 userInfo:nil 
-                                                  repeats:YES] retain];
-    
-    UInt32 count = maxX / xScale + 0.5 + 1;
-    if (points == nil || count != [points count]) {
-        self.points = [NSMutableArray arrayWithCapacity:count];
-        while ([points count] < count) {
-            [points addObject:[NSNumber numberWithFloat:0.0]];
-        }
-        newest = 0;
-    }
-    
-    if (graph != nil) {
-        CPXYPlotSpace* plotSpace = static_cast<CPXYPlotSpace*>(graph.defaultPlotSpace);
-        NSDecimal oldMaxX = plotSpace.xRange.length;
-        NSDecimal newMaxX = CPDecimalFromFloat(maxX);
-        if (NSDecimalCompare(&oldMaxX, &newMaxX) != NSOrderedSame) {
-            plotSpace.xRange = [CPPlotRange plotRangeWithLocation:CPDecimalFromInt(0) length:newMaxX];
-        }
-    }
 }
 
 - (void)viewDidLoad
@@ -205,6 +77,44 @@
     return YES;
 }
 
+- (void)updateFromSettings
+{
+    NSLog(@"RpmViewController.updateFromSettings");
+    NSUserDefaults* settings = [UserSettings registerDefaults];
+    
+    Float32 maxX = [settings floatForKey:kSettingsDetectionsViewDurationKey];
+    xScale = 1.0 / [settings floatForKey:kSettingsDetectionsViewUpdateRateKey];
+
+    if (updateTimer != nil) {
+        [updateTimer invalidate];
+        [updateTimer release];
+    }
+    
+    updateTimer = [[NSTimer scheduledTimerWithTimeInterval:xScale
+                                                   target:self
+                                                  selector:@selector(pullValue:)
+                                                 userInfo:nil 
+                                                  repeats:YES] retain];
+    
+    UInt32 count = maxX / xScale + 0.5 + 1;
+    if (points == nil || count != [points count]) {
+        self.points = [NSMutableArray arrayWithCapacity:count];
+        while ([points count] < count) {
+            [points addObject:[NSNumber numberWithFloat:0.0]];
+        }
+        newest = 0;
+    }
+    
+    if (graph != nil) {
+        CPXYPlotSpace* plotSpace = static_cast<CPXYPlotSpace*>(graph.defaultPlotSpace);
+        NSDecimal oldMaxX = plotSpace.xRange.length;
+        NSDecimal newMaxX = CPDecimalFromFloat(maxX);
+        if (NSDecimalCompare(&oldMaxX, &newMaxX) != NSOrderedSame) {
+            plotSpace.xRange = [CPPlotRange plotRangeWithLocation:CPDecimalFromInt(0) length:newMaxX];
+        }
+    }
+}
+
 #pragma mark -
 #pragma mark Plot Data Source Methods
 
@@ -231,12 +141,106 @@
     }
 }
 
-- (void)pullValue
+@end
+
+@implementation DetectionsViewController (Private)
+
+- (void)makeGraph
+{
+    Float32 maxX = [[NSUserDefaults standardUserDefaults] floatForKey:kSettingsDetectionsViewDurationKey];
+    
+    self.graph = [[[CPXYGraph alloc] initWithFrame:CGRectZero] autorelease];
+    [graph applyTheme:[CPTheme themeNamed:kCPDarkGradientTheme]];
+    
+    graph.paddingLeft = 0.0f;
+    graph.paddingRight = 0.0f;
+    graph.paddingTop = 0.0f;
+    graph.paddingBottom = 0.0f;
+    
+    graph.plotAreaFrame.borderLineStyle = nil;
+    graph.plotAreaFrame.cornerRadius = 0.0f;
+    graph.plotAreaFrame.paddingLeft = 40.0;
+    graph.plotAreaFrame.paddingTop = 8.0;
+    graph.plotAreaFrame.paddingRight = 10.0;
+    graph.plotAreaFrame.paddingBottom = 35.0;
+    
+    CPMutableLineStyle* majorGridLineStyle = [CPMutableLineStyle lineStyle];
+    majorGridLineStyle.lineWidth = 0.75;
+    majorGridLineStyle.lineColor = [[CPColor colorWithGenericGray:0.5] colorWithAlphaComponent:0.75];
+    
+    CPMutableLineStyle *minorGridLineStyle = [CPMutableLineStyle lineStyle];
+    minorGridLineStyle.lineWidth = 0.25;
+    minorGridLineStyle.lineColor = [[CPColor whiteColor] colorWithAlphaComponent:0.1];
+    
+    CPMutableLineStyle *redLineStyle = [CPMutableLineStyle lineStyle];
+    redLineStyle.lineWidth = 10.0;
+    redLineStyle.lineColor = [[CPColor redColor] colorWithAlphaComponent:0.5];
+    
+    CPMutableTextStyle *textStyle = [CPTextStyle textStyle];
+    textStyle.color = [CPColor colorWithGenericGray:0.75];
+    textStyle.fontSize = 12.0f;
+    
+    CPXYPlotSpace *plotSpace = (CPXYPlotSpace *)graph.defaultPlotSpace;
+    plotSpace.allowsUserInteraction = NO;
+    plotSpace.xRange = [CPPlotRange plotRangeWithLocation:CPDecimalFromInt(0) length:CPDecimalFromFloat(maxX)];
+    plotSpace.yRange = [CPPlotRange plotRangeWithLocation:CPDecimalFromFloat(0.0f) length:CPDecimalFromFloat(12.0f)];
+    
+    CPXYAxisSet* axisSet = (CPXYAxisSet *)graph.axisSet;
+    CPXYAxis* x = axisSet.xAxis;
+    x.titleTextStyle = textStyle;
+    x.labelTextStyle = textStyle;
+    x.majorIntervalLength = CPDecimalFromInt(5);
+    x.minorTicksPerInterval = 5;
+    x.majorGridLineStyle = majorGridLineStyle;
+    x.minorGridLineStyle = minorGridLineStyle;
+    NSNumberFormatter* formatter = [[[NSNumberFormatter alloc] init] autorelease]; 
+    [formatter setMaximumFractionDigits:0];
+    x.labelFormatter = formatter;
+    x.title = NSLocalizedString(@"Seconds Past", @"X axis label for RPM plot");
+    x.titleOffset = 18.0f;
+    
+    CPXYAxis* y = axisSet.yAxis;
+    y.titleTextStyle = textStyle;
+    y.labelTextStyle = textStyle;
+    y.majorIntervalLength = CPDecimalFromInt(2);
+    y.minorTicksPerInterval = 5;
+    y.majorGridLineStyle = majorGridLineStyle;
+    y.minorGridLineStyle = minorGridLineStyle;
+    formatter = [[[NSNumberFormatter alloc] init] autorelease];
+    [formatter setMaximumFractionDigits:0];
+    [formatter setPositiveSuffix:NSLocalizedString(@"k",@"1000's units designator for RPM ticks")];
+    y.labelFormatter = formatter;
+    y.title = NSLocalizedString(@"RPM", @"Y axis label for RPM plot");
+    y.titleOffset = 20.0f;
+
+    CPScatterPlot* plot = [[[CPScatterPlot alloc] init] autorelease];
+    CPMutableLineStyle* lineStyle = [CPMutableLineStyle lineStyle];
+    lineStyle.lineJoin = kCGLineJoinRound;
+    lineStyle.lineCap = kCGLineCapRound;
+    lineStyle.lineWidth = 3.0f;
+    lineStyle.lineColor = [CPColor cyanColor];
+    
+    plot.dataLineStyle = lineStyle;
+    
+    CPFill* fill = [CPFill fillWithColor:[[CPColor cyanColor] colorWithAlphaComponent:0.3]];
+    plot.areaFill = fill;
+    plot.areaBaseValue = CPDecimalFromInt(0);
+    plot.dataSource = self;
+    
+    [graph addPlot:plot toPlotSpace:plotSpace];
+    
+    CPGraphHostingView* hostingView = (CPGraphHostingView*)self.view;
+    hostingView.backgroundColor = [UIColor blackColor];
+    hostingView.collapsesLayers = YES;
+    hostingView.hostedGraph = graph;
+}
+
+- (void)pullValue:(NSTimer*)timer
 {
     if (detector) {
         if (newest == 0) newest = [points count];
         newest -= 1;
-        Float32 detection = [detector lastDetectionValue];
+        Float32 detection = [detector updatedDetectionValue] / 1000.0;
         [points replaceObjectAtIndex:newest withObject:[NSNumber numberWithFloat:detection]];
         if (graph != nil) {
             [graph reloadData];

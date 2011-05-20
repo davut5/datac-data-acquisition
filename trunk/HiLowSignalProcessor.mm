@@ -44,15 +44,6 @@
     [super dealloc];
 }
 
-- (void)start
-{
-    [self reset];
-}
-
-- (void)stop
-{
-}
-
 - (void)reset
 {
     [bitDetector reset];
@@ -75,7 +66,7 @@
     return controller;
 }
 
-- (UIViewController*)infoOverlayController
+- (InfoOverlayViewController*)infoOverlayController
 {
     return nil;
 }

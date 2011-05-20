@@ -14,11 +14,15 @@
 @interface SignalProcessorController : NSObject
 {
     SampleView* sampleView;
-    UIView* infoOverlay;
+    UITextView* infoOverlay;
+    NSTimeInterval infoOverlayUpdateTimerInterval;
+    NSTimer* infoOverlayUpdateTimer;
 }
 
 @property (nonatomic, retain) SampleView* sampleView;
-@property (nonatomic, retain) UIView* infoOverlay;
+@property (nonatomic, retain) UITextView* infoOverlay;
+@property (nonatomic, assign) NSTimeInterval infoOverlayUpdateTimerInterval;
+@property (nonatomic, retain) NSTimer* infoOverlayUpdateTimer;
 
 /** Show signal processor level settings on the held SampleView instance.
     \param vertices an array of GLfloat values that are setup for fast plotting in the OpenGL context.
@@ -29,5 +33,13 @@
     \param recognizer the pan gesture recognizer that is currently active
  */
 - (void)handlePanGesture:(UIPanGestureRecognizer*)recognizer;
+
+- (BOOL)showInfoOverlay;
+
+- (void)infoOverlayWillAppear;
+
+- (void)infoOverlayWillDisappear;
+
+- (void)updateInfoOverlay:(NSTimer*)timer;
 
 @end

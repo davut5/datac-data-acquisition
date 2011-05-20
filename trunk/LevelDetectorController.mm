@@ -61,4 +61,23 @@
     }
 }
 
+- (BOOL)showInfoOverlay
+{
+    return YES;
+}
+
+- (void)updateInfoOverlay:(NSTimer*)timer
+{
+    NSLog(@"LevelDetectorInfoOverlayController.updateInfo");
+    NSString* counterHistory = [levelDetector counterHistoryAsString];
+    NSString* filterValues = [levelDetector.counterDecayFilter description];
+    NSString* content = [NSString stringWithFormat:
+                         @"Counter scale: %f\nDetection scale: %f\nCounters: %@\nDecay filter: %@",
+                         levelDetector.counterScale,
+                         levelDetector.detectionScale,
+                         counterHistory,
+                         filterValues];
+    infoOverlay.text = content;
+}
+
 @end

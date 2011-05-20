@@ -24,14 +24,6 @@
 {
 }
 
-- (void)start
-{
-}
-
-- (void)stop
-{
-}
-
 - (void)updateFromSettings
 {
 }
@@ -46,7 +38,7 @@
     return nil;
 }
 
-- (UIViewController*)infoOverlayController
+- (InfoOverlayViewController*)infoOverlayController
 {
     return nil;
 }

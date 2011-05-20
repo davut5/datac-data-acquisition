@@ -45,7 +45,6 @@
 
 - (void)startAnimation;
 - (void)stopAnimation;
-- (void)drawView;
 - (BOOL)isAnimating;
 
 @property (nonatomic, retain) NSTimer* animationTimer;

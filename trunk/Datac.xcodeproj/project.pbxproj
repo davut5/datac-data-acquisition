@@ -82,7 +82,7 @@
 		BD5EAF371345CABC00B01DC7 /* LowPassFilter.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF2E1345CABC00B01DC7 /* LowPassFilter.mm */; };
 		BD5EAF381345CABC00B01DC7 /* RecordingInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF301345CABC00B01DC7 /* RecordingInfo.mm */; };
 		BD5EAF531345CADF00B01DC7 /* RecordingsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF3E1345CADF00B01DC7 /* RecordingsViewController.mm */; };
-		BD5EAF541345CADF00B01DC7 /* RpmViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF401345CADF00B01DC7 /* RpmViewController.mm */; };
+		BD5EAF541345CADF00B01DC7 /* DetectionsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF401345CADF00B01DC7 /* DetectionsViewController.mm */; };
 		BD5EAF551345CADF00B01DC7 /* SampleRecorder.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF421345CADF00B01DC7 /* SampleRecorder.mm */; };
 		BD5EAF561345CADF00B01DC7 /* SampleView.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF441345CADF00B01DC7 /* SampleView.mm */; };
 		BD5EAF571345CADF00B01DC7 /* SettingsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF461345CADF00B01DC7 /* SettingsViewController.mm */; };
@@ -123,9 +123,7 @@
 		BD9D943B134919920054C7E8 /* copyrights.html in Resources */ = {isa = PBXBuildFile; fileRef = BD9D9439134919920054C7E8 /* copyrights.html */; };
 		BDB1D7D913773C000051F5B9 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB1D7D813773C000051F5B9 /* libCorePlot-CocoaTouch.a */; };
 		BDB1D9511377D12E0051F5B9 /* LevelDetectorInfoOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = BDB1D9501377D12E0051F5B9 /* LevelDetectorInfoOverlay.xib */; };
-		BDB1D9671377D69D0051F5B9 /* LevelDetectorInfoOverlayController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1D9661377D69D0051F5B9 /* LevelDetectorInfoOverlayController.mm */; };
 		BDB1D9CD1377E6EA0051F5B9 /* AFSK.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1D9CC1377E6EA0051F5B9 /* AFSK.mm */; };
-		BDB1DB3E137801CB0051F5B9 /* HiLowSignalProcessorInfoOverlayController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1DB3D137801CB0051F5B9 /* HiLowSignalProcessorInfoOverlayController.mm */; };
 		BDB1DB61137806AF0051F5B9 /* HiLowSignalProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1DB60137806AF0051F5B9 /* HiLowSignalProcessor.mm */; };
 		BDB1DC34137895850051F5B9 /* 159-voicemail.opacity in Resources */ = {isa = PBXBuildFile; fileRef = BDB1DC33137895830051F5B9 /* 159-voicemail.opacity */; };
 		BDB1DC40137897350051F5B9 /* 159-voicemail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BDB1DC3F137897350051F5B9 /* 159-voicemail@2x.png */; };
@@ -199,6 +197,9 @@
 		BDDD47231341DC8E001A574B /* db_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = BDDD46F71341DC8E001A574B /* db_logo.png */; };
 		BDDD47241341DC8E001A574B /* db_logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BDDD46F81341DC8E001A574B /* db_logo@2x.png */; };
 		BDDD473D1341DCB0001A574B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDDD473C1341DCB0001A574B /* Security.framework */; };
+		BDEF5A0313865F590074E93A /* AboveLevelCounterTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEF5A0213865F590074E93A /* AboveLevelCounterTests.mm */; };
+		BDEF5A0D138660950074E93A /* AboveLevelCounter.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEF5A0C138660950074E93A /* AboveLevelCounter.mm */; };
+		BDEF5A42138667030074E93A /* AboveLevelCounter.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEF5A0C138660950074E93A /* AboveLevelCounter.mm */; };
 		BDF9D9C91326E9A5004DC652 /* IASKAppSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDF9D9A31326E9A5004DC652 /* IASKAppSettingsViewController.m */; };
 		BDF9D9CA1326E9A5004DC652 /* IASKSpecifierValuesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDF9D9A51326E9A5004DC652 /* IASKSpecifierValuesViewController.m */; };
 		BDF9D9CB1326E9A5004DC652 /* IASKAppSettingsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDF9D9A71326E9A5004DC652 /* IASKAppSettingsWebViewController.m */; };
@@ -328,8 +329,8 @@
 		BD5EAF301345CABC00B01DC7 /* RecordingInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RecordingInfo.mm; sourceTree = "<group>"; };
 		BD5EAF3D1345CADF00B01DC7 /* RecordingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordingsViewController.h; sourceTree = "<group>"; };
 		BD5EAF3E1345CADF00B01DC7 /* RecordingsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RecordingsViewController.mm; sourceTree = "<group>"; };
-		BD5EAF3F1345CADF00B01DC7 /* RpmViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RpmViewController.h; sourceTree = "<group>"; };
-		BD5EAF401345CADF00B01DC7 /* RpmViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RpmViewController.mm; sourceTree = "<group>"; };
+		BD5EAF3F1345CADF00B01DC7 /* DetectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetectionsViewController.h; sourceTree = "<group>"; };
+		BD5EAF401345CADF00B01DC7 /* DetectionsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DetectionsViewController.mm; sourceTree = "<group>"; };
 		BD5EAF411345CADF00B01DC7 /* SampleRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleRecorder.h; sourceTree = "<group>"; };
 		BD5EAF421345CADF00B01DC7 /* SampleRecorder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SampleRecorder.mm; sourceTree = "<group>"; };
 		BD5EAF431345CADF00B01DC7 /* SampleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleView.h; sourceTree = "<group>"; };
@@ -377,20 +378,16 @@
 		BD7FDAB41316C4B0001D1FBF /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BD7FDAB61316C4B0001D1FBF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		BD86CA071326FB90001B7D82 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		BD86CC32132778D0001B7D82 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		BD86CC32132778D0001B7D82 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BD937541134B51D70015CC8D /* Dropbox.keys */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Dropbox.keys; sourceTree = "<group>"; };
 		BD937577134B53000015CC8D /* IASKAppSettingsWebViewController+Customizations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IASKAppSettingsWebViewController+Customizations.h"; sourceTree = "<group>"; };
 		BD937578134B53000015CC8D /* IASKAppSettingsWebViewController+Customizations.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "IASKAppSettingsWebViewController+Customizations.mm"; sourceTree = "<group>"; };
 		BD9D943A134919920054C7E8 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = English; path = English.lproj/copyrights.html; sourceTree = "<group>"; };
 		BDB1D7D813773C000051F5B9 /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libCorePlot-CocoaTouch.a"; path = "CorePlot/libCorePlot-CocoaTouch.a"; sourceTree = "<group>"; };
 		BDB1D9501377D12E0051F5B9 /* LevelDetectorInfoOverlay.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LevelDetectorInfoOverlay.xib; sourceTree = "<group>"; };
-		BDB1D9651377D69D0051F5B9 /* LevelDetectorInfoOverlayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelDetectorInfoOverlayController.h; sourceTree = "<group>"; };
-		BDB1D9661377D69D0051F5B9 /* LevelDetectorInfoOverlayController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LevelDetectorInfoOverlayController.mm; sourceTree = "<group>"; };
 		BDB1D9CB1377E6EA0051F5B9 /* AFSK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFSK.h; sourceTree = "<group>"; };
 		BDB1D9CC1377E6EA0051F5B9 /* AFSK.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AFSK.mm; sourceTree = "<group>"; };
 		BDB1D9EB1377E92E0051F5B9 /* SignalProcessorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignalProcessorProtocol.h; sourceTree = "<group>"; };
-		BDB1DB3C137801CB0051F5B9 /* HiLowSignalProcessorInfoOverlayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HiLowSignalProcessorInfoOverlayController.h; sourceTree = "<group>"; };
-		BDB1DB3D137801CB0051F5B9 /* HiLowSignalProcessorInfoOverlayController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HiLowSignalProcessorInfoOverlayController.mm; sourceTree = "<group>"; };
 		BDB1DB5F137806AF0051F5B9 /* HiLowSignalProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HiLowSignalProcessor.h; sourceTree = "<group>"; };
 		BDB1DB60137806AF0051F5B9 /* HiLowSignalProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HiLowSignalProcessor.mm; sourceTree = "<group>"; };
 		BDB1DC33137895830051F5B9 /* 159-voicemail.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = "159-voicemail.opacity"; path = "Images/159-voicemail.opacity"; sourceTree = "<group>"; };
@@ -506,6 +503,9 @@
 		BDDD46F71341DC8E001A574B /* db_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = db_logo.png; sourceTree = "<group>"; };
 		BDDD46F81341DC8E001A574B /* db_logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "db_logo@2x.png"; sourceTree = "<group>"; };
 		BDDD473C1341DCB0001A574B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		BDEF5A0213865F590074E93A /* AboveLevelCounterTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AboveLevelCounterTests.mm; sourceTree = "<group>"; };
+		BDEF5A0B138660950074E93A /* AboveLevelCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboveLevelCounter.h; sourceTree = "<group>"; };
+		BDEF5A0C138660950074E93A /* AboveLevelCounter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AboveLevelCounter.mm; sourceTree = "<group>"; };
 		BDF9D9A21326E9A5004DC652 /* IASKAppSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IASKAppSettingsViewController.h; sourceTree = "<group>"; };
 		BDF9D9A31326E9A5004DC652 /* IASKAppSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IASKAppSettingsViewController.m; sourceTree = "<group>"; };
 		BDF9D9A41326E9A5004DC652 /* IASKSpecifierValuesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IASKSpecifierValuesViewController.h; sourceTree = "<group>"; };
@@ -672,6 +672,7 @@
 				BDB82FFF135991600026F11B /* BitFrameDecoderTests.mm */,
 				BD7E79E11358DB0200F38E0F /* BitStreamFrameDetectorTests.mm */,
 				BDB670EE136EF90E009FF047 /* FrequencyDetectorTests.mm */,
+				BDEF5A0213865F590074E93A /* AboveLevelCounterTests.mm */,
 				BDB833AB135C50350026F11B /* LowPassFilterTests.mm */,
 				BD14B4CA1357296E00F39A4B /* SampleCircularBufferTests.mm */,
 				BDB66FEA136E93D1009FF047 /* WaveCycleDetectorTests.mm */,
@@ -683,26 +684,15 @@
 		BD5EAF391345CAC200B01DC7 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				BD7E79761358AB9100F38E0F /* Recordings Tab */,
-				BD7E79861358AC1F00F38E0F /* Sample Tab */,
-				BD7E79871358AC5E00F38E0F /* Signal Processors */,
 				BD7E79751358AB6300F38E0F /* LED Indicator Button */,
+				BD7E79871358AC5E00F38E0F /* Signal Processors */,
+				BDEF5BDF13869AAE0074E93A /* Tabs */,
 				BD5EAF211345CABC00B01DC7 /* AppDelegate.h */,
 				BD5EAF221345CABC00B01DC7 /* AppDelegate.mm */,
 				BD5EAF251345CABC00B01DC7 /* DataCapture.h */,
 				BD5EAF261345CABC00B01DC7 /* DataCapture.mm */,
-				BDBA134B137A7E4500AD9A95 /* GuideViewController.h */,
-				BDBA134C137A7E4500AD9A95 /* GuideViewController.mm */,
 				BD937577134B53000015CC8D /* IASKAppSettingsWebViewController+Customizations.h */,
 				BD937578134B53000015CC8D /* IASKAppSettingsWebViewController+Customizations.mm */,
-				BD5EAF3F1345CADF00B01DC7 /* RpmViewController.h */,
-				BD5EAF401345CADF00B01DC7 /* RpmViewController.mm */,
-				BD14B46F1357247000F39A4B /* SampleCircularBuffer.h */,
-				BD14B4701357247000F39A4B /* SampleCircularBuffer.mm */,
-				BD5EAF451345CADF00B01DC7 /* SettingsViewController.h */,
-				BD5EAF461345CADF00B01DC7 /* SettingsViewController.mm */,
-				BD5EAF4D1345CADF00B01DC7 /* UserSettings.h */,
-				BD5EAF4E1345CADF00B01DC7 /* UserSettings.mm */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -710,11 +700,13 @@
 		BD7E79281358A94A00F38E0F /* Attic */ = {
 			isa = PBXGroup;
 			children = (
+				BD14B46F1357247000F39A4B /* SampleCircularBuffer.h */,
+				BD14B4701357247000F39A4B /* SampleCircularBuffer.mm */,
 			);
 			name = Attic;
 			sourceTree = "<group>";
 		};
-		BD7E79581358AA1C00F38E0F /* AFSK */ = {
+		BD7E79581358AA1C00F38E0F /* AFSK Processor */ = {
 			isa = PBXGroup;
 			children = (
 				BDB1D9CB1377E6EA0051F5B9 /* AFSK.h */,
@@ -724,20 +716,20 @@
 				BDB670A6136EBBCF009FF047 /* FrequencyDetector.h */,
 				BDB670A7136EBBCF009FF047 /* FrequencyDetector.mm */,
 			);
-			name = AFSK;
+			name = "AFSK Processor";
 			sourceTree = "<group>";
 		};
-		BD7E79591358AA4300F38E0F /* Level Detector */ = {
+		BD7E79591358AA4300F38E0F /* Hi Level Processor */ = {
 			isa = PBXGroup;
 			children = (
+				BDEF5A0B138660950074E93A /* AboveLevelCounter.h */,
+				BDEF5A0C138660950074E93A /* AboveLevelCounter.mm */,
 				BD5EAF471345CADF00B01DC7 /* LevelDetector.h */,
 				BD5EAF481345CADF00B01DC7 /* LevelDetector.mm */,
 				BD2FC1B61373F643004BEA40 /* LevelDetectorController.h */,
 				BD2FC1B71373F643004BEA40 /* LevelDetectorController.mm */,
-				BDB1D9651377D69D0051F5B9 /* LevelDetectorInfoOverlayController.h */,
-				BDB1D9661377D69D0051F5B9 /* LevelDetectorInfoOverlayController.mm */,
 			);
-			name = "Level Detector";
+			name = "Hi Level Processor";
 			sourceTree = "<group>";
 		};
 		BD7E79751358AB6300F38E0F /* LED Indicator Button */ = {
@@ -766,7 +758,7 @@
 			name = "Recordings Tab";
 			sourceTree = "<group>";
 		};
-		BD7E79861358AC1F00F38E0F /* Sample Tab */ = {
+		BD7E79861358AC1F00F38E0F /* Sample View Tab */ = {
 			isa = PBXGroup;
 			children = (
 				BD5EAF431345CADF00B01DC7 /* SampleView.h */,
@@ -778,7 +770,7 @@
 				BD5EAF511345CADF00B01DC7 /* VertexBufferManager.h */,
 				BD5EAF521345CADF00B01DC7 /* VertexBufferManager.mm */,
 			);
-			name = "Sample Tab";
+			name = "Sample View Tab";
 			sourceTree = "<group>";
 		};
 		BD7E79871358AC5E00F38E0F /* Signal Processors */ = {
@@ -792,10 +784,10 @@
 				BD2FC23B137443AC004BEA40 /* SignalProcessorController.mm */,
 				BDB66EBF136AAED7009FF047 /* WeightedAverager.h */,
 				BDB66EC0136AAED7009FF047 /* WeightedAverager.mm */,
+				BD7E79581358AA1C00F38E0F /* AFSK Processor */,
+				BDB1DB3B1378014D0051F5B9 /* Hi-Low Level Processor */,
+				BD7E79591358AA4300F38E0F /* Hi Level Processor */,
 				BD7E79881358AC9600F38E0F /* Mic Switch Detection */,
-				BD7E79591358AA4300F38E0F /* Level Detector */,
-				BDB1DB3B1378014D0051F5B9 /* Hi-Low Level Detector */,
-				BD7E79581358AA1C00F38E0F /* AFSK */,
 			);
 			name = "Signal Processors";
 			sourceTree = "<group>";
@@ -825,7 +817,7 @@
 			path = iPublicUtility;
 			sourceTree = "<group>";
 		};
-		BDB1DB3B1378014D0051F5B9 /* Hi-Low Level Detector */ = {
+		BDB1DB3B1378014D0051F5B9 /* Hi-Low Level Processor */ = {
 			isa = PBXGroup;
 			children = (
 				BD14B43D13571CD400F39A4B /* BitDetector.h */,
@@ -841,10 +833,8 @@
 				BDB1DB60137806AF0051F5B9 /* HiLowSignalProcessor.mm */,
 				BD2FC358137483C6004BEA40 /* HiLowSignalProcessorController.h */,
 				BD2FC359137483C6004BEA40 /* HiLowSignalProcessorController.mm */,
-				BDB1DB3C137801CB0051F5B9 /* HiLowSignalProcessorInfoOverlayController.h */,
-				BDB1DB3D137801CB0051F5B9 /* HiLowSignalProcessorInfoOverlayController.mm */,
 			);
-			name = "Hi-Low Level Detector";
+			name = "Hi-Low Level Processor";
 			sourceTree = "<group>";
 		};
 		BDDD46A21341DC8E001A574B /* DropboxSDK */ = {
@@ -966,6 +956,39 @@
 				BDDD46F81341DC8E001A574B /* db_logo@2x.png */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		BDEF5BDF13869AAE0074E93A /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				BD7E79861358AC1F00F38E0F /* Sample View Tab */,
+				BDEF5BE013869ADF0074E93A /* Detections View Tab */,
+				BD7E79761358AB9100F38E0F /* Recordings Tab */,
+				BDEF5BE113869B230074E93A /* Settings Tab */,
+			);
+			name = Tabs;
+			sourceTree = "<group>";
+		};
+		BDEF5BE013869ADF0074E93A /* Detections View Tab */ = {
+			isa = PBXGroup;
+			children = (
+				BD5EAF3F1345CADF00B01DC7 /* DetectionsViewController.h */,
+				BD5EAF401345CADF00B01DC7 /* DetectionsViewController.mm */,
+			);
+			name = "Detections View Tab";
+			sourceTree = "<group>";
+		};
+		BDEF5BE113869B230074E93A /* Settings Tab */ = {
+			isa = PBXGroup;
+			children = (
+				BDBA134B137A7E4500AD9A95 /* GuideViewController.h */,
+				BDBA134C137A7E4500AD9A95 /* GuideViewController.mm */,
+				BD5EAF451345CADF00B01DC7 /* SettingsViewController.h */,
+				BD5EAF461345CADF00B01DC7 /* SettingsViewController.mm */,
+				BD5EAF4D1345CADF00B01DC7 /* UserSettings.h */,
+				BD5EAF4E1345CADF00B01DC7 /* UserSettings.mm */,
+			);
+			name = "Settings Tab";
 			sourceTree = "<group>";
 		};
 		BDF9D8731326C88B004DC652 /* Images */ = {
@@ -1382,7 +1405,7 @@
 				BD5EAF371345CABC00B01DC7 /* LowPassFilter.mm in Sources */,
 				BD5EAF381345CABC00B01DC7 /* RecordingInfo.mm in Sources */,
 				BD5EAF531345CADF00B01DC7 /* RecordingsViewController.mm in Sources */,
-				BD5EAF541345CADF00B01DC7 /* RpmViewController.mm in Sources */,
+				BD5EAF541345CADF00B01DC7 /* DetectionsViewController.mm in Sources */,
 				BD5EAF551345CADF00B01DC7 /* SampleRecorder.mm in Sources */,
 				BD5EAF561345CADF00B01DC7 /* SampleView.mm in Sources */,
 				BD5EAF571345CADF00B01DC7 /* SettingsViewController.mm in Sources */,
@@ -1405,12 +1428,11 @@
 				BD2FC1B81373F643004BEA40 /* LevelDetectorController.mm in Sources */,
 				BD2FC23C137443AC004BEA40 /* SignalProcessorController.mm in Sources */,
 				BD2FC35A137483C6004BEA40 /* HiLowSignalProcessorController.mm in Sources */,
-				BDB1D9671377D69D0051F5B9 /* LevelDetectorInfoOverlayController.mm in Sources */,
 				BDB1D9CD1377E6EA0051F5B9 /* AFSK.mm in Sources */,
-				BDB1DB3E137801CB0051F5B9 /* HiLowSignalProcessorInfoOverlayController.mm in Sources */,
 				BDB1DB61137806AF0051F5B9 /* HiLowSignalProcessor.mm in Sources */,
 				BDBA134D137A7E4500AD9A95 /* GuideViewController.mm in Sources */,
 				BD2F285C1383B613000E69AE /* AUOutputBL.cpp in Sources */,
+				BDEF5A0D138660950074E93A /* AboveLevelCounter.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1434,6 +1456,8 @@
 				BDB66FEC136E940D009FF047 /* WaveCycleDetectorTests.mm in Sources */,
 				BDB670A9136EBBCF009FF047 /* FrequencyDetector.mm in Sources */,
 				BDB670EF136EF90E009FF047 /* FrequencyDetectorTests.mm in Sources */,
+				BDEF5A0313865F590074E93A /* AboveLevelCounterTests.mm in Sources */,
+				BDEF5A42138667030074E93A /* AboveLevelCounter.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
