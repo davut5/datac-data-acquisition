@@ -9,7 +9,7 @@
 
 @class AppDelegate;
 
-@interface RpmViewController : UIViewController<CPPlotDataSource> {
+@interface DetectionsViewController : UIViewController<CPPlotDataSource> {
 @private
     NSTimer* updateTimer;
     NSMutableArray* points;

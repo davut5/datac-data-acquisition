@@ -13,10 +13,10 @@ extern NSString* kSettingsDetectionsViewDurationKey;
 extern NSString* kSettingsDetectionsViewUpdateRateKey;
 
 extern NSString* kSettingsLevelDetectorLevelKey;
+extern NSString* kSettingsLevelDetectorScalingKey;
 extern NSString* kSettingsLevelDetectorUseLowPassFilterKey;
 extern NSString* kSettingsLevelDetectorLowPassFilterFileNameKey;
 extern NSString* kSettingsLevelDetectorCountsDecayDurationKey;
-extern NSString* kSettingsLevelDetectorScalingKey;
 
 extern NSString* kSettingsBitDetectorMaxLowLevelKey;
 extern NSString* kSettingsBitDetectorMinHighLevelKey;

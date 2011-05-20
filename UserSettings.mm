@@ -13,10 +13,10 @@ NSString* kSettingsDetectionsViewDurationKey = @"DETECTIONS_VIEW_DURATION";
 NSString* kSettingsDetectionsViewUpdateRateKey = @"DETECTIONS_VIEW_UPDATE_RATE";
 
 NSString* kSettingsLevelDetectorLevelKey = @"LEVEL_DETECTOR_LEVEL";
+NSString* kSettingsLevelDetectorScalingKey = @"LEVEL_DETECTOR_SCALING";
 NSString* kSettingsLevelDetectorUseLowPassFilterKey = @"LEVEL_DETECTOR_USE_LOW_PASS_FILTER";
 NSString* kSettingsLevelDetectorLowPassFilterFileNameKey = @"LEVEL_DETECTOR_LOW_PASS_FILTER_FILENAME";
 NSString* kSettingsLevelDetectorCountsDecayDurationKey = @"LEVEL_DETECTOR_COUNTS_DECAY_DURATION";
-NSString* kSettingsLevelDetectorScalingKey = @"LEVEL_DETECTOR_SCALING";
 
 NSString* kSettingsBitDetectorMaxLowLevelKey = @"BIT_DETECTOR_MAX_LOW_LEVEL";
 NSString* kSettingsBitDetectorMinHighLevelKey = @"BIT_DETECTOR_MIN_HIGH_LEVEL";
@@ -50,10 +50,10 @@ NSString* kSettingsWaveCycleDetectorNonZeroLevelKey = @"nonZeroLevel";
                                 [NSNumber numberWithFloat:4], kSettingsDetectionsViewUpdateRateKey,
 
                                 [NSNumber numberWithFloat:0.3333], kSettingsLevelDetectorLevelKey,
+                                [NSNumber numberWithFloat:(1000.0/33.0)], kSettingsLevelDetectorScalingKey,
                                 [NSNumber numberWithBool:YES], kSettingsLevelDetectorUseLowPassFilterKey,
                                 @"taps", kSettingsLevelDetectorLowPassFilterFileNameKey,
                                 [NSNumber numberWithInt:4], kSettingsLevelDetectorCountsDecayDurationKey,
-                                [NSNumber numberWithFloat:33.0], kSettingsLevelDetectorScalingKey,
 
                                 [NSNumber numberWithFloat:0.33], kSettingsBitDetectorMaxLowLevelKey,
                                 [NSNumber numberWithFloat:0.66], kSettingsBitDetectorMinHighLevelKey,

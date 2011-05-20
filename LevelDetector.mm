@@ -3,20 +3,19 @@
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
+#import <iterator>
+#import <sstream>
+
+#import "AboveLevelCounter.h"
 #import "LowPassFilter.h"
 #import "LevelDetector.h"
 #import "LevelDetectorController.h"
-#import "LevelDetectorInfoOverlayController.h"
 #import "SignalProcessorController.h"
 #import "UserSettings.h"
 
-NSString* kLevelDetectorCounterUpdateNotification = @"LevelDetectorCounterUpdateNotification";
-NSString* kLevelDetectorCounterKey = @"counter";
-NSString* kLevelDetectorRPMKey = @"rpm";
-
 @implementation LevelDetector
 
-@synthesize lowPassFilter, counterDecayFilter, level, rpmScaleFactor;
+@synthesize sampleProcessor, counterDecayFilter, level, detectionScale, counterScale, lastDetection;
 
 + (id)create
 {
@@ -26,11 +25,12 @@ NSString* kLevelDetectorRPMKey = @"rpm";
 - (id)init
 {
     if ((self = [super init])) {
+        self.sampleProcessor = [AboveLevelCounter createWithLevel:0.0];
         controller = nil;
-        infoOverlayController = nil;
-	lowPassFilter = nil;
+        infoOverlayViewController = nil;
         counterDecayFilter = nil;
-        countScale = -1.0;
+        counterScale = -1.0;
+        counterHistory.clear();
 	[self updateFromSettings];
     }
     return self;
@@ -38,35 +38,67 @@ NSString* kLevelDetectorRPMKey = @"rpm";
 
 - (void)dealloc
 {
-    self.lowPassFilter = nil;
+    self.sampleProcessor = nil;
     self.counterDecayFilter = nil;
     [controller release];
-    [infoOverlayController release];
+    [infoOverlayViewController release];
+    counterHistory.clear();
     [super dealloc];
-}
-
-- (void)setRpmScaleFactor:(Float32)value
-{
-    rpmScaleFactor = 1000.0 / value;
 }
 
 #pragma mark -
 #pragma mark SignalProcessorProtocol
 
-- (void)start
+- (void)updateFromSettings
 {
-}
+    NSUserDefaults* settings = [NSUserDefaults standardUserDefaults];
+    
+    counterScale = [settings floatForKey:kSettingsDetectionsViewUpdateRateKey];
+    int decaySteps = [settings floatForKey:kSettingsLevelDetectorCountsDecayDurationKey] * counterScale;
+    
+    if (counterDecayFilter == nil || decaySteps != [counterDecayFilter size]) {
+        NSNumber* weight = [NSNumber numberWithFloat:1.0/decaySteps];
+        NSMutableArray* weights = [NSMutableArray arrayWithCapacity:decaySteps];
+        while ([weights count] < decaySteps) {
+            [weights addObject:weight];
+        }
+        
+        self.counterDecayFilter = [LowPassFilter createFromArray:weights];
+        [self reset];
+    }
 
-- (void)stop
-{
+    sampleProcessor.level = [settings floatForKey:kSettingsLevelDetectorLevelKey];
+
+    if ([settings boolForKey:kSettingsLevelDetectorUseLowPassFilterKey] == YES) {
+        NSString* fileName = [settings stringForKey:kSettingsLevelDetectorLowPassFilterFileNameKey];
+        LowPassFilter* lowPassFilter = sampleProcessor.lowPassFilter;
+        if (lowPassFilter == nil || [lowPassFilter.fileName isEqualToString:fileName] != YES) {
+            sampleProcessor.lowPassFilter = [LowPassFilter createFromFile:fileName];
+        }
+    }
+    else {
+        sampleProcessor.lowPassFilter = nil;
+    }
+
+    detectionScale = [settings floatForKey:kSettingsLevelDetectorScalingKey] * counterScale;
+
+    counterHistorySize = counterScale * 10;
+    while (counterHistory.size() < counterHistorySize) {
+        counterHistory.push_back(0);
+    }
+    while (counterHistory.size() > counterHistorySize)
+        counterHistory.pop_back();
 }
 
 - (void)reset
 {
-    counter = 0;
-    currentEdge = kEdgeKindUnknown;
-    [lowPassFilter reset];
+    [sampleProcessor reset];
     [counterDecayFilter reset];
+    lastDetection = 0.0;
+    counterHistory.clear();
+    while (counterHistory.size() < counterHistorySize) {
+        counterHistory.push_back(0);
+    }
 }
 
 - (SignalProcessorController*)controller
@@ -74,92 +106,35 @@ NSString* kLevelDetectorRPMKey = @"rpm";
     if (controller == nil) {
         controller = [[LevelDetectorController createWithLevelDetector:self] retain];
     }
-    
+
     return controller;
 }
 
-- (UIViewController*)infoOverlayController
+- (Float32)updatedDetectionValue
 {
-    if (infoOverlayController == nil) {
-        infoOverlayController = [[LevelDetectorInfoOverlayController alloc] initWithNibName:@"LevelDetectorInfoOverlay"
-                                                                                     bundle:nil];
-    }
-    
-    return infoOverlayController;
+    counterHistory.push_front([sampleProcessor counterAndReset]);
+    Float32 filteredCounter = [counterDecayFilter filter:counterHistory.front()];
+    lastDetection = filteredCounter * detectionScale;
+    if (counterHistory.size() > counterHistorySize) counterHistory.pop_back();
+    return lastDetection;
 }
 
-- (void)updateFromSettings
+- (void)setLevel:(Float32)value
 {
-    NSUserDefaults* settings = [NSUserDefaults standardUserDefaults];
-    
-    Float32 newCountScale = 1.0 / [settings floatForKey:kSettingsDetectionsViewUpdateRateKey];
-    int decaySeconds = [settings integerForKey:kSettingsLevelDetectorCountsDecayDurationKey] * newCountScale; 
-    
-    if (counterDecayFilter == nil || decaySeconds != [counterDecayFilter size]) {
-        NSNumber* weight = [NSNumber numberWithFloat:1.0/decaySeconds];
-        NSMutableArray* weights = [NSMutableArray arrayWithCapacity:decaySeconds];
-        while ([weights count] < decaySeconds) {
-            [weights addObject:weight];
-        }
-        
-        self.counterDecayFilter = [LowPassFilter createFromArray:weights];
-        [self reset];
-    }
-    
-    if ([settings boolForKey:kSettingsLevelDetectorUseLowPassFilterKey] == YES) {
-        NSString* fileName = [settings stringForKey:kSettingsLevelDetectorLowPassFilterFileNameKey];
-        if (lowPassFilter == nil || [lowPassFilter.fileName isEqualToString:fileName] != YES) {
-            self.lowPassFilter = [LowPassFilter createFromFile:fileName];
-        }
-    }
-    else {
-        self.lowPassFilter = nil;
-    }
-    
-    self.level = [settings floatForKey:kSettingsLevelDetectorLevelKey];
-    self.rpmScaleFactor = [settings floatForKey:kSettingsLevelDetectorScalingKey];
-    
-    if (countScale != newCountScale) {
-        countScale = newCountScale;
-        NSLog(@"countScale: %f", countScale);
-    }
+    sampleProcessor.level = value;
 }
 
-- (NSObject<SampleProcessorProtocol>*)sampleProcessor
+- (Float32)level
 {
-    return self;
+    return sampleProcessor.level;
 }
 
-- (Float32)lastDetectionValue
+- (NSString*)counterHistoryAsString
 {
-    Float32 filteredCounter = [counterDecayFilter filter:(counter * countScale)];
-    counter = 0;
-    return filteredCounter * rpmScaleFactor / 1000.0;
-}
-
-#pragma mark -
-#pragma mark SampleProcessorProtocol
-
-- (void)addSamples:(Float32*)ptr count:(UInt32)count
-{
-    while (count-- > 0) {
-        Float32 sample = *ptr++;
-        if (lowPassFilter != nil) {
-            sample = [lowPassFilter filter:sample];
-        }
-        
-        if (sample >= level) {
-            if (currentEdge != kEdgeKindRising) {
-                currentEdge = kEdgeKindRising;
-                ++counter;
-            }
-        }
-        else {
-            if (currentEdge != kEdgeKindFalling) {
-                currentEdge = kEdgeKindFalling;
-            }
-        }
-    }
+    std::ostringstream os;
+    std::copy(counterHistory.begin(), counterHistory.end(), std::ostream_iterator<UInt32>(os, ", "));
+    std::string s(os.str());
+    return [NSString stringWithCString:s.c_str() encoding:[NSString defaultCStringEncoding]];
 }
 
 @end

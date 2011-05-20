@@ -7,6 +7,7 @@
 #import "BitDetector.h"
 #import "BitFrameDecoder.h"
 #import "BitStreamFrameDetector.h"
+#import "DetectionsViewController.h"
 #import "DropboxSDK.h"
 #import "Dropbox.keys"
 #import "DropboxUploader.h"
@@ -15,7 +16,6 @@
 #import "IndicatorButton.h"
 #import "RecordingInfo.h"
 #import "RecordingsViewController.h"
-#import "RpmViewController.h"
 #import "SampleRecorder.h"
 #import "LevelDetector.h"
 #import "LevelDetectorController.h"
@@ -27,8 +27,8 @@
 
 @implementation AppDelegate
 
-@synthesize window, tabBarController, signalViewController, appSettingsViewController, recordingsViewController;
-@synthesize rpmViewController, dropboxSession;
+@synthesize window, tabBarController, samplesViewController, appSettingsViewController, recordingsViewController;
+@synthesize detectionsViewController, dropboxSession;
 @synthesize dataCapture, signalDetector, switchDetector, vertexBufferManager;
 
 #pragma mark -
@@ -58,13 +58,14 @@
     dataCapture.switchDetector = switchDetector;
     dataCapture.vertexBufferManager = vertexBufferManager;
     
-    self.rpmViewController.detector = self.signalDetector;
+    self.detectionsViewController.detector = self.signalDetector;
 
     application.idleTimerDisabled = YES;
 
     [self.window addSubview:tabBarController.view];
     [self.window makeKeyAndVisible];
 
+    NSLog(@"AppDelegate.application:didFinishLaunchingWithOptions: - END");
     return YES;
 }
 
@@ -75,7 +76,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     NSLog(@"applicationDidBecomeActive");
-    [self start];
+    // [self start];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -85,14 +86,17 @@
 
 - (void)start
 {
-    [dataCapture start];
-    [signalDetector start];
+    NSLog(@"AppDelegate.start");
+    if (dataCapture.audioUnitRunning == NO) {
+        [dataCapture start];
+        [signalDetector reset];
+    }
 }
 
 - (void)stop
 {
+    NSLog(@"AppDelegate.stop");
     [self stopRecording];
-    [signalDetector stop];
     [dataCapture stop];
     [recordingsViewController saveContext];
 }
@@ -135,16 +139,13 @@
     UIViewController* current = [sender selectedViewController];
     if (current == viewController) {
         if (sender.selectedIndex == 0) {
-            [signalViewController toggleInfoOverlay];
+            [samplesViewController toggleInfoOverlay];
         }
     }
     else {
 	if (sender.selectedIndex == 3) {
 	    [settingsController dismiss:self];
 	}
-        else if (viewController == rpmViewController) {
-            [rpmViewController.view sizeToFit];
-        }
     }
 	
     return YES;
@@ -161,7 +162,7 @@
 
 - (void)stopRecording
 {
-    signalViewController.recordIndicator.on = NO;
+    samplesViewController.recordIndicator.on = NO;
     dataCapture.sampleRecorder = nil;
     [recordingsViewController saveContext];
 }
@@ -183,10 +184,10 @@
 
 - (void)updateFromSettings
 {
+    [samplesViewController updateFromSettings];
+    [detectionsViewController updateFromSettings];
     [recordingsViewController updateFromSettings];
-    [rpmViewController updateFromSettings];
     [signalDetector updateFromSettings];
-    [signalViewController updateFromSettings];
     [switchDetector updateFromSettings];
 }
 

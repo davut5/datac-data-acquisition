@@ -31,7 +31,6 @@
 
 @synthesize sampleView, powerIndicator, connectedIndicator, recordIndicator, infoOverlay;
 @synthesize xMinLabel, xMaxLabel, yPos05Label, yZeroLabel, yNeg05Label, signalProcessorController;
-@synthesize infoOverlayController;
 
 //
 // Maximum age of audio samples we can show at one go. Since we capture at 44.1kHz, that means 44.1k
@@ -52,7 +51,6 @@ static const CGFloat kXMaxMax = 1.0;
 
 - (void)dealloc {
     self.signalProcessorController = nil;
-    self.infoOverlayController = nil;
     [super dealloc];
 }
 
@@ -136,7 +134,6 @@ static const CGFloat kXMaxMax = 1.0;
     NSLog(@"SampleViewController.viewDidUnload");
     [self stop];
     self.signalProcessorController = nil;
-    self.infoOverlayController = nil;
     [super viewDidUnload];
 }
 
@@ -145,8 +142,10 @@ static const CGFloat kXMaxMax = 1.0;
     NSLog(@"SampleViewController.viewWillAppear");
     [self adaptViewToOrientation:0];
     [self start];
+    [appDelegate start];
     self.signalProcessorController = [appDelegate.signalDetector controller];
-    self.signalProcessorController.sampleView = sampleView;
+    signalProcessorController.sampleView = sampleView;
+    signalProcessorController.infoOverlay = infoOverlay;
     [super viewWillAppear:animated];
 }
 
@@ -403,51 +402,47 @@ enum GestureType {
 
 - (void)hideInfoOverlayDone:(NSString*)animationId finished:(NSNumber*)finished context:(void*)context
 {
-    infoOverlayController = nil;
-    [infoOverlayController.view removeFromSuperview];
     infoOverlay.hidden = YES;
 }
 
 - (void)toggleInfoOverlay
 {
-    if (infoOverlay.hidden) {
-        infoOverlayController = [appDelegate.signalDetector infoOverlayController];
-        if (infoOverlayController) {
-            
-            //
-            // Add the view managed by the infoOverlayController to our infoOverlay view and make them visible.
-            //
-            [infoOverlay addSubview:infoOverlayController.view];
-            infoOverlay.hidden = NO;
+    if ([signalProcessorController showInfoOverlay] == NO) return;
 
-            //
-            // Reveal the infoOverlay view by popping it up from the tab bar at the bottom of the screen. End when
-            // it is centered over the sampleView display.
-            //
-            CGPoint toPoint = sampleView.center;
-            CGPoint fromPoint = toPoint;
-            fromPoint.y = infoOverlay.bounds.size.height / 2 + self.view.window.bounds.size.height;
-            infoOverlay.center = fromPoint;
-            [UIView beginAnimations:@"" context:nil];
-            infoOverlay.center = toPoint;
-            [UIView commitAnimations];
-        }
+    if (infoOverlay.hidden) {
+        infoOverlay.hidden = NO;
+
+        //
+        // Add the view managed by the infoOverlayController to our infoOverlay view and make them visible.
+        //
+        [signalProcessorController infoOverlayWillAppear];
+
+        //
+        // Reveal the infoOverlay view by popping it up from the tab bar at the bottom of the screen. End when
+        // it is centered over the sampleView display.
+        //
+        CGPoint toPoint = sampleView.center;
+        CGPoint fromPoint = toPoint;
+        fromPoint.y = infoOverlay.bounds.size.height / 2 + self.view.window.bounds.size.height;
+        infoOverlay.center = fromPoint;
+        [UIView beginAnimations:@"" context:nil];
+        infoOverlay.center = toPoint;
+        [UIView commitAnimations];
     }
     else {
-        if (infoOverlayController) {
 
-            //
-            // Hide the infoOverlay view by dropping it into the tab bar at the bottom of the screen. When the 
-            // animation is done, invoke hideInfoOverlayDone to remove the custom view from our infoOverlay view.
-            //
-            [UIView beginAnimations:@"" context:nil];
-            [UIView setAnimationDelegate:self];
-            [UIView setAnimationDidStopSelector:@selector(hideInfoOverlayDone:finished:context:)];
-            CGPoint toPoint = infoOverlay.center;
-            toPoint.y = infoOverlay.bounds.size.height / 2 + self.view.window.bounds.size.height;
-            infoOverlay.center = toPoint;
-            [UIView commitAnimations];
-        }
+        //
+        // Hide the infoOverlay view by dropping it into the tab bar at the bottom of the screen. When the 
+        // animation is done, invoke hideInfoOverlayDone to remove the custom view from our infoOverlay view.
+        //
+        [signalProcessorController infoOverlayWillDisappear];
+        [UIView beginAnimations:@"" context:nil];
+        [UIView setAnimationDelegate:self];
+        [UIView setAnimationDidStopSelector:@selector(hideInfoOverlayDone:finished:context:)];
+        CGPoint toPoint = infoOverlay.center;
+        toPoint.y = infoOverlay.bounds.size.height / 2 + self.view.window.bounds.size.height;
+        infoOverlay.center = toPoint;
+        [UIView commitAnimations];
     }
 }
 

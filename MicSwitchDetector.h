@@ -46,8 +46,8 @@
 
 - (id)initWithSampleRate:(Float32)sampleRate;
 
-- (void)reset;
-
 - (void)updateFromSettings;
+
+- (void)reset;
 
 @end
