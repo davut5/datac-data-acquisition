@@ -200,6 +200,10 @@
 		BDEF5A0313865F590074E93A /* AboveLevelCounterTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEF5A0213865F590074E93A /* AboveLevelCounterTests.mm */; };
 		BDEF5A0D138660950074E93A /* AboveLevelCounter.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEF5A0C138660950074E93A /* AboveLevelCounter.mm */; };
 		BDEF5A42138667030074E93A /* AboveLevelCounter.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEF5A0C138660950074E93A /* AboveLevelCounter.mm */; };
+		BDEF5E711387259F0074E93A /* iphone.css in Resources */ = {isa = PBXBuildFile; fileRef = BDEF5E6F1387259E0074E93A /* iphone.css */; };
+		BDEF5EC41387329D0074E93A /* stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = BDEF5EC21387329D0074E93A /* stripes.png */; };
+		BDEF5ED8138732F00074E93A /* ipad.css in Resources */ = {isa = PBXBuildFile; fileRef = BDEF5ED6138732F00074E93A /* ipad.css */; };
+		BDEF5F5013873A5D0074E93A /* ios.css in Resources */ = {isa = PBXBuildFile; fileRef = BDEF5F4E13873A5C0074E93A /* ios.css */; };
 		BDF9D9C91326E9A5004DC652 /* IASKAppSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDF9D9A31326E9A5004DC652 /* IASKAppSettingsViewController.m */; };
 		BDF9D9CA1326E9A5004DC652 /* IASKSpecifierValuesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDF9D9A51326E9A5004DC652 /* IASKSpecifierValuesViewController.m */; };
 		BDF9D9CB1326E9A5004DC652 /* IASKAppSettingsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDF9D9A71326E9A5004DC652 /* IASKAppSettingsWebViewController.m */; };
@@ -506,6 +510,10 @@
 		BDEF5A0213865F590074E93A /* AboveLevelCounterTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AboveLevelCounterTests.mm; sourceTree = "<group>"; };
 		BDEF5A0B138660950074E93A /* AboveLevelCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboveLevelCounter.h; sourceTree = "<group>"; };
 		BDEF5A0C138660950074E93A /* AboveLevelCounter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AboveLevelCounter.mm; sourceTree = "<group>"; };
+		BDEF5E701387259E0074E93A /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = English; path = English.lproj/iphone.css; sourceTree = "<group>"; };
+		BDEF5EC31387329D0074E93A /* English */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = English; path = English.lproj/stripes.png; sourceTree = "<group>"; };
+		BDEF5ED7138732F00074E93A /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = English; path = English.lproj/ipad.css; sourceTree = "<group>"; };
+		BDEF5F4F13873A5C0074E93A /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = English; path = English.lproj/ios.css; sourceTree = "<group>"; };
 		BDF9D9A21326E9A5004DC652 /* IASKAppSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IASKAppSettingsViewController.h; sourceTree = "<group>"; };
 		BDF9D9A31326E9A5004DC652 /* IASKAppSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IASKAppSettingsViewController.m; sourceTree = "<group>"; };
 		BDF9D9A41326E9A5004DC652 /* IASKSpecifierValuesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IASKSpecifierValuesViewController.h; sourceTree = "<group>"; };
@@ -622,10 +630,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BDEF5F9313873DBB0074E93A /* HTML */,
 				BD937541134B51D70015CC8D /* Dropbox.keys */,
-				BDFB98051348FBBB00551716 /* about.html */,
-				BD9D9439134919920054C7E8 /* copyrights.html */,
-				BDBA1328137A768B00AD9A95 /* guide.html */,
 				BD5EAFA91345DE4400B01DC7 /* RecordingInfo.xcdatamodel */,
 				BDB671C2137034C2009FF047 /* AFSKInfoOverlay.xib */,
 				BDBA1347137A7C9400AD9A95 /* Guide.xib */,
@@ -991,6 +997,20 @@
 			name = "Settings Tab";
 			sourceTree = "<group>";
 		};
+		BDEF5F9313873DBB0074E93A /* HTML */ = {
+			isa = PBXGroup;
+			children = (
+				BDFB98051348FBBB00551716 /* about.html */,
+				BD9D9439134919920054C7E8 /* copyrights.html */,
+				BDBA1328137A768B00AD9A95 /* guide.html */,
+				BDEF5F4E13873A5C0074E93A /* ios.css */,
+				BDEF5ED6138732F00074E93A /* ipad.css */,
+				BDEF5EC21387329D0074E93A /* stripes.png */,
+				BDEF5E6F1387259E0074E93A /* iphone.css */,
+			);
+			name = HTML;
+			sourceTree = "<group>";
+		};
 		BDF9D8731326C88B004DC652 /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -1312,6 +1332,10 @@
 				BD14E0101381E92C0007F4B9 /* rpm.opacity in Resources */,
 				BD14E0111381E92C0007F4B9 /* settings.opacity in Resources */,
 				BD14E0121381E92C0007F4B9 /* SplashScreen iPad.opacity in Resources */,
+				BDEF5E711387259F0074E93A /* iphone.css in Resources */,
+				BDEF5EC41387329D0074E93A /* stripes.png in Resources */,
+				BDEF5ED8138732F00074E93A /* ipad.css in Resources */,
+				BDEF5F5013873A5D0074E93A /* ios.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1494,6 +1518,38 @@
 				BDBA1329137A768B00AD9A95 /* English */,
 			);
 			name = guide.html;
+			sourceTree = "<group>";
+		};
+		BDEF5E6F1387259E0074E93A /* iphone.css */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BDEF5E701387259E0074E93A /* English */,
+			);
+			name = iphone.css;
+			sourceTree = "<group>";
+		};
+		BDEF5EC21387329D0074E93A /* stripes.png */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BDEF5EC31387329D0074E93A /* English */,
+			);
+			name = stripes.png;
+			sourceTree = "<group>";
+		};
+		BDEF5ED6138732F00074E93A /* ipad.css */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BDEF5ED7138732F00074E93A /* English */,
+			);
+			name = ipad.css;
+			sourceTree = "<group>";
+		};
+		BDEF5F4E13873A5C0074E93A /* ios.css */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BDEF5F4F13873A5C0074E93A /* English */,
+			);
+			name = ios.css;
 			sourceTree = "<group>";
 		};
 		BDFB98051348FBBB00551716 /* about.html */ = {
