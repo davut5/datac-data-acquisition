@@ -87,23 +87,24 @@
 #pragma mark -
 #pragma mark Dropbox Management and Settings Display
 
-- (void)updateDropboxCell:(UITableViewCell*)cell
+- (void)updateDropboxCell
 {
-    cell.textLabel.text = NSLocalizedString(@"Dropbox", @"Name of the Dropbox button shown in the Settings Display");
     if ([dropboxSession isLinked]) {
-	cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        dropboxCell.textLabel.text = NSLocalizedString(@"Account linked", @"Name of the Dropbox button shown in the Settings Display");
+	dropboxCell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
     else {
-	cell.accessoryType = UITableViewCellAccessoryNone;
+        dropboxCell.textLabel.text = NSLocalizedString(@"Link account", @"Name of the Dropbox button shown in the Settings Display");
+	dropboxCell.accessoryType = UITableViewCellAccessoryNone;
     }
-    [cell setNeedsDisplay];
+    [dropboxCell setNeedsDisplay];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == [actionSheet destructiveButtonIndex]) {
         [dropboxSession unlink];
-	[self updateDropboxCell:dropboxCell];
+	[self updateDropboxCell];
     }
 }
 
@@ -135,7 +136,7 @@
 
 - (void)loginControllerDidLogin:(DBLoginController *)controller
 {
-    [self updateDropboxCell:dropboxCell];
+    [self updateDropboxCell];
 }
 
 - (void)loginControllerDidCancel:(DBLoginController *)controller
@@ -153,7 +154,10 @@
 	cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault 
                                        reuseIdentifier:specifier.key] autorelease];
     }
-    [self updateDropboxCell:cell];
+
+    self.dropboxCell = cell;
+    [self updateDropboxCell];
+
     return cell;
 }
 
