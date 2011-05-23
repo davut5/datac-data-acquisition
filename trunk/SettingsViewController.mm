@@ -90,7 +90,8 @@
 - (void)updateDropboxCell
 {
     if ([dropboxSession isLinked]) {
-        dropboxCell.textLabel.text = NSLocalizedString(@"Account linked", @"Name of the Dropbox button shown in the Settings Display");
+        dropboxCell.textLabel.text = NSLocalizedString(@"Account linked",
+                                                       @"Name of the Dropbox button shown in the Settings Display");
 	dropboxCell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
     else {

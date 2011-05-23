@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>FooterText</key>
+			<string>INPUT_VIEW_FOOTER</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>AutocorrectionType</key>
+			<string>No</string>
+			<key>DefaultValue</key>
+			<real>20</real>
+			<key>Key</key>
+			<string>INPUT_VIEW_UPDATE_RATE</string>
+			<key>KeyboardType</key>
+			<string>NumbersAndPunctuation</string>
+			<key>Title</key>
+			<string>INPUT_VIEW_UPDATE_RATE</string>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+		</dict>
+		<dict>
+			<key>AutocorrectionType</key>
+			<string>No</string>
+			<key>DefaultValue</key>
+			<real>0.0</real>
+			<key>Key</key>
+			<string>INPUT_VIEW_XMIN</string>
+			<key>KeyboardType</key>
+			<string>NumbersAndPunctuation</string>
+			<key>Title</key>
+			<string>INPUT_VIEW_XMIN</string>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+		</dict>
+		<dict>
+			<key>AutocorrectionType</key>
+			<string>No</string>
+			<key>DefaultValue</key>
+			<real>1</real>
+			<key>Key</key>
+			<string>INPUT_VIEW_XMAX</string>
+			<key>KeyboardType</key>
+			<string>NumbersAndPunctuation</string>
+			<key>Title</key>
+			<string>INPUT_VIEW_XMAX</string>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+		</dict>
+	</array>
+	<key>StringsTable</key>
+	<string>Root</string>
+	<key>Title</key>
+	<string>Settings</string>
+</dict>
+</plist>

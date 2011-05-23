@@ -1000,12 +1000,12 @@
 		BDEF5F9313873DBB0074E93A /* HTML */ = {
 			isa = PBXGroup;
 			children = (
+				BDEF5EC21387329D0074E93A /* stripes.png */,
 				BDFB98051348FBBB00551716 /* about.html */,
 				BD9D9439134919920054C7E8 /* copyrights.html */,
 				BDBA1328137A768B00AD9A95 /* guide.html */,
 				BDEF5F4E13873A5C0074E93A /* ios.css */,
 				BDEF5ED6138732F00074E93A /* ipad.css */,
-				BDEF5EC21387329D0074E93A /* stripes.png */,
 				BDEF5E6F1387259E0074E93A /* iphone.css */,
 			);
 			name = HTML;
