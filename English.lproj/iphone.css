@@ -2,9 +2,5 @@
 
 body {
     background: rgb(197,204,211) url(stripes.png);
-    font-family: Helvetica;
-    margin: 0 0 0 10px;
-    padding: 0;
-    -webkit-user-select: none;
-    -webkit-text-size-adjust: none;
+    margin: 10px 10px; /* top/bottom right/left */
 }

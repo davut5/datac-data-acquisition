@@ -81,7 +81,7 @@
     return vertexBuffer;
 }
 
-- (void)drawVerticesStartingAt:(GLfloat)offset forSpan:(GLfloat)totalSpan
+- (void)drawVerticesStartingAt:(GLfloat)xMin forSpan:(GLfloat)xSpan
 {
     //
     // Keep the AudioUnit thread from manipulating the buffer array until we have a 
@@ -92,6 +92,9 @@
     NSArray* bufs = [NSArray arrayWithArray:vertexBuffers];
     UInt32 pos = first;
     [lock unlock];
+    
+    GLfloat xMax = xMin + xSpan;
+    xMin = 0.0f;
 
     //
     // Draw buffers, newest to oldest until we've filled the screen.
@@ -104,8 +107,8 @@
 	if (vertexBuffer.count > 0) {
 
 	    GLfloat span = [vertexBuffer drawVerticesJoinedWith:previousBuffer];
-	    totalSpan -= span;
-	    if (totalSpan <= 0.0)
+	    xMin += span;
+	    if (xMin >= xMax)
 		break;
 
 	    //

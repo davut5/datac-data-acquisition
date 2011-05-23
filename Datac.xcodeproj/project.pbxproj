@@ -764,7 +764,7 @@
 			name = "Recordings Tab";
 			sourceTree = "<group>";
 		};
-		BD7E79861358AC1F00F38E0F /* Sample View Tab */ = {
+		BD7E79861358AC1F00F38E0F /* Input Tab */ = {
 			isa = PBXGroup;
 			children = (
 				BD5EAF431345CADF00B01DC7 /* SampleView.h */,
@@ -776,7 +776,7 @@
 				BD5EAF511345CADF00B01DC7 /* VertexBufferManager.h */,
 				BD5EAF521345CADF00B01DC7 /* VertexBufferManager.mm */,
 			);
-			name = "Sample View Tab";
+			name = "Input Tab";
 			sourceTree = "<group>";
 		};
 		BD7E79871358AC5E00F38E0F /* Signal Processors */ = {
@@ -967,7 +967,7 @@
 		BDEF5BDF13869AAE0074E93A /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
-				BD7E79861358AC1F00F38E0F /* Sample View Tab */,
+				BD7E79861358AC1F00F38E0F /* Input Tab */,
 				BDEF5BE013869ADF0074E93A /* Detections View Tab */,
 				BD7E79761358AB9100F38E0F /* Recordings Tab */,
 				BDEF5BE113869B230074E93A /* Settings Tab */,
