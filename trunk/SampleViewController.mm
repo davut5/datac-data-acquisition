@@ -30,14 +30,19 @@
 @implementation SampleViewController
 
 @synthesize sampleView, powerIndicator, connectedIndicator, recordIndicator, infoOverlay;
-@synthesize xMinLabel, xMaxLabel, yPos05Label, yZeroLabel, yNeg05Label, signalProcessorController;
+@synthesize xMinLabel, xMaxLabel, yMaxLabel, yPos05Label, yZeroLabel, yNeg05Label, signalProcessorController;
+@synthesize xMin, yMin, scale;
 
 //
 // Maximum age of audio samples we can show at one go. Since we capture at 44.1kHz, that means 44.1k
 // OpenGL vertices or 2 88.2k floats.
 //
-static const CGFloat kXMaxMin = 0.0001;
-static const CGFloat kXMaxMax = 1.0;
+static const CGFloat kScaleMin = 0.0001;
+static const CGFloat kScaleMax = 1.0;
+static const CGFloat kXMin =  0.0;
+static const CGFloat kXMax =  1.0;
+static const CGFloat kYMin = -1.0;
+static const CGFloat kYMax =  1.0;
 
 - (id)initWithCoder:(NSCoder*)decoder
 {
@@ -101,7 +106,7 @@ static const CGFloat kXMaxMax = 1.0;
     [sampleView addGestureRecognizer:stgr];
 
     //
-    // Install a 1 finger pan guesture to change the pulse detector levels
+    // Install a 1 finger pan guesture to pan the display levels
     //
     UIPanGestureRecognizer* pgr = [[[UIPanGestureRecognizer alloc] 
                                     initWithTarget:self action:@selector(handlePanGesture:)]
@@ -124,9 +129,80 @@ static const CGFloat kXMaxMax = 1.0;
     stgr = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissInfoOverlay:)] autorelease];
     [infoOverlay addGestureRecognizer:stgr];
 
-    [self setXMax:[[NSUserDefaults standardUserDefaults] floatForKey:kSettingsInputViewXMaxKey]];
-    
+    scale = 1.0;
+    self.xMin = 0.0;    // Use self.xMin to update xMinLabel
+    yMin = -1.0;
+    self.scale = 1.0;   // Use self.scale to update xMaxLabel and set xSpan, ySpan
+
     [super viewDidLoad];
+}
+
+- (void)setScale:(CGFloat)value
+{
+    GLfloat yc = yMin + ySpan / 2.0f;
+
+    if (value < kScaleMin) value = kScaleMin;
+    if (value > kScaleMax) value = kScaleMax;
+
+    scale = value;
+    xSpan = scale * (kXMax - kXMin);
+    ySpan = scale * (kYMax - kYMin);
+
+    //
+    // Move xMin back if the new scale would make xMax too large.
+    //
+    GLfloat xMax = xMin + xSpan;
+    if (xMax > kXMax) {
+        self.xMin = kXMax - xSpan;
+        xMax = kXMax;
+    }
+
+    xMaxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%5.4gs", @"Format string for X label"), xMax];
+
+    self.yMin = yc - ySpan / 2.0f;
+}
+
+- (void)setXMin:(CGFloat)value
+{
+    if (value < kXMin) value = kXMin;
+
+    //
+    // Reduce value if it would make xMax too large.
+    //
+    GLfloat xMax = value + xSpan;
+    if (xMax > kXMax) value = kXMax - xSpan;
+
+    xMin = value;
+
+    value = round(xMin * 10000.0) / 10000.0;
+    xMinLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%5.4gs", @"Format string for X label"), value];
+
+    value = round((xMin + xSpan) * 10000.0) / 10000.0;
+    xMaxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%5.4gs", @"Format string for X label"), value];
+}
+    
+- (void)setYMin:(CGFloat)value
+{
+    if (value < kYMin) value = kYMin;
+
+    //
+    // Reduce value if it would make yMax too large.
+    //
+    GLfloat diff = (value + ySpan) - kYMax;
+    if (diff > 0.0f) value -= diff;
+    yMin = value;
+    [self adaptViewToOrientation:0.0f];
+
+    NSString* format = NSLocalizedString(@"%5.4gs", @"Format string for X label");
+
+    value = round((yMin + 1.00 * ySpan) * 10000.0) / 10000.0;
+    yMaxLabel.text = [NSString stringWithFormat:format, value];
+    value = round((yMin + 0.75 * ySpan) * 10000.0) / 10000.0;
+    yPos05Label.text = [NSString stringWithFormat:format, value];
+    value = round((yMin + 0.50 * ySpan) * 10000.0) / 10000.0;
+    yZeroLabel.text = [NSString stringWithFormat:format, value];
+    value = round((yMin + 0.25 * ySpan) * 10000.0) / 10000.0;
+    yNeg05Label.text = [NSString stringWithFormat:format, value];
 }
 
 - (void)viewDidUnload
@@ -201,12 +277,6 @@ static const CGFloat kXMaxMax = 1.0;
     }
 }
 
-- (void)setXMax:(GLfloat)value
-{
-    xMax = value;
-    xMaxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%5.4gs", @"Format string for xMax label"), value];
-}
-
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change 
                        context:(void *)context
 {
@@ -238,22 +308,24 @@ static const CGFloat kXMaxMax = 1.0;
 - (void)drawView:(SampleView*)sender
 {
     glClear(GL_COLOR_BUFFER_BIT);
-    
+
     //
     // Set scaling for the floating-point samples
     //
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrthof(0.0f, xMax, -1.0f, 1.0, -1.0f, 1.0f);
-    
+    glOrthof(xMin, xMin + xSpan, yMin, yMin + ySpan, -1.0f, 1.0f);
+
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    
+
     glColor4f(0., 1., 0., 1.);
     glLineWidth(1.25);
     glPushMatrix();
-    [vertexBufferManager drawVerticesStartingAt:xMin forSpan:xMax];
+    [vertexBufferManager drawVerticesStartingAt:xMin forSpan:xSpan];
     glPopMatrix();
+
+    GLfloat xMax = xMin + xSpan;
 
     //
     // Draw three horizontal values at Y = -0.5, 0.0, and +0.5
@@ -261,20 +333,23 @@ static const CGFloat kXMaxMax = 1.0;
     GLfloat vertices[ 12 ];
     glVertexPointer(2, GL_FLOAT, 0, vertices);
 
+    GLfloat y = yMin + 0.25 * ySpan;
     vertices[0] = 0.0;
-    vertices[1] = -0.5;
+    vertices[1] = y;
     vertices[2] = xMax;
-    vertices[3] = -0.5;
+    vertices[3] = y;
 
+    y = yMin + 0.5 * ySpan;
     vertices[4] = 0.0;
-    vertices[5] = 0.0;
+    vertices[5] = y;
     vertices[6] = xMax;
-    vertices[7] = 0.0;
+    vertices[7] = y;
 
+    y = yMin + 0.75 * ySpan;
     vertices[8] = 0.0;
-    vertices[9] = 0.5;
+    vertices[9] = y;
     vertices[10] = xMax;
-    vertices[11] = 0.5;
+    vertices[11] = y;
 
     glColor4f(.5, .5, .5, 1.0);
     glLineWidth(0.5);
@@ -297,81 +372,53 @@ static const CGFloat kXMaxMax = 1.0;
 
 enum GestureType {
     kGestureUnknown,
-    kGestureScaleXMax,
-    kGestureSetMinHighLevel,
-    kGestureSetMaxLowLevel
+    kGestureScale,
+    kGesturePan
 };
 
 - (void)handlePanGesture:(UIPanGestureRecognizer*)recognizer
 {
-    if (signalProcessorController) {
-        [signalProcessorController handlePanGesture:recognizer];
+    if ([recognizer numberOfTouches] == 2) {
+        if (signalProcessorController) {
+            [signalProcessorController handlePanGesture:recognizer];
+        }
+        return;
     }
-}
-
-#if 0
-    CGFloat height = sampleView.bounds.size.height;
 
     if (recognizer.state == UIGestureRecognizerStateBegan) {
-        gestureType = kGestureUnknown;
-        CGPoint location = [recognizer locationInView:sampleView];
-        CGFloat y = 1.0 - location.y * 2 / height;
-        CGFloat minHighLevel = appDelegate.bitDetector.minHighLevel;
-        CGFloat maxLowLevel = appDelegate.bitDetector.maxLowLevel;
-        CGFloat dMin = fabs(y - minHighLevel);
-        CGFloat dMax = fabs(y - maxLowLevel);
-        if (dMin < dMax) {
-            if (dMin < 0.10) {
-                gestureType = kGestureSetMinHighLevel;
-                gestureStart = minHighLevel;
-            }
-        }
-        else {
-            if (dMax < 0.10) {
-                gestureType = kGestureSetMaxLowLevel;
-                gestureStart = maxLowLevel;
-            }
-        }
+        gestureType = kGesturePan;
+        gesturePoint = [recognizer translationInView:sampleView];
     }
-    else if (gestureType != kGestureUnknown) {
+    else if (gestureType == kGesturePan) {
+        CGFloat width = sampleView.bounds.size.width;
+        CGFloat height = sampleView.bounds.size.height;
         CGPoint translate = [recognizer translationInView:sampleView];
-        Float32 newLevel = gestureStart - translate.y * 2 / height;
-	if (newLevel > 1.0) newLevel = 1.0;
-	if (newLevel < -1.0) newLevel = -1.0;
-        if (gestureType == kGestureSetMinHighLevel) {
-            appDelegate.bitDetector.minHighLevel = newLevel;
-            if (recognizer.state == UIGestureRecognizerStateEnded) {
-                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:newLevel]
-                                                          forKey:kSettingsPulseDecoderMinHighLevelKey];
-            }
-        }
-        else if (gestureType == kGestureSetMaxLowLevel) {
-            appDelegate.bitDetector.maxLowLevel = newLevel;
-            if (recognizer.state == UIGestureRecognizerStateEnded) {
-                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:newLevel]
-                                                          forKey:kSettingsPulseDecoderMaxLowLevelKey];
-            }
+        CGFloat dx = (gesturePoint.x - translate.x) / width;
+        CGFloat dy = (translate.y - gesturePoint.y) / height;
+        self.xMin = xMin + dx * xSpan;
+        self.yMin = yMin + dy * ySpan;
+        gesturePoint = translate;
+        if (recognizer.state == UIGestureRecognizerStateEnded) {
+            gestureType = kUnknownType;
         }
     }
 }
-#endif
 
 - (void)handlePinchGesture:(UIPinchGestureRecognizer*)recognizer
 {
     CGFloat width = sampleView.bounds.size.width;
     CGFloat height = sampleView.bounds.size.height;
     if (recognizer.state == UIGestureRecognizerStateBegan) {
-        gestureType = kGestureScaleXMax;
-        gestureStart = xMax;
+        gestureType = kGestureScale;
+        gestureStart = scale;
     }
-    else if (gestureType == kGestureScaleXMax && recognizer.scale != 0.0) {
-        CGFloat newXMax = gestureStart / recognizer.scale;
-        if (newXMax > kXMaxMax) newXMax = kXMaxMax;
-        if (newXMax < kXMaxMin) newXMax = kXMaxMin;
-        [self setXMax:newXMax];
+    else if (gestureType == kGestureScale) {
+        if (recognizer.scale != 0.0) {
+            CGFloat newScale = gestureStart / recognizer.scale;
+            self.scale = newScale;
+        }
         if (recognizer.state == UIGestureRecognizerStateEnded) {
-            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:newXMax] 
-                                                      forKey:kSettingsInputViewXMaxKey];
+            gestureType = kUnknownType;
         }
     }
 }
@@ -389,15 +436,24 @@ enum GestureType {
     //
     SInt32 offset = sampleView.frame.origin.y;
     SInt32 height = sampleView.frame.size.height;
-    [UIView beginAnimations:@"" context:nil];
-    [UIView setAnimationDuration:duration];
+
+    if (duration > 0.0f) {
+        [UIView beginAnimations:@"" context:nil];
+        [UIView setAnimationDuration:duration];
+    }
+
     yPos05Label.center = CGPointMake(yPos05Label.center.x, offset + 0.25 * height + 
                                      yPos05Label.bounds.size.height * 0.5 + 1);
+
     yZeroLabel.center = CGPointMake(yZeroLabel.center.x, offset + 0.5 * height + 
                                     yZeroLabel.bounds.size.height * 0.5 + 1);
+
     yNeg05Label.center = CGPointMake(yNeg05Label.center.x, offset + 0.75 * height + 
                                      yNeg05Label.bounds.size.height * 0.5 + 1);
-    [UIView commitAnimations];
+
+    if (duration > 0.0) {
+        [UIView commitAnimations];
+    }
 }
 
 - (void)hideInfoOverlayDone:(NSString*)animationId finished:(NSNumber*)finished context:(void*)context
