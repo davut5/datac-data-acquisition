@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>FooterText</key>
+			<string>DETECTIONS_VIEW_FOOTER</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>AutoCorrectionType</key>
+			<string>No</string>
+			<key>DefaultValue</key>
+			<real>4</real>
+			<key>Key</key>
+			<string>DETECTIONS_VIEW_UPDATE_RATE</string>
+			<key>KeyboardType</key>
+			<string>NumbersAndPunctuation</string>
+			<key>Title</key>
+			<string>DETECTIONS_VIEW_UPDATE_RATE</string>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+		</dict>
+		<dict>
+			<key>AutoCorrectionType</key>
+			<string>No</string>
+			<key>DefaultValue</key>
+			<real>30</real>
+			<key>Key</key>
+			<string>DETECTIONS_VIEW_DURATION</string>
+			<key>KeyboardType</key>
+			<string>NumbersAndPunctuation</string>
+			<key>Title</key>
+			<string>DETECTIONS_VIEW_DURATION</string>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+		</dict>
+	</array>
+	<key>StringsTable</key>
+	<string>Root</string>
+	<key>Title</key>
+	<string>Settings</string>
+</dict>
+</plist>
