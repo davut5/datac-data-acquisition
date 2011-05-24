@@ -501,28 +501,32 @@ enum GestureType {
     spacing = (kYMax - kYMin) / N;
     int index = 0;
 
-    // 
+    //
     // Calculate parameterized value [0, 1] of label within the view.
     //
-    // ( N * spacing - yMin ) / ySpan >= 0
-    // N = yMin / spacing
-    //
     CGFloat t = (0.0 - yMin) / ySpan;
-    while (t <= 1.0) {
-        if (t > 0.0) {
-            yAxes[index++] = t;
-        }
-        t += 0.25;
-    }
-
-    t = (0.0 - yMin) / ySpan - 0.25;
-    while (t > 0.0) {
-        if (t <= 1.0) {
-            yAxes[index++] = t;
-        }
-        t -= 0.25;
+    if (t <= 0.0) {
+        t += (int((0.0 - t) / 0.25) + 1) * 0.25;
     }
     
+    //
+    // TODO: don't show element that with t < 0.08 since it overlaps the xMin label.
+    //
+    while (t <= 1.0) {
+        yAxes[index++] = t;
+        t+= 0.25;
+    } 
+
+    t = (0.0 - yMin) / ySpan - 0.25;
+    if (t > 1.0) {
+        t -= (int((t - 1.0) / 0.25) + 1) * 0.25;
+    }
+
+    while (t > 0.0) {
+        yAxes[index++] = t;
+        t -= 0.25;
+    }
+
     NSString* format = NSLocalizedString(@"%5.4gs", @"Format string for X label");
 
     yNeg05Label.center = CGPointMake(yNeg05Label.center.x, offset + height * (1 - yAxes[0]) + 
