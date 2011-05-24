@@ -24,6 +24,8 @@
 - (void)switchStateChanged:(MicSwitchDetector*)sender;
 - (void)adaptViewToOrientation:(NSTimeInterval)duration;
 - (void)dismissInfoOverlay:(UITapGestureRecognizer*)recognizer;
+- (void)placeYLabels;
+- (void)updateKineticPan;
 
 @end
 
@@ -69,6 +71,8 @@ static const CGFloat kYMax =  1.0;
     self.view.autoresizesSubviews = YES;
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
+    kineticPanActive = NO;
+
     //
     // Register for notification when the DataCapture properties emittingPowerSignal and pluggedIn
     // change so we can update our display appropriately.
@@ -139,7 +143,7 @@ static const CGFloat kYMax =  1.0;
 
 - (void)setScale:(CGFloat)value
 {
-    GLfloat yc = yMin + ySpan / 2.0f;
+    CGFloat yc = yMin + ySpan / 2.0f;
 
     if (value < kScaleMin) value = kScaleMin;
     if (value > kScaleMax) value = kScaleMax;
@@ -151,7 +155,7 @@ static const CGFloat kYMax =  1.0;
     //
     // Move xMin back if the new scale would make xMax too large.
     //
-    GLfloat xMax = xMin + xSpan;
+    CGFloat xMax = xMin + xSpan;
     if (xMax > kXMax) {
         self.xMin = kXMax - xSpan;
         xMax = kXMax;
@@ -169,7 +173,7 @@ static const CGFloat kYMax =  1.0;
     //
     // Reduce value if it would make xMax too large.
     //
-    GLfloat xMax = value + xSpan;
+    CGFloat xMax = value + xSpan;
     if (xMax > kXMax) value = kXMax - xSpan;
 
     xMin = value;
@@ -188,21 +192,13 @@ static const CGFloat kYMax =  1.0;
     //
     // Reduce value if it would make yMax too large.
     //
-    GLfloat diff = (value + ySpan) - kYMax;
+    CGFloat diff = (value + ySpan) - kYMax;
     if (diff > 0.0f) value -= diff;
     yMin = value;
-    [self adaptViewToOrientation:0.0f];
+    [self placeYLabels];
 
-    NSString* format = NSLocalizedString(@"%5.4gs", @"Format string for X label");
-
-    value = round((yMin + 1.00 * ySpan) * 10000.0) / 10000.0;
-    yMaxLabel.text = [NSString stringWithFormat:format, value];
-    value = round((yMin + 0.75 * ySpan) * 10000.0) / 10000.0;
-    yPos05Label.text = [NSString stringWithFormat:format, value];
-    value = round((yMin + 0.50 * ySpan) * 10000.0) / 10000.0;
-    yZeroLabel.text = [NSString stringWithFormat:format, value];
-    value = round((yMin + 0.25 * ySpan) * 10000.0) / 10000.0;
-    yNeg05Label.text = [NSString stringWithFormat:format, value];
+#if 0
+#endif
 }
 
 - (void)viewDidUnload
@@ -307,6 +303,10 @@ static const CGFloat kYMax =  1.0;
 
 - (void)drawView:(SampleView*)sender
 {
+    if (kineticPanActive) {
+        [self updateKineticPan];
+    }
+
     glClear(GL_COLOR_BUFFER_BIT);
 
     //
@@ -330,30 +330,32 @@ static const CGFloat kYMax =  1.0;
     //
     // Draw three horizontal values at Y = -0.5, 0.0, and +0.5
     //
-    GLfloat vertices[ 12 ];
+    GLfloat vertices[ 16 ];
     glVertexPointer(2, GL_FLOAT, 0, vertices);
 
-    GLfloat y = yMin + 0.25 * ySpan;
-    vertices[0] = 0.0;
-    vertices[1] = y;
+    vertices[0] = xMin;
+    vertices[1] = yAxes[0];
     vertices[2] = xMax;
-    vertices[3] = y;
+    vertices[3] = yAxes[0];
 
-    y = yMin + 0.5 * ySpan;
-    vertices[4] = 0.0;
-    vertices[5] = y;
+    vertices[4] = xMin;
+    vertices[5] = yAxes[1];
     vertices[6] = xMax;
-    vertices[7] = y;
+    vertices[7] = yAxes[1];
 
-    y = yMin + 0.75 * ySpan;
-    vertices[8] = 0.0;
-    vertices[9] = y;
+    vertices[8] = xMin;
+    vertices[9] = yAxes[2];
     vertices[10] = xMax;
-    vertices[11] = y;
+    vertices[11] = yAxes[2];
+
+    vertices[12] = xMin;
+    vertices[13] = yAxes[3];
+    vertices[14] = xMax;
+    vertices[15] = yAxes[3];
 
     glColor4f(.5, .5, .5, 1.0);
     glLineWidth(0.5);
-    glDrawArrays(GL_LINES, 0, 6);
+    glDrawArrays(GL_LINES, 0, 8);
 
     if (signalProcessorController) {
         [signalProcessorController drawOnSampleView:vertices];
@@ -362,7 +364,12 @@ static const CGFloat kYMax =  1.0;
 
 - (void)handleSingleTapGesture:(UITapGestureRecognizer*)recognizer
 {
-    vertexBufferManager.frozen = ! vertexBufferManager.frozen;
+    if (kineticPanActive) {
+        kineticPanActive = NO;
+    }
+    else {
+        vertexBufferManager.frozen = ! vertexBufferManager.frozen;
+    }
 }
 
 - (void)dismissInfoOverlay:(UITapGestureRecognizer *)recognizer
@@ -393,15 +400,45 @@ enum GestureType {
         CGFloat width = sampleView.bounds.size.width;
         CGFloat height = sampleView.bounds.size.height;
         CGPoint translate = [recognizer translationInView:sampleView];
+        NSLog(@"state: %d distance: %f %f", recognizer.state, gesturePoint.x - translate.x, 
+              translate.y - gesturePoint.y);
         CGFloat dx = (gesturePoint.x - translate.x) / width;
         CGFloat dy = (translate.y - gesturePoint.y) / height;
         self.xMin = xMin + dx * xSpan;
         self.yMin = yMin + dy * ySpan;
         gesturePoint = translate;
         if (recognizer.state == UIGestureRecognizerStateEnded) {
+            kineticPanVelocity = [recognizer velocityInView:sampleView];
+            kineticPanVelocity.x = int(kineticPanVelocity.x / 20);
+            if (fabs(kineticPanVelocity.x) < 20) kineticPanVelocity.x = 0;
+            kineticPanVelocity.y = int(kineticPanVelocity.y / 20);
+            if (fabs(kineticPanVelocity.y) < 20) kineticPanVelocity.y = 0;
+            NSLog(@"velocity: %f %f", kineticPanVelocity.x, kineticPanVelocity.y);
+            kineticPanActive = kineticPanVelocity.x != 0 || kineticPanVelocity.y != 0;
             gestureType = kUnknownType;
         }
     }
+}
+
+- (void)updateKineticPan
+{
+    CGFloat width = sampleView.bounds.size.width;
+    CGFloat height = sampleView.bounds.size.height;
+    CGFloat dx = kineticPanVelocity.x * xSpan / width;
+    CGFloat dy = kineticPanVelocity.y * ySpan / height;
+    if (dx) {
+        self.xMin = xMin - dx;
+        if (kineticPanVelocity.x > 0) kineticPanVelocity.x -= 1;
+        else if (kineticPanVelocity.x <0) kineticPanVelocity.x += 1;
+    }
+
+    if (dy) {
+        self.yMin = yMin + dy;
+        if (kineticPanVelocity.y > 0) kineticPanVelocity.y -= 1;
+        else if (kineticPanVelocity.y <0) kineticPanVelocity.y += 1;
+    }
+
+    kineticPanActive = kineticPanVelocity.x != 0 || kineticPanVelocity.y != 0;
 }
 
 - (void)handlePinchGesture:(UIPinchGestureRecognizer*)recognizer
@@ -431,29 +468,90 @@ enum GestureType {
 
 - (void)adaptViewToOrientation:(NSTimeInterval)duration
 {
+    if (duration > 0.0f) {
+        [UIView beginAnimations:@"" context:nil];
+        [UIView setAnimationDuration:duration];
+    }
+
+    [self placeYLabels];
+    
+    if (duration > 0.0) {
+        [UIView commitAnimations];
+    }
+}
+
+- (void)placeYLabels
+{
     //
     // Place the grid labels in the appropriate location after a rotation event.
     //
     SInt32 offset = sampleView.frame.origin.y;
     SInt32 height = sampleView.frame.size.height;
 
-    if (duration > 0.0f) {
-        [UIView beginAnimations:@"" context:nil];
-        [UIView setAnimationDuration:duration];
+    //
+    // Split view into four vertical positions.
+    //
+    CGFloat spacing = ySpan / 4.0;
+
+    //
+    // Take that spacing, and calculate the number of integral divisions in the [-1, +1] world.
+    //
+    CGFloat N = (kYMax - kYMin) / spacing;
+    N = int(N + 0.5);
+    spacing = (kYMax - kYMin) / N;
+    int index = 0;
+
+    // 
+    // Calculate parameterized value [0, 1] of label within the view.
+    //
+    // ( N * spacing - yMin ) / ySpan >= 0
+    // N = yMin / spacing
+    //
+    CGFloat t = (0.0 - yMin) / ySpan;
+    while (t <= 1.0) {
+        if (t > 0.0) {
+            yAxes[index++] = t;
+        }
+        t += 0.25;
     }
 
-    yPos05Label.center = CGPointMake(yPos05Label.center.x, offset + 0.25 * height + 
-                                     yPos05Label.bounds.size.height * 0.5 + 1);
+    t = (0.0 - yMin) / ySpan - 0.25;
+    while (t > 0.0) {
+        if (t <= 1.0) {
+            yAxes[index++] = t;
+        }
+        t -= 0.25;
+    }
+    
+    NSString* format = NSLocalizedString(@"%5.4gs", @"Format string for X label");
 
-    yZeroLabel.center = CGPointMake(yZeroLabel.center.x, offset + 0.5 * height + 
-                                    yZeroLabel.bounds.size.height * 0.5 + 1);
-
-    yNeg05Label.center = CGPointMake(yNeg05Label.center.x, offset + 0.75 * height + 
+    yNeg05Label.center = CGPointMake(yNeg05Label.center.x, offset + height * (1 - yAxes[0]) + 
                                      yNeg05Label.bounds.size.height * 0.5 + 1);
+    CGFloat y = yMin + yAxes[0] * ySpan;
+    yAxes[0] = y;
+    CGFloat value = round(y * 10000.0) / 10000.0;
+    yNeg05Label.text = [NSString stringWithFormat:format, value];
 
-    if (duration > 0.0) {
-        [UIView commitAnimations];
-    }
+    yZeroLabel.center = CGPointMake(yZeroLabel.center.x, offset + height * (1 - yAxes[1])+ 
+                                    yZeroLabel.bounds.size.height * 0.5 + 1);
+    y = yMin + yAxes[1] * ySpan;
+    yAxes[1] = y;
+    value = round(y * 10000.0) / 10000.0;
+    yZeroLabel.text = [NSString stringWithFormat:format, value];
+
+    yPos05Label.center = CGPointMake(yPos05Label.center.x, offset + height * (1 - yAxes[2]) + 
+                                     yPos05Label.bounds.size.height * 0.5 + 1);
+    y = yMin + yAxes[2] * ySpan;
+    yAxes[2] = y;
+    value = round(y * 10000.0) / 10000.0;
+    yPos05Label.text = [NSString stringWithFormat:format, value];
+
+    yMaxLabel.center = CGPointMake(yMaxLabel.center.x, offset + height * (1 - yAxes[3]) + 
+                                   yMaxLabel.bounds.size.height * 0.5 + 1);
+    y = yMin + yAxes[3] * ySpan;
+    yAxes[3] = y;
+    value = round(y * 10000.0) / 10000.0;
+    yMaxLabel.text = [NSString stringWithFormat:format, value];
 }
 
 - (void)hideInfoOverlayDone:(NSString*)animationId finished:(NSNumber*)finished context:(void*)context
