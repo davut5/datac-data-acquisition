@@ -12,7 +12,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>1.4 (15)</string>
+			<string>1.5 (16)</string>
 			<key>Key</key>
 			<string>version</string>
 			<key>Title</key>
@@ -107,12 +107,12 @@
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
+			<key>FooterText</key>
+			<string>DETECTORS_FOOTER</string>
 			<key>Title</key>
 			<string>DETECTORS</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
-			<key>FooterText</key>
-			<string>DETECTORS_FOOTER</string>
 		</dict>
 		<dict>
 			<key>File</key>
