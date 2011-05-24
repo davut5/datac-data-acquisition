@@ -31,18 +31,23 @@
     IBOutlet UILabel* yZeroLabel;
     IBOutlet UILabel* yNeg05Label;
     IBOutlet UITextView* infoOverlay;
+
     VertexBufferManager* vertexBufferManager;
     SignalProcessorController* signalProcessorController;
     
-    GLfloat xMin;
-    GLfloat xSpan;
-    GLfloat yMin;
-    GLfloat ySpan;
-    GLfloat scale;
-
+    CGFloat xMin;
+    CGFloat xSpan;
+    CGFloat yMin;
+    CGFloat ySpan;
+    CGFloat scale;
     CGFloat gestureStart;
     CGPoint gesturePoint;
+    GLfloat yAxes[8];
+
     int gestureType;
+
+    CGPoint kineticPanVelocity;
+    BOOL kineticPanActive;
 }
 
 @property (nonatomic, retain) IBOutlet SampleView* sampleView;
@@ -57,9 +62,9 @@
 @property (nonatomic, retain) IBOutlet UILabel* yNeg05Label;
 @property (nonatomic, retain) IBOutlet UIView* infoOverlay;
 @property (nonatomic, retain) SignalProcessorController* signalProcessorController;
-@property (nonatomic, assign) GLfloat xMin;
-@property (nonatomic, assign) GLfloat yMin;
-@property (nonatomic, assign) GLfloat scale;
+@property (nonatomic, assign) CGFloat xMin;
+@property (nonatomic, assign) CGFloat yMin;
+@property (nonatomic, assign) CGFloat scale;
 
 - (IBAction)togglePower;
 - (IBAction)toggleRecord;
