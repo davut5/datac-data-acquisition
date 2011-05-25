@@ -66,11 +66,6 @@
     return controller;
 }
 
-- (InfoOverlayViewController*)infoOverlayController
-{
-    return nil;
-}
-
 - (NSObject<SampleProcessorProtocol>*)sampleProcessor
 {
     return bitDetector;

@@ -22,7 +22,6 @@
 @private
     AboveLevelCounter* sampleProcessor;
     LevelDetectorController* controller;
-    InfoOverlayViewController* infoOverlayViewController;
     LowPassFilter* counterDecayFilter;
 
     Float32 detectionScale;

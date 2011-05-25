@@ -6,6 +6,20 @@
 #import <Foundation/Foundation.h>
 #import "DataCapture.h"
 
+@interface WaveCycleDetectorInfo : NSObject
+{
+    NSUInteger sampleCount;
+    Float32 minValue;
+    Float32 maxValue;
+}
+
+@property (nonatomic, assign) NSUInteger sampleCount;
+@property (nonatomic, assign) Float32 minValue;
+@property (nonatomic, assign) Float32 maxValue;
+@property (nonatomic, readonly) Float32 amplitude;
+
+@end
+
 /** A protocol for observers interested in WaveCycleDetector detections.
  */
 @protocol WaveCycleDetectorObserver
@@ -14,13 +28,13 @@
 /** Notification sent out when the bit detector find a new bit.
  \param cycleWidth NSNumber object that was created with an NSUInteger value describing the number of 44.1 kHz samples seen by the detector since the last detection.
  */
-- (void)waveCycleDetected:(NSNumber*)cycleWidth;
+- (void)waveCycleDetected:(WaveCycleDetectorInfo*)info;
 
 @end
 
 enum State {
-    kNegValue,
-    kPosValue,
+    kFallingEdge,
+    kRisingEdge,
     kUnknownValue
 };
 
@@ -28,22 +42,24 @@ enum State {
  */
 @interface WaveCycleDetector : NSObject<SampleProcessorProtocol> {
 @private
-    Float32 negLevel, posLevel;
+    Float32 lowLevel, highLevel;
     State state;
-    NSUInteger sampleCount;
+    WaveCycleDetectorInfo* info;
     NSObject<WaveCycleDetectorObserver>* observer;
 }
 
+@property (nonatomic, assign) Float32 lowLevel;
+@property (nonatomic, assign) Float32 highLevel;
+@property (nonatomic, retain) WaveCycleDetectorInfo* info;
 @property (nonatomic, retain) NSObject<WaveCycleDetectorObserver>* observer;
-@property (nonatomic, assign) Float32 level;
 
 /** Factory method to create and initialize a new WaveCycleDetector object.
  */
-+ (WaveCycleDetector*)createWithLevel:(Float32)theLevel;
++ (WaveCycleDetector*)createWithLowLevel:(Float32)theLowLevel highLevel:(Float32)theHighLevel;
 
 /** Initialize a new WaveCycleDetector object.
  */
-- (id)initWithLevel:(Float32)theLevel;
+- (id)initWithLowLevel:(Float32)theLowLevel highLevel:(Float32)theHighLevel;
 
 /** Reset detector logic to known values.
  */

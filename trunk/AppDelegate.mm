@@ -147,7 +147,7 @@
 	    [settingsController dismiss:self];
 	}
     }
-	
+
     return YES;
 }
 
@@ -184,6 +184,9 @@
 
 - (void)updateFromSettings
 {
+    NSUserDefaults* settings = [NSUserDefaults standardUserDefaults];
+    dataCapture.invertSignal = [settings boolForKey:kSettingsInputViewInvertKey];
+
     [samplesViewController updateFromSettings];
     [detectionsViewController updateFromSettings];
     [recordingsViewController updateFromSettings];

@@ -30,41 +30,45 @@
 
     lastBitValue = nil;
 
-    [fd waveCycleDetected:[NSNumber numberWithUnsignedInteger:11]];
+    WaveCycleDetectorInfo* info = [[WaveCycleDetectorInfo alloc] init];
+    info.sampleCount = 11;
+
+    [fd waveCycleDetected:info];
     STAssertTrue(lastBitValue == nil, @"");
     STAssertTrue([fd.currentBitState isEqualToString:@"0"], @"");
     STAssertEquals(fd.currentBitLength, 11.0f, @"");
 
-    [fd waveCycleDetected:[NSNumber numberWithUnsignedInteger:11]];
+    info.sampleCount = 11;
+    [fd waveCycleDetected:info];
     STAssertTrue(lastBitValue == nil, @"");
     STAssertTrue([fd.currentBitState isEqualToString:@"0"], @"");
     STAssertEquals(fd.currentBitLength, 22.0f, @"");
 
-    [fd waveCycleDetected:[NSNumber numberWithUnsignedInteger:11]];
+    [fd waveCycleDetected:info];
     STAssertTrue(lastBitValue == nil, @"");
-    [fd waveCycleDetected:[NSNumber numberWithUnsignedInteger:11]];
+    [fd waveCycleDetected:info];
     STAssertTrue(lastBitValue == nil, @"");
-    [fd waveCycleDetected:[NSNumber numberWithUnsignedInteger:11]];
+    [fd waveCycleDetected:info];
     STAssertTrue(lastBitValue == nil, @"");
-    [fd waveCycleDetected:[NSNumber numberWithUnsignedInteger:11]];
+    [fd waveCycleDetected:info];
     STAssertTrue(lastBitValue == nil, @"");
-    [fd waveCycleDetected:[NSNumber numberWithUnsignedInteger:11]];
+    [fd waveCycleDetected:info];
     STAssertTrue(lastBitValue == nil, @"");
-    [fd waveCycleDetected:[NSNumber numberWithUnsignedInteger:11]];
+    [fd waveCycleDetected:info];
     STAssertTrue(lastBitValue == nil, @"");
-    [fd waveCycleDetected:[NSNumber numberWithUnsignedInteger:11]];
+    [fd waveCycleDetected:info];
     STAssertTrue(lastBitValue == nil, @"");
-    [fd waveCycleDetected:[NSNumber numberWithUnsignedInteger:11]];
+    [fd waveCycleDetected:info];
     STAssertTrue(lastBitValue == nil, @"");
-    [fd waveCycleDetected:[NSNumber numberWithUnsignedInteger:11]];
+    [fd waveCycleDetected:info];
     STAssertTrue(lastBitValue == nil, @"");
-    [fd waveCycleDetected:[NSNumber numberWithUnsignedInteger:11]];
+    [fd waveCycleDetected:info];
     STAssertTrue(lastBitValue == nil, @"");
-    [fd waveCycleDetected:[NSNumber numberWithUnsignedInteger:11]];
+    [fd waveCycleDetected:info];
     STAssertTrue(lastBitValue == nil, @"");
     STAssertEquals(fd.currentBitLength, 143.0f, @"");
 
-    [fd waveCycleDetected:[NSNumber numberWithUnsignedInteger:11]];
+    [fd waveCycleDetected:info];
     [[NSRunLoop currentRunLoop] acceptInputForMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:10]];
     
     STAssertEquals(fd.currentBitLength, -140.0f, @"");
@@ -74,8 +78,9 @@
 
     [fd reset];
     lastBitValue = nil;
+    info.sampleCount = 5;
     while (fd.currentBitLength >= 0.0) {
-        [fd waveCycleDetected:[NSNumber numberWithUnsignedInteger:5]];
+        [fd waveCycleDetected:info];
     }
 
     [[NSRunLoop currentRunLoop] acceptInputForMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:10]];
@@ -86,11 +91,11 @@
 
     lastBitValue = nil;
     while (fd.currentBitLength <= 0.0) {
-        [fd waveCycleDetected:[NSNumber numberWithUnsignedInteger:5]];
+        [fd waveCycleDetected:info];
     }
 
     while (fd.currentBitLength >= 0.0) {
-        [fd waveCycleDetected:[NSNumber numberWithUnsignedInteger:5]];
+        [fd waveCycleDetected:info];
     }
 
     [[NSRunLoop currentRunLoop] acceptInputForMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:10]];
@@ -101,11 +106,11 @@
 
     lastBitValue = nil;
     while (fd.currentBitLength <= 0.0) {
-        [fd waveCycleDetected:[NSNumber numberWithUnsignedInteger:5]];
+        [fd waveCycleDetected:info];
     }
     
     while (fd.currentBitLength >= 0.0) {
-        [fd waveCycleDetected:[NSNumber numberWithUnsignedInteger:5]];
+        [fd waveCycleDetected:info];
     }
     
     [[NSRunLoop currentRunLoop] acceptInputForMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:10]];

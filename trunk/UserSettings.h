@@ -6,8 +6,8 @@
 #import <Foundation/Foundation.h>
 
 extern NSString* kSettingsInputViewUpdateRateKey;
-extern NSString* kSettingsInputViewXMinKey;
-extern NSString* kSettingsInputViewXMaxKey;
+extern NSString* kSettingsInputViewScaleKey;
+extern NSString* kSettingsInputViewInvertKey;
 
 extern NSString* kSettingsDetectionsViewDurationKey;
 extern NSString* kSettingsDetectionsViewUpdateRateKey;
@@ -27,7 +27,8 @@ extern NSString* kSettingsMicSwitchDetectorDurationKey;
 
 extern NSString* kSettingsCloudStorageEnableKey;
 
-extern NSString* kSettingsWaveCycleDetectorNonZeroLevelKey;
+extern NSString* kSettingsWaveCycleDetectorLowLevelKey;
+extern NSString* kSettingsWaveCycleDetectorHighLevelKey;
 extern NSString* kSettingsBitStreamFrameDetectorPrefixKey;
 extern NSString* kSettingsBitStreamFrameDetectorSuffixKey;
 extern NSString* kSettingsBitStreamFrameDetectorContentSizeKey;
