@@ -18,7 +18,7 @@
 #import "RecordingsViewController.h"
 #import "SampleRecorder.h"
 #import "LevelDetector.h"
-#import "LevelDetectorController.h"
+#import "PulseFrequencyDetector.h"
 #import "SampleViewController.h"
 #import "SettingsViewController.h"
 #import "UserSettings.h"
@@ -50,7 +50,8 @@
     [application setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
 
     self.dataCapture = [DataCapture create];
-    self.signalDetector = [LevelDetector create];
+    // self.signalDetector = [LevelDetector create];
+    self.signalDetector = [PulseFrequencyDetector create];
     self.switchDetector = [MicSwitchDetector createWithSampleRate:dataCapture.sampleRate];
     self.vertexBufferManager = [VertexBufferManager createForDuration:1.0 sampleRate:dataCapture.sampleRate];
 

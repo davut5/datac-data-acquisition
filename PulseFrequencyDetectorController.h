@@ -14,6 +14,9 @@
 @interface PulseFrequencyDetectorController : SignalProcessorController {
 @private
     PulseFrequencyDetector* detector;
+    int gestureKind;
+    CGFloat gestureStart;
+    CGFloat gestureLevel;
 }
 
 + (id)createWithDetector:(PulseFrequencyDetector*)detector;

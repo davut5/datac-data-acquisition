@@ -8,11 +8,13 @@
 
 #import "PulseFrequencyDetector.h"
 #import "PulseFrequencyDetectorController.h"
+#import "UserSettings.h"
 #import "WeightedAverager.h"
 
 @implementation PulseFrequencyDetector
 
-@synthesize sampleProcessor, lowLevel, highLevel, observer, minHighPulseAmplitude;
+@synthesize sampleProcessor, lowLevel, highLevel, observer, minHighPulseAmplitude, smoother, smootherValues;
+@synthesize maxPulseToPulseWidth;
 
 + (PulseFrequencyDetector*)create
 {
@@ -25,8 +27,9 @@
         self.sampleProcessor = [WaveCycleDetector createWithLowLevel:-0.33 highLevel:0.33];
         sampleProcessor.observer = self;
         controller = nil;
-        smoother = [[WeightedAverager createForSize:3] retain];
+        self.smoother = [WeightedAverager createForSize:10];
         observer = nil;
+        maxPulseToPulseWidth = 22000;   // 0.5 seconds of samples
         [self updateFromSettings];
     }
 
@@ -43,6 +46,10 @@
 
 - (void)updateFromSettings
 {
+    NSUserDefaults* settings = [NSUserDefaults standardUserDefaults];
+    self.lowLevel = [settings floatForKey:kSettingsPulseFrequencyDetectorLowLevelKey];
+    self.highLevel = [settings floatForKey:kSettingsPulseFrequencyDetectorHighLevelKey];
+    self.minHighPulseAmplitude = [settings floatForKey:kSettingsPulseFrequencyDetectorMinHighAmplitudeKey];
     [self reset];
 }
 
@@ -83,6 +90,11 @@
     return controller;
 }
 
+- (NSString*)smootherValues
+{
+    return [smoother description];
+}
+
 - (Float32)updatedDetectionValue
 {
     return currentValue;
@@ -97,9 +109,12 @@
                 //
                 // We have a valid pulse-to-pulse detection.
                 //
-                currentValue = [smoother filter:pulseToPulseWidth];
-                if (observer) {
-                    [observer pulseDetected:pulseToPulseWidth filtered:currentValue];
+                if (pulseToPulseWidth < maxPulseToPulseWidth) {
+                    currentValue = [smoother filter:pulseToPulseWidth];
+                    NSLog(@"pulseToPulseWidth: %d  smoothed: %f", pulseToPulseWidth, currentValue);
+                    if (observer) {
+                        [observer pulseDetected:pulseToPulseWidth filtered:currentValue];
+                    }
                 }
             }
 

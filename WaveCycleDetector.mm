@@ -77,12 +77,15 @@
                     //
 #ifdef UNIT_TESTING
                     [observer waveCycleDetected:info];
+                    self.info = [[[WaveCycleDetectorInfo alloc] init] autorelease];
 #else
+                    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
                     [observer performSelectorOnMainThread:@selector(waveCycleDetected:)
                                                withObject:info
                                             waitUntilDone:NO];
-#endif
                     self.info = [[[WaveCycleDetectorInfo alloc] init] autorelease];
+                    [pool drain];
+#endif
                 }
 
                 state = kRisingEdge;
@@ -98,14 +101,6 @@
 {
     state = kUnknownValue;
     info.sampleCount = 0;
-}
-
-- (void)updateFromSettings
-{
-    NSUserDefaults* settings = [NSUserDefaults standardUserDefaults];
-    lowLevel = [settings floatForKey:kSettingsWaveCycleDetectorLowLevelKey];
-    highLevel = [settings floatForKey:kSettingsWaveCycleDetectorHighLevelKey];
-    [self reset];
 }
 
 @end

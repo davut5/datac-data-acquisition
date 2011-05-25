@@ -207,6 +207,8 @@
 		BDE414A0138D22F500892C35 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD7FDAA41316C4B0001D1FBF /* AudioToolbox.framework */; };
 		BDE414AF138D23C700892C35 /* audio.wav in Resources */ = {isa = PBXBuildFile; fileRef = BDE414AE138D23C600892C35 /* audio.wav */; };
 		BDEB620F138D388F001AE9EE /* invertedAudio.wav in Resources */ = {isa = PBXBuildFile; fileRef = BDEB620E138D388F001AE9EE /* invertedAudio.wav */; };
+		BDEB64C2138D7D16001AE9EE /* ZoomMin.png in Resources */ = {isa = PBXBuildFile; fileRef = BDEB64C1138D7D14001AE9EE /* ZoomMin.png */; };
+		BDEB64C4138D7D69001AE9EE /* ZoomMax.png in Resources */ = {isa = PBXBuildFile; fileRef = BDEB64C3138D7D68001AE9EE /* ZoomMax.png */; };
 		BDEF5A0313865F590074E93A /* AboveLevelCounterTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEF5A0213865F590074E93A /* AboveLevelCounterTests.mm */; };
 		BDEF5A0D138660950074E93A /* AboveLevelCounter.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEF5A0C138660950074E93A /* AboveLevelCounter.mm */; };
 		BDEF5A42138667030074E93A /* AboveLevelCounter.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEF5A0C138660950074E93A /* AboveLevelCounter.mm */; };
@@ -525,6 +527,8 @@
 		BDE414AE138D23C600892C35 /* audio.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = audio.wav; sourceTree = "<group>"; };
 		BDE41538138D2F5E00892C35 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		BDEB620E138D388F001AE9EE /* invertedAudio.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = invertedAudio.wav; sourceTree = "<group>"; };
+		BDEB64C1138D7D14001AE9EE /* ZoomMin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ZoomMin.png; path = Images/ZoomMin.png; sourceTree = "<group>"; };
+		BDEB64C3138D7D68001AE9EE /* ZoomMax.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ZoomMax.png; path = Images/ZoomMax.png; sourceTree = "<group>"; };
 		BDEF5A0213865F590074E93A /* AboveLevelCounterTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AboveLevelCounterTests.mm; sourceTree = "<group>"; };
 		BDEF5A0B138660950074E93A /* AboveLevelCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboveLevelCounter.h; sourceTree = "<group>"; };
 		BDEF5A0C138660950074E93A /* AboveLevelCounter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AboveLevelCounter.mm; sourceTree = "<group>"; };
@@ -621,8 +625,6 @@
 		29B97314FDCFA39411CA2CEA /* Tabby */ = {
 			isa = PBXGroup;
 			children = (
-				BDEB620E138D388F001AE9EE /* invertedAudio.wav */,
-				BDE414AE138D23C600892C35 /* audio.wav */,
 				BD7E79281358A94A00F38E0F /* Attic */,
 				BD14B4B01357290C00F39A4B /* Tests */,
 				BD5EAF391345CAC200B01DC7 /* Classes */,
@@ -651,6 +653,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BDEB620E138D388F001AE9EE /* invertedAudio.wav */,
+				BDE414AE138D23C600892C35 /* audio.wav */,
 				BDEF5F9313873DBB0074E93A /* HTML */,
 				BD937541134B51D70015CC8D /* Dropbox.keys */,
 				BD5EAFA91345DE4400B01DC7 /* RecordingInfo.xcdatamodel */,
@@ -1051,6 +1055,8 @@
 			isa = PBXGroup;
 			children = (
 				BDF9D8741326C926004DC652 /* Sources */,
+				BDEB64C1138D7D14001AE9EE /* ZoomMin.png */,
+				BDEB64C3138D7D68001AE9EE /* ZoomMax.png */,
 				BD232B5A1333FA9D006ADDC4 /* 33-cabinet.png */,
 				BD232B5B1333FA9D006ADDC4 /* 77-ekg.png */,
 				BD232B5C1333FA9D006ADDC4 /* 81-dashboard.png */,
@@ -1372,6 +1378,8 @@
 				BDEF5EC41387329D0074E93A /* stripes.png in Resources */,
 				BDEF5ED8138732F00074E93A /* ipad.css in Resources */,
 				BDEF5F5013873A5D0074E93A /* ios.css in Resources */,
+				BDEB64C2138D7D16001AE9EE /* ZoomMin.png in Resources */,
+				BDEB64C4138D7D69001AE9EE /* ZoomMax.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

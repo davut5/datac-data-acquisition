@@ -32,7 +32,7 @@
 /** Respond to the user's pan gesture.
     \param recognizer the pan gesture recognizer that is currently active
  */
-- (void)handlePanGesture:(UIPanGestureRecognizer*)recognizer;
+- (void)handlePanGesture:(UIPanGestureRecognizer*)recognizer viewPoint:(CGPoint)pos;
 
 - (BOOL)showInfoOverlay;
 

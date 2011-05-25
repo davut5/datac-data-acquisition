@@ -33,6 +33,7 @@ enum PulseFrequencyDetectorState {
     WaveCycleDetector* sampleProcessor;
     PulseFrequencyDetectorController* controller;
     Float32 minHighPulseAmplitude;
+    NSUInteger maxPulseToPulseWidth;
     PulseFrequencyDetectorState state;
     NSUInteger pulseToPulseWidth;
     WeightedAverager* smoother;
@@ -44,7 +45,10 @@ enum PulseFrequencyDetectorState {
 @property (nonatomic, assign) Float32 lowLevel;
 @property (nonatomic, assign) Float32 highLevel;
 @property (nonatomic, assign) Float32 minHighPulseAmplitude;
+@property (nonatomic, assign) NSUInteger maxPulseToPulseWidth;
 @property (nonatomic, retain) NSObject<PulseFrequencyDetectorProtocol>* observer;
+@property (nonatomic, readonly) NSString* smootherValues;
+@property (nonatomic, retain) WeightedAverager* smoother;
 
 + (PulseFrequencyDetector*)create;
 
