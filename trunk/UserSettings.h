@@ -27,11 +27,14 @@ extern NSString* kSettingsMicSwitchDetectorDurationKey;
 
 extern NSString* kSettingsCloudStorageEnableKey;
 
-extern NSString* kSettingsWaveCycleDetectorLowLevelKey;
-extern NSString* kSettingsWaveCycleDetectorHighLevelKey;
 extern NSString* kSettingsBitStreamFrameDetectorPrefixKey;
 extern NSString* kSettingsBitStreamFrameDetectorSuffixKey;
 extern NSString* kSettingsBitStreamFrameDetectorContentSizeKey;
+
+extern NSString* kSettingsPulseFrequencyDetectorLowLevelKey;
+extern NSString* kSettingsPulseFrequencyDetectorHighLevelKey;
+extern NSString* kSettingsPulseFrequencyDetectorMinHighAmplitudeKey;
+extern NSString* kSettingsPulseFrequencyDetectorMaxPulse2PulseWidthKey;
 
 extern NSString* kSettingsRecordingsFileFormatKey;
 

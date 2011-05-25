@@ -25,32 +25,38 @@
 			<string>PSTextFieldSpecifier</string>
 		</dict>
 		<dict>
-			<key>AutocorrectionType</key>
-			<string>No</string>
 			<key>DefaultValue</key>
-			<real>0.0</real>
+			<false/>
 			<key>Key</key>
-			<string>INPUT_VIEW_XMIN</string>
-			<key>KeyboardType</key>
-			<string>NumbersAndPunctuation</string>
+			<string>INPUT_VIEW_INVERT</string>
 			<key>Title</key>
-			<string>INPUT_VIEW_XMIN</string>
+			<string>INPUT_VIEW_INVERT</string>
 			<key>Type</key>
-			<string>PSTextFieldSpecifier</string>
+			<string>PSToggleSwitchSpecifier</string>
 		</dict>
 		<dict>
-			<key>AutocorrectionType</key>
-			<string>No</string>
-			<key>DefaultValue</key>
-			<real>1</real>
-			<key>Key</key>
-			<string>INPUT_VIEW_XMAX</string>
-			<key>KeyboardType</key>
-			<string>NumbersAndPunctuation</string>
+			<key>FooterText</key>
+			<string>INPUT_VIEW_SCALE_FOOTER</string>
 			<key>Title</key>
-			<string>INPUT_VIEW_XMAX</string>
+			<string>INPUT_VIEW_SCALE</string>
 			<key>Type</key>
-			<string>PSTextFieldSpecifier</string>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>MaximumValue</key>
+			<real>1.0</real>
+			<key>MinimumValue</key>
+			<real>0.0001</real>
+			<key>DefaultValue</key>
+			<real>1.0</real>
+			<key>Key</key>
+			<string>INPUT_VIEW_SCALE</string>
+			<key>Type</key>
+			<string>PSSliderSpecifier</string>
+			<key>MinimumValueImage</key>
+			<string>ZoomMin.png</string>
+			<key>MaximumValueImage</key>
+			<string>ZoomMax.png</string>
 		</dict>
 	</array>
 	<key>StringsTable</key>

@@ -65,8 +65,4 @@ enum State {
  */
 - (void)reset;
 
-/** Update bit detector operating parameters from user settings. Also invokes reset method.
- */
-- (void)updateFromSettings;
-
 @end

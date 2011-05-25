@@ -34,7 +34,7 @@
 {
 }
 
-- (void)handlePanGesture:(UIPanGestureRecognizer*)recognizer
+- (void)handlePanGesture:(UIPanGestureRecognizer*)recognizer viewPoint:(CGPoint)pos
 {
 }
 

@@ -35,61 +35,97 @@
     vertices[1] = detector.lowLevel;
     vertices[3] = detector.lowLevel;
     glLineWidth(2.0);
-    glColor4f(.3, .3, 1., 1.0);
+    glColor4f(1., 0., 1., 1.0);
     glDrawArrays(GL_LINES, 0, 2);
 
     vertices[1] = detector.highLevel;
     vertices[3] = detector.highLevel;
     glLineWidth(2.0);
+    glColor4f(1., .5, 0., 1.0);
+    glDrawArrays(GL_LINES, 0, 2);
+
+    vertices[1] = detector.minHighPulseAmplitude;
+    vertices[3] = detector.minHighPulseAmplitude;
+    glLineWidth(2.0);
     glColor4f(1., 0., 0., 1.0);
     glDrawArrays(GL_LINES, 0, 2);
 }
 
-- (void)handlePanGesture:(UIPanGestureRecognizer*)recognizer
+enum GestureKind {
+    kAdjustLowLevel,
+    kAdjustHighLevel,
+    kAdjustMinAmplitude,
+    kUnknown
+};
+
+struct HitInfo
 {
-#if 0
+    GestureKind kind;
+    CGFloat level;
+    CGFloat delta;
+    HitInfo(GestureKind k, CGFloat l, CGFloat y)
+        : kind(k), level(l), delta(fabs(l - y)) 
+    {}
+
+    bool operator<(const HitInfo& rhs) const { return delta < rhs.delta; }
+};
+
+- (void)handlePanGesture:(UIPanGestureRecognizer*)recognizer viewPoint:(CGPoint)pos
+{
     CGFloat height = sampleView.bounds.size.height;
     if (recognizer.state == UIGestureRecognizerStateBegan) {
-        CGPoint location = [recognizer locationInView:sampleView];
-        CGFloat y = 1.0 - location.y * 2 / height;
-        CGFloat level = levelDetector.level;
-        gestureStart = level;
+        HitInfo a(kAdjustLowLevel, detector.lowLevel, pos.y);
+        HitInfo b(kAdjustHighLevel, detector.highLevel, pos.y);
+        HitInfo c(kAdjustMinAmplitude, detector.minHighPulseAmplitude, pos.y);
+        if (b < a) std::swap(b, a);
+        if (c < b) std::swap(c, b);
+        if (b < a) std::swap(b, a);
+        gestureKind = a.kind;
+        gestureStart = pos.y;
+        gestureLevel = a.level;
     }
     else {
-        CGPoint translate = [recognizer translationInView:sampleView];
-        Float32 newLevel = gestureStart - translate.y * 2 / height;
+        Float32 newLevel = gestureLevel + (pos.y - gestureStart);
+        NSString* key = nil;
+
 	if (newLevel > 1.0) newLevel = 1.0;
 	if (newLevel < -1.0) newLevel = -1.0;
-        levelDetector.level = newLevel;
+        if (gestureKind == kAdjustLowLevel) {
+            detector.lowLevel = newLevel;
+            key = kSettingsPulseFrequencyDetectorLowLevelKey;
+        }
+        else if (gestureKind == kAdjustHighLevel) {
+            detector.highLevel = newLevel;
+            key = kSettingsPulseFrequencyDetectorHighLevelKey;
+        }
+        else {
+            detector.minHighPulseAmplitude = newLevel;
+            key = kSettingsPulseFrequencyDetectorMinHighAmplitudeKey;
+        }
+
         if (recognizer.state == UIGestureRecognizerStateEnded) {
-            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:newLevel]
-                                                      forKey:kSettingsLevelDetectorLevelKey];
+            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:newLevel] forKey:key];
+            [[NSUserDefaults standardUserDefaults] synchronize];
         }
     }
-#endif
 }
-
-#if 0
 
 - (BOOL)showInfoOverlay
 {
-    return NO;
+    return YES;
 }
 
 - (void)updateInfoOverlay:(NSTimer*)timer
 {
-    NSLog(@"LevelDetectorInfoOverlayController.updateInfo");
-    NSString* counterHistory = [levelDetector counterHistoryAsString];
-    NSString* filterValues = [levelDetector.counterDecayFilter description];
     NSString* content = [NSString stringWithFormat:
-                         @"Counter scale: %f\nDetection scale: %f\nCounters: %@\nDecay filter: %@",
-                         levelDetector.counterScale,
-                         levelDetector.detectionScale,
-                         counterHistory,
-                         filterValues];
+                         @"Low Level: %f\nHigh Level: %f\nMin Amplitude: %f\nMax Pulse-Pulse Width: %d\nSmoother Values: %@",
+                         detector.lowLevel,
+                         detector.highLevel,
+                         detector.minHighPulseAmplitude,
+                         detector.maxPulseToPulseWidth,
+                         detector.smootherValues
+                         ];
     infoOverlay.text = content;
 }
-
-#endif
 
 @end

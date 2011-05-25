@@ -196,9 +196,6 @@ static const CGFloat kYMax =  1.0;
     if (diff > 0.0f) value -= diff;
     yMin = value;
     [self placeYLabels];
-
-#if 0
-#endif
 }
 
 - (void)viewDidUnload
@@ -246,6 +243,8 @@ static const CGFloat kYMax =  1.0;
 
 - (void)updateFromSettings
 {
+    self.scale = kScaleMax - [[NSUserDefaults standardUserDefaults] floatForKey:kSettingsInputViewScaleKey] + kScaleMin;
+
     Float32 rate = 1.0 / [[NSUserDefaults standardUserDefaults] floatForKey:kSettingsInputViewUpdateRateKey];
     if (rate != sampleView.animationInterval) {
 	sampleView.animationInterval = rate;
@@ -380,28 +379,38 @@ static const CGFloat kYMax =  1.0;
 enum GestureType {
     kGestureUnknown,
     kGestureScale,
-    kGesturePan
+    kGesturePan,
+    kGestureDetector,
 };
 
 - (void)handlePanGesture:(UIPanGestureRecognizer*)recognizer
 {
-    if ([recognizer numberOfTouches] == 2) {
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        if ([recognizer numberOfTouches] == 2) {
+            gestureType = kGestureDetector;
+        }
+        else {
+            gestureType = kGesturePan;
+            gesturePoint = [recognizer translationInView:sampleView];
+        }
+    }
+
+    if (gestureType == kGestureDetector) {
         if (signalProcessorController) {
-            [signalProcessorController handlePanGesture:recognizer];
+            CGFloat width = sampleView.bounds.size.width;
+            CGFloat height = sampleView.bounds.size.height;
+            CGPoint pos = [recognizer locationInView:sampleView];
+            pos.x = pos.x / width * xSpan + xMin;
+            pos.y = (1.0 - pos.y / height) * ySpan + yMin;
+            [signalProcessorController handlePanGesture:recognizer viewPoint:pos];
         }
         return;
     }
 
-    if (recognizer.state == UIGestureRecognizerStateBegan) {
-        gestureType = kGesturePan;
-        gesturePoint = [recognizer translationInView:sampleView];
-    }
-    else if (gestureType == kGesturePan) {
+    if (gestureType == kGesturePan) {
         CGFloat width = sampleView.bounds.size.width;
         CGFloat height = sampleView.bounds.size.height;
         CGPoint translate = [recognizer translationInView:sampleView];
-        NSLog(@"state: %d distance: %f %f", recognizer.state, gesturePoint.x - translate.x, 
-              translate.y - gesturePoint.y);
         CGFloat dx = (gesturePoint.x - translate.x) / width;
         CGFloat dy = (translate.y - gesturePoint.y) / height;
         self.xMin = xMin + dx * xSpan;
@@ -413,7 +422,6 @@ enum GestureType {
             if (fabs(kineticPanVelocity.x) < 20) kineticPanVelocity.x = 0;
             kineticPanVelocity.y = int(kineticPanVelocity.y / 20);
             if (fabs(kineticPanVelocity.y) < 20) kineticPanVelocity.y = 0;
-            NSLog(@"velocity: %f %f", kineticPanVelocity.x, kineticPanVelocity.y);
             kineticPanActive = kineticPanVelocity.x != 0 || kineticPanVelocity.y != 0;
             gestureType = kUnknownType;
         }
@@ -456,6 +464,8 @@ enum GestureType {
         }
         if (recognizer.state == UIGestureRecognizerStateEnded) {
             gestureType = kUnknownType;
+            [[NSUserDefaults standardUserDefaults] setFloat:(kScaleMax - scale + kScaleMin)
+                                                     forKey:kSettingsInputViewScaleKey];
         }
     }
 }

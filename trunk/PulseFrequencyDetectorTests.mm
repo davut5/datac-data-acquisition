@@ -11,6 +11,7 @@
 #import <SenTestingKit/SenTestingKit.h>
 
 #import "PulseFrequencyDetector.h"
+#import "WeightedAverager.h"
 
 @interface PulseFrequencyDetectorTests : SenTestCase<PulseFrequencyDetectorProtocol> {
     std::vector<int> rawWidths;
@@ -82,6 +83,7 @@
 - (void)testOne
 {
     PulseFrequencyDetector* pfd = [PulseFrequencyDetector create];
+    pfd.smoother = [WeightedAverager createForSize:3];
     pfd.observer = self;
     pfd.lowLevel = -0.1;
     pfd.highLevel = 0.0;
