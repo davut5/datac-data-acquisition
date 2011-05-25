@@ -523,11 +523,8 @@
 		BDE413C6138CF08000892C35 /* PulseFrequencyDetectorController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PulseFrequencyDetectorController.mm; sourceTree = "<group>"; };
 		BDE41434138CFC4D00892C35 /* PulseFrequencyDetectorTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PulseFrequencyDetectorTests.mm; sourceTree = "<group>"; };
 		BDE414AE138D23C600892C35 /* audio.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = audio.wav; sourceTree = "<group>"; };
-		BDE414EA138D269500892C35 /* LogicTests-Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LogicTests-Info copy.plist"; sourceTree = "<group>"; };
 		BDE41538138D2F5E00892C35 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		BDEB620E138D388F001AE9EE /* invertedAudio.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = invertedAudio.wav; sourceTree = "<group>"; };
-		BDEB6274138D406B001AE9EE /* LogicTests-Info copy 2.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LogicTests-Info copy 2.plist"; sourceTree = "<group>"; };
-		BDEB6292138D4233001AE9EE /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
 		BDEF5A0213865F590074E93A /* AboveLevelCounterTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AboveLevelCounterTests.mm; sourceTree = "<group>"; };
 		BDEF5A0B138660950074E93A /* AboveLevelCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboveLevelCounter.h; sourceTree = "<group>"; };
 		BDEF5A0C138660950074E93A /* AboveLevelCounter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AboveLevelCounter.mm; sourceTree = "<group>"; };
@@ -633,11 +630,6 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				BD14B4AA135728D500F39A4B /* LogicTests-Info.plist */,
-				BDE414EA138D269500892C35 /* LogicTests-Info copy.plist */,
-				BDE41538138D2F5E00892C35 /* CoreFoundation.framework */,
-				BDEB6274138D406B001AE9EE /* LogicTests-Info copy 2.plist */,
-				BDEB6292138D4233001AE9EE /* Tests-Info.plist */,
 			);
 			name = Tabby;
 			sourceTree = "<group>";
@@ -671,6 +663,7 @@
 				BD86CA071326FB90001B7D82 /* Settings.bundle */,
 				BDF9D8731326C88B004DC652 /* Images */,
 				8D1107310486CEB800E47090 /* Datac-Info.plist */,
+				BD14B4AA135728D500F39A4B /* LogicTests-Info.plist */,
 				BD86CC5513277AD4001B7D82 /* Localizable.strings */,
 				BD2303731331FCBA006ADDC4 /* taps.txt */,
 			);
@@ -680,6 +673,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BDE41538138D2F5E00892C35 /* CoreFoundation.framework */,
 				BDB1D7D813773C000051F5B9 /* libCorePlot-CocoaTouch.a */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
