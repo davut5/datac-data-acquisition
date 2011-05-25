@@ -6,54 +6,90 @@
 #import "UserSettings.h"
 #import "WaveCycleDetector.h"
 
-@implementation WaveCycleDetector
+@implementation WaveCycleDetectorInfo
 
-@synthesize observer, level;
+@synthesize sampleCount, minValue, maxValue, amplitude;
 
-+ (WaveCycleDetector*)createWithLevel:(Float32)theLevel
-{
-    return [[[WaveCycleDetector alloc] initWithLevel:theLevel] autorelease];
-}
-
-- (id)initWithLevel:(Float32)theLevel
+- (id)init
 {
     if (self = [super init]) {
-        self.level = theLevel;
+        minValue = 0;
+        maxValue = 0;
+        sampleCount = 0;
     }
-    
+
     return self;
 }
 
-- (void)setLevel:(Float32)theLevel
+- (Float32)amplitude
 {
-    posLevel = theLevel;
-    negLevel = -theLevel;
-    [self reset];
+    return maxValue - minValue;
+}
+
+- (void)addSample:(Float32)value
+{
+    if (sampleCount++ == 0) {
+        minValue = value;
+        maxValue = value;
+    }
+    else if (value < minValue) {
+        minValue = value;
+    }
+    else if (value > maxValue) {
+        maxValue = value;
+    }
+}
+
+@end
+
+@implementation WaveCycleDetector
+
+@synthesize lowLevel, highLevel, info, observer;
+
++ (WaveCycleDetector*)createWithLowLevel:(Float32)theLowLevel highLevel:(Float32)theHighLevel
+{
+    return [[[WaveCycleDetector alloc] initWithLowLevel:theLowLevel highLevel:theHighLevel] autorelease];
+}
+
+- (id)initWithLowLevel:(Float32)theLowLevel highLevel:(Float32)theHighLevel
+{
+    if (self = [super init]) {
+        lowLevel = theLowLevel;
+        highLevel = theHighLevel;
+        self.info = [[[WaveCycleDetectorInfo alloc] init] autorelease];
+        [self reset];
+    }
+
+    return self;
 }
 
 - (void)addSamples:(Float32*)ptr count:(UInt32)count
 {
     while (count-- > 0) {
         Float32 sample = *ptr++;
-        ++sampleCount;
-        if (sample >= posLevel) {
-            if (state != kPosValue) {
-                if (state == kNegValue) {
+        [info addSample:sample];
+        if (sample >= highLevel) {
+            if (state != kRisingEdge) {
+                if (state == kFallingEdge) {
 
                     //
-                    // Finished rising edge detection
+                    // Finished cycle detection.
                     //
+#ifdef UNIT_TESTING
+                    [observer waveCycleDetected:info];
+#else
                     [observer performSelectorOnMainThread:@selector(waveCycleDetected:)
-                                               withObject:[NSNumber numberWithUnsignedInteger:sampleCount]
+                                               withObject:info
                                             waitUntilDone:NO];
+#endif
+                    self.info = [[[WaveCycleDetectorInfo alloc] init] autorelease];
                 }
 
-                state = kPosValue;
-                sampleCount = 0;
+                state = kRisingEdge;
             }
         }
-        else if (sample <= negLevel) {
-            state = kNegValue;
+        else if (sample <= lowLevel) {
+            state = kFallingEdge;
         }
     }
 }
@@ -61,14 +97,14 @@
 - (void)reset
 {
     state = kUnknownValue;
-    sampleCount = 0;
+    info.sampleCount = 0;
 }
 
 - (void)updateFromSettings
 {
     NSUserDefaults* settings = [NSUserDefaults standardUserDefaults];
-    posLevel = [settings floatForKey:kSettingsWaveCycleDetectorNonZeroLevelKey];
-    negLevel = -posLevel;
+    lowLevel = [settings floatForKey:kSettingsWaveCycleDetectorLowLevelKey];
+    highLevel = [settings floatForKey:kSettingsWaveCycleDetectorHighLevelKey];
     [self reset];
 }
 

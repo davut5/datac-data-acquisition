@@ -39,6 +39,7 @@ typedef void (*DataCaptureProcessSamplesProc)(id, SEL, AudioBufferList*, UInt32,
     BOOL audioUnitRunning;
     BOOL emittingPowerSignal;
     BOOL pluggedIn;
+    BOOL invertSignal;
     std::vector<Float32> sampleBuffer;
     struct AudioUnitRenderProcContext* audioUnitRenderProcContext;
     CAStreamBasicDescription streamFormat;
@@ -52,6 +53,7 @@ typedef void (*DataCaptureProcessSamplesProc)(id, SEL, AudioBufferList*, UInt32,
 @property (nonatomic, assign, readonly) BOOL audioUnitRunning;
 @property (nonatomic, assign) BOOL emittingPowerSignal;
 @property (nonatomic, assign) BOOL pluggedIn;
+@property (nonatomic, assign) BOOL invertSignal;
 
 @property (nonatomic, assign, readonly) Float64 sampleRate;
 @property (nonatomic, assign, readonly) SEL processSamplesSelector;

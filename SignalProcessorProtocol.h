@@ -5,7 +5,6 @@
 
 #import "SampleProcessorProtocol.h"
 
-@class InfoOverlayViewController;
 @class SignalProcessorController;
 
 /** Protocol for objects that perform signal processing on the audio stream. Unlike the SampleProcessorProtocol, this

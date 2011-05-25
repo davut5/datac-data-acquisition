@@ -6,8 +6,8 @@
 #import "UserSettings.h"
 
 NSString* kSettingsInputViewUpdateRateKey = @"INPUT_VIEW_UPDATE_RATE";
-NSString* kSettingsInputViewXMinKey = @"INPUT_VIEW_XMIN";
-NSString* kSettingsInputViewXMaxKey = @"INPUT_VIEW_XMAX";
+NSString* kSettingsInputViewScaleKey = @"INPUT_VIEW_SCALE";
+NSString* kSettingsInputViewInvertKey = @"INPUT_VIEW_INVERT";
 
 NSString* kSettingsDetectionsViewDurationKey = @"DETECTIONS_VIEW_DURATION";
 NSString* kSettingsDetectionsViewUpdateRateKey = @"DETECTIONS_VIEW_UPDATE_RATE";
@@ -33,7 +33,8 @@ NSString* kSettingsCloudStorageEnableKey = @"CLOUD_STORAGE_ENABLE";
 
 NSString* kSettingsRecordingsFileFormatKey = @"RECORDINGS_FILE_FORMAT";
 
-NSString* kSettingsWaveCycleDetectorNonZeroLevelKey = @"nonZeroLevel";
+NSString* kSettingsWaveCycleDetectorLowLevelKey = @"WAVE_CYCLE_DETECTOR_LOW_LEVEL";
+NSString* kSettingsWaveCycleDetectorHighLevelKey = @"WAVE_CYCLE_DETECTOR_HIGH_LEVEL";
 
 @implementation UserSettings
 
@@ -43,8 +44,8 @@ NSString* kSettingsWaveCycleDetectorNonZeroLevelKey = @"nonZeroLevel";
     [defaults registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
 
                                 [NSNumber numberWithFloat:20.0], kSettingsInputViewUpdateRateKey,
-                                [NSNumber numberWithFloat:0.0], kSettingsInputViewXMinKey,
-                                [NSNumber numberWithFloat:1.0], kSettingsInputViewXMaxKey,
+                                [NSNumber numberWithFloat:1.0], kSettingsInputViewScaleKey,
+                                [NSNumber numberWithBool:NO], kSettingsInputViewInvertKey,
 
                                 [NSNumber numberWithFloat:30.0], kSettingsDetectionsViewDurationKey,
                                 [NSNumber numberWithFloat:4], kSettingsDetectionsViewUpdateRateKey,
@@ -70,8 +71,9 @@ NSString* kSettingsWaveCycleDetectorNonZeroLevelKey = @"nonZeroLevel";
 
                                 @"caf", kSettingsRecordingsFileFormatKey,
 
-                                [NSNumber numberWithFloat:0.33], kSettingsWaveCycleDetectorNonZeroLevelKey,
-                                
+                                [NSNumber numberWithFloat:-0.33], kSettingsWaveCycleDetectorLowLevelKey,
+                                [NSNumber numberWithFloat: 0.33], kSettingsWaveCycleDetectorHighLevelKey,
+
                                 nil]];
     return defaults;
 }
@@ -108,11 +110,8 @@ NSString* kSettingsWaveCycleDetectorNonZeroLevelKey = @"nonZeroLevel";
 {
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     [UserSettings validateFloatNamed:kSettingsInputViewUpdateRateKey minValue:1.0 maxValue:60.0];
-    [UserSettings validateFloatNamed:kSettingsInputViewXMinKey minValue:0.0 maxValue:1.0];
-    [UserSettings validateFloatNamed:kSettingsInputViewXMaxKey minValue:0.0 maxValue:1.0];
-
+    [UserSettings validateFloatNamed:kSettingsInputViewScaleKey minValue:0.0001 maxValue:1.0];
     [UserSettings validateFloatNamed:kSettingsDetectionsViewUpdateRateKey minValue:0.1 maxValue:60.0];
-
     [UserSettings validateFloatNamed:kSettingsLevelDetectorLevelKey minValue:0.0 maxValue:1.0];
     [UserSettings validateFloatNamed:kSettingsLevelDetectorScalingKey minValue:0.1 maxValue:10000.0];
     [UserSettings validateIntegerNamed:kSettingsLevelDetectorCountsDecayDurationKey minValue:0 maxValue:10];

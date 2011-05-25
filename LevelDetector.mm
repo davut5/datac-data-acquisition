@@ -27,7 +27,6 @@
     if ((self = [super init])) {
         self.sampleProcessor = [AboveLevelCounter createWithLevel:0.0];
         controller = nil;
-        infoOverlayViewController = nil;
         counterDecayFilter = nil;
         counterScale = -1.0;
         counterHistory.clear();
@@ -41,7 +40,6 @@
     self.sampleProcessor = nil;
     self.counterDecayFilter = nil;
     [controller release];
-    [infoOverlayViewController release];
     counterHistory.clear();
     [super dealloc];
 }

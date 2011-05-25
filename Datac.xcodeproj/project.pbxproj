@@ -197,6 +197,16 @@
 		BDDD47231341DC8E001A574B /* db_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = BDDD46F71341DC8E001A574B /* db_logo.png */; };
 		BDDD47241341DC8E001A574B /* db_logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BDDD46F81341DC8E001A574B /* db_logo@2x.png */; };
 		BDDD473D1341DCB0001A574B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDDD473C1341DCB0001A574B /* Security.framework */; };
+		BDE413B6138CECAC00892C35 /* PulseFrequencyDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE413B5138CECAC00892C35 /* PulseFrequencyDetector.mm */; };
+		BDE413C7138CF08000892C35 /* PulseFrequencyDetectorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE413C6138CF08000892C35 /* PulseFrequencyDetectorController.mm */; };
+		BDE41435138CFC4D00892C35 /* PulseFrequencyDetectorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE41434138CFC4D00892C35 /* PulseFrequencyDetectorTests.mm */; };
+		BDE41445138D016D00892C35 /* PulseFrequencyDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE413B5138CECAC00892C35 /* PulseFrequencyDetector.mm */; };
+		BDE4144A138D019700892C35 /* PulseFrequencyDetectorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE413C6138CF08000892C35 /* PulseFrequencyDetectorController.mm */; };
+		BDE4146E138D021400892C35 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD7FDAB41316C4B0001D1FBF /* OpenGLES.framework */; };
+		BDE41471138D022E00892C35 /* SignalProcessorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2FC23B137443AC004BEA40 /* SignalProcessorController.mm */; };
+		BDE414A0138D22F500892C35 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD7FDAA41316C4B0001D1FBF /* AudioToolbox.framework */; };
+		BDE414AF138D23C700892C35 /* audio.wav in Resources */ = {isa = PBXBuildFile; fileRef = BDE414AE138D23C600892C35 /* audio.wav */; };
+		BDEB620F138D388F001AE9EE /* invertedAudio.wav in Resources */ = {isa = PBXBuildFile; fileRef = BDEB620E138D388F001AE9EE /* invertedAudio.wav */; };
 		BDEF5A0313865F590074E93A /* AboveLevelCounterTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEF5A0213865F590074E93A /* AboveLevelCounterTests.mm */; };
 		BDEF5A0D138660950074E93A /* AboveLevelCounter.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEF5A0C138660950074E93A /* AboveLevelCounter.mm */; };
 		BDEF5A42138667030074E93A /* AboveLevelCounter.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEF5A0C138660950074E93A /* AboveLevelCounter.mm */; };
@@ -507,6 +517,17 @@
 		BDDD46F71341DC8E001A574B /* db_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = db_logo.png; sourceTree = "<group>"; };
 		BDDD46F81341DC8E001A574B /* db_logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "db_logo@2x.png"; sourceTree = "<group>"; };
 		BDDD473C1341DCB0001A574B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		BDE413B4138CECAC00892C35 /* PulseFrequencyDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PulseFrequencyDetector.h; sourceTree = "<group>"; };
+		BDE413B5138CECAC00892C35 /* PulseFrequencyDetector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PulseFrequencyDetector.mm; sourceTree = "<group>"; };
+		BDE413C5138CF08000892C35 /* PulseFrequencyDetectorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PulseFrequencyDetectorController.h; sourceTree = "<group>"; };
+		BDE413C6138CF08000892C35 /* PulseFrequencyDetectorController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PulseFrequencyDetectorController.mm; sourceTree = "<group>"; };
+		BDE41434138CFC4D00892C35 /* PulseFrequencyDetectorTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PulseFrequencyDetectorTests.mm; sourceTree = "<group>"; };
+		BDE414AE138D23C600892C35 /* audio.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = audio.wav; sourceTree = "<group>"; };
+		BDE414EA138D269500892C35 /* LogicTests-Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LogicTests-Info copy.plist"; sourceTree = "<group>"; };
+		BDE41538138D2F5E00892C35 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		BDEB620E138D388F001AE9EE /* invertedAudio.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = invertedAudio.wav; sourceTree = "<group>"; };
+		BDEB6274138D406B001AE9EE /* LogicTests-Info copy 2.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LogicTests-Info copy 2.plist"; sourceTree = "<group>"; };
+		BDEB6292138D4233001AE9EE /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
 		BDEF5A0213865F590074E93A /* AboveLevelCounterTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AboveLevelCounterTests.mm; sourceTree = "<group>"; };
 		BDEF5A0B138660950074E93A /* AboveLevelCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboveLevelCounter.h; sourceTree = "<group>"; };
 		BDEF5A0C138660950074E93A /* AboveLevelCounter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AboveLevelCounter.mm; sourceTree = "<group>"; };
@@ -583,6 +604,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDE4146E138D021400892C35 /* OpenGLES.framework in Frameworks */,
+				BDE414A0138D22F500892C35 /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -601,6 +624,8 @@
 		29B97314FDCFA39411CA2CEA /* Tabby */ = {
 			isa = PBXGroup;
 			children = (
+				BDEB620E138D388F001AE9EE /* invertedAudio.wav */,
+				BDE414AE138D23C600892C35 /* audio.wav */,
 				BD7E79281358A94A00F38E0F /* Attic */,
 				BD14B4B01357290C00F39A4B /* Tests */,
 				BD5EAF391345CAC200B01DC7 /* Classes */,
@@ -609,6 +634,10 @@
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				BD14B4AA135728D500F39A4B /* LogicTests-Info.plist */,
+				BDE414EA138D269500892C35 /* LogicTests-Info copy.plist */,
+				BDE41538138D2F5E00892C35 /* CoreFoundation.framework */,
+				BDEB6274138D406B001AE9EE /* LogicTests-Info copy 2.plist */,
+				BDEB6292138D4233001AE9EE /* Tests-Info.plist */,
 			);
 			name = Tabby;
 			sourceTree = "<group>";
@@ -683,6 +712,7 @@
 				BD14B4CA1357296E00F39A4B /* SampleCircularBufferTests.mm */,
 				BDB66FEA136E93D1009FF047 /* WaveCycleDetectorTests.mm */,
 				BDB66ECE136B176F009FF047 /* WeightedAveragerTests.mm */,
+				BDE41434138CFC4D00892C35 /* PulseFrequencyDetectorTests.mm */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -717,8 +747,6 @@
 			children = (
 				BDB1D9CB1377E6EA0051F5B9 /* AFSK.h */,
 				BDB1D9CC1377E6EA0051F5B9 /* AFSK.mm */,
-				BDB66E8F1369FE05009FF047 /* WaveCycleDetector.h */,
-				BDB66E901369FE05009FF047 /* WaveCycleDetector.mm */,
 				BDB670A6136EBBCF009FF047 /* FrequencyDetector.h */,
 				BDB670A7136EBBCF009FF047 /* FrequencyDetector.mm */,
 			);
@@ -788,9 +816,12 @@
 				BDB1D9EB1377E92E0051F5B9 /* SignalProcessorProtocol.h */,
 				BD2FC1B91374372D004BEA40 /* SignalProcessorController.h */,
 				BD2FC23B137443AC004BEA40 /* SignalProcessorController.mm */,
+				BDB66E8F1369FE05009FF047 /* WaveCycleDetector.h */,
+				BDB66E901369FE05009FF047 /* WaveCycleDetector.mm */,
 				BDB66EBF136AAED7009FF047 /* WeightedAverager.h */,
 				BDB66EC0136AAED7009FF047 /* WeightedAverager.mm */,
 				BD7E79581358AA1C00F38E0F /* AFSK Processor */,
+				BDE413B3138CEC1B00892C35 /* Pulse Frequency Detection */,
 				BDB1DB3B1378014D0051F5B9 /* Hi-Low Level Processor */,
 				BD7E79591358AA4300F38E0F /* Hi Level Processor */,
 				BD7E79881358AC9600F38E0F /* Mic Switch Detection */,
@@ -962,6 +993,17 @@
 				BDDD46F81341DC8E001A574B /* db_logo@2x.png */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		BDE413B3138CEC1B00892C35 /* Pulse Frequency Detection */ = {
+			isa = PBXGroup;
+			children = (
+				BDE413B4138CECAC00892C35 /* PulseFrequencyDetector.h */,
+				BDE413B5138CECAC00892C35 /* PulseFrequencyDetector.mm */,
+				BDE413C5138CF08000892C35 /* PulseFrequencyDetectorController.h */,
+				BDE413C6138CF08000892C35 /* PulseFrequencyDetectorController.mm */,
+			);
+			name = "Pulse Frequency Detection";
 			sourceTree = "<group>";
 		};
 		BDEF5BDF13869AAE0074E93A /* Tabs */ = {
@@ -1343,6 +1385,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDE414AF138D23C700892C35 /* audio.wav in Resources */,
+				BDEB620F138D388F001AE9EE /* invertedAudio.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1457,6 +1501,8 @@
 				BDBA134D137A7E4500AD9A95 /* GuideViewController.mm in Sources */,
 				BD2F285C1383B613000E69AE /* AUOutputBL.cpp in Sources */,
 				BDEF5A0D138660950074E93A /* AboveLevelCounter.mm in Sources */,
+				BDE413B6138CECAC00892C35 /* PulseFrequencyDetector.mm in Sources */,
+				BDE413C7138CF08000892C35 /* PulseFrequencyDetectorController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1482,6 +1528,10 @@
 				BDB670EF136EF90E009FF047 /* FrequencyDetectorTests.mm in Sources */,
 				BDEF5A0313865F590074E93A /* AboveLevelCounterTests.mm in Sources */,
 				BDEF5A42138667030074E93A /* AboveLevelCounter.mm in Sources */,
+				BDE41435138CFC4D00892C35 /* PulseFrequencyDetectorTests.mm in Sources */,
+				BDE41445138D016D00892C35 /* PulseFrequencyDetector.mm in Sources */,
+				BDE4144A138D019700892C35 /* PulseFrequencyDetectorController.mm in Sources */,
+				BDE41471138D022E00892C35 /* SignalProcessorController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1622,6 +1672,7 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = UNIT_TESTING;
 				INFOPLIST_FILE = "LogicTests-Info.plist";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -1651,6 +1702,7 @@
 				);
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = UNIT_TESTING;
 				INFOPLIST_FILE = "LogicTests-Info.plist";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -1679,6 +1731,7 @@
 				);
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = UNIT_TESTING;
 				INFOPLIST_FILE = "LogicTests-Info.plist";
 				OTHER_LDFLAGS = (
 					"-framework",

@@ -57,9 +57,9 @@ NSString* kFrequencyDetectorHighBit = @"1";
     [self reset];
 }
 
-- (void)waveCycleDetected:(NSNumber*)length
+- (void)waveCycleDetected:(WaveCycleDetectorInfo*)info
 {
-    Float32 waveLength = [length unsignedIntegerValue];
+    Float32 waveLength = info.sampleCount;
     Float32 dLow = fabs(waveLength - nominalLowWaveLength);
     Float32 dHigh = fabs(waveLength - nominalHighWaveLength);
 

@@ -72,6 +72,7 @@ static const Float32 kQ824ToFloat = Float32(1.0) / Float32(kFloatToQ824);
 
 @synthesize audioUnit, maxAudioSampleCount, vertexBufferManager, sampleProcessor, switchDetector, sampleRecorder;
 @synthesize audioUnitRunning, emittingPowerSignal, pluggedIn, sampleRate, processSamplesSelector, processSamplesProc;
+@synthesize invertSignal;
 
 + (DataCapture*)create
 {
@@ -447,8 +448,11 @@ audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, co
     // Convert samples to floats
     //
     Float32* fptr = &sampleBuffer[0];
+    Float32 scale = invertSignal ? -1.0 : 1.0;
     for (UInt32 index = 0; index < count; ++index) {
-        *fptr++ = Q824_TO_FLOAT(*sptr++);
+        Float32 value = Q824_TO_FLOAT(*sptr++);
+        value *= scale;
+        *fptr++ = value;
     }
 
     fptr = &sampleBuffer[0];
