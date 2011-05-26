@@ -1,9 +1,6 @@
+// -*- Mode: ObjC -*-
 //
-//  PulseFrequencyDetector.h
-//  Datac
-//
-//  Created by Brad Howes on 5/25/11.
-//  Copyright 2011 Brad Howes. All rights reserved.
+// Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -12,33 +9,33 @@
 #import "SignalProcessorProtocol.h"
 #import "WaveCycleDetector.h"
 
-@class PulseFrequencyDetectorController;
+@class PulseWidthDetectorController;
 @class WeightedAverager;
 
-@protocol PulseFrequencyDetectorProtocol
+@protocol PulseWidthDetectorProtocol
 @required
 
 - (void)pulseDetected:(NSUInteger)pulseToPulseWidth filtered:(Float32)filtered;
 
 @end
 
-enum PulseFrequencyDetectorState {
+enum PulseWidthDetectorState {
     kInLowPulse,
     kInHighPulse,
     kUnknownState
 };
 
-@interface PulseFrequencyDetector : NSObject <SignalProcessorProtocol, WaveCycleDetectorObserver> {
+@interface PulseWidthDetector : NSObject <SignalProcessorProtocol, WaveCycleDetectorObserver> {
 @private
     WaveCycleDetector* sampleProcessor;
-    PulseFrequencyDetectorController* controller;
+    PulseWidthDetectorController* controller;
     Float32 minHighPulseAmplitude;
     NSUInteger maxPulseToPulseWidth;
-    PulseFrequencyDetectorState state;
+    PulseWidthDetectorState state;
     NSUInteger pulseToPulseWidth;
     WeightedAverager* smoother;
     Float32 currentValue;
-    NSObject<PulseFrequencyDetectorProtocol>* observer;
+    NSObject<PulseWidthDetectorProtocol>* observer;
 }
 
 @property (nonatomic, retain) WaveCycleDetector* sampleProcessor;
@@ -46,11 +43,11 @@ enum PulseFrequencyDetectorState {
 @property (nonatomic, assign) Float32 highLevel;
 @property (nonatomic, assign) Float32 minHighPulseAmplitude;
 @property (nonatomic, assign) NSUInteger maxPulseToPulseWidth;
-@property (nonatomic, retain) NSObject<PulseFrequencyDetectorProtocol>* observer;
+@property (nonatomic, retain) NSObject<PulseWidthDetectorProtocol>* observer;
 @property (nonatomic, readonly) NSString* smootherValues;
 @property (nonatomic, retain) WeightedAverager* smoother;
 
-+ (PulseFrequencyDetector*)create;
++ (PulseWidthDetector*)create;
 
 - (id)init;
 

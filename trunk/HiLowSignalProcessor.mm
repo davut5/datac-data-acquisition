@@ -1,9 +1,6 @@
+// -*- Mode: ObjC -*-
 //
-//  HiLowSignalProcessor.mm
-//  Datac
-//
-//  Created by Brad Howes on 5/9/11.
-//  Copyright 2011 Brad Howes. All rights reserved.
+// Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
 #import "BitDetector.h"

@@ -6,7 +6,7 @@
 	<array>
 		<dict>
 			<key>FooterText</key>
-			<string>PULSE_FREQUENCY_DETECTOR_FOOTER</string>
+			<string>PULSE_WIDTH_DETECTOR_FOOTER</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>
@@ -16,11 +16,11 @@
 			<key>DefaultValue</key>
 			<real>-0.1</real>
 			<key>Key</key>
-			<string>PULSE_FREQUENCY_DETECTOR_LOW_LEVEL</string>
+			<string>PULSE_WIDTH_DETECTOR_LOW_LEVEL</string>
 			<key>KeyboardType</key>
 			<string>NumbersAndPunctuation</string>
 			<key>Title</key>
-			<string>PULSE_FREQUENCY_DETECTOR_LOW_LEVEL</string>
+			<string>PULSE_WIDTH_DETECTOR_LOW_LEVEL</string>
 			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 		</dict>
@@ -30,11 +30,11 @@
 			<key>DefaultValue</key>
 			<real>0.0</real>
 			<key>Key</key>
-			<string>PULSE_FREQUENCY_DETECTOR_HIGH_LEVEL</string>
+			<string>PULSE_WIDTH_DETECTOR_HIGH_LEVEL</string>
 			<key>KeyboardType</key>
 			<string>NumbersAndPunctuation</string>
 			<key>Title</key>
-			<string>PULSE_FREQUENCY_DETECTOR_HIGH_LEVEL</string>
+			<string>PULSE_WIDTH_DETECTOR_HIGH_LEVEL</string>
 			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 		</dict>
@@ -44,11 +44,11 @@
 			<key>DefaultValue</key>
 			<real>0.7</real>
 			<key>Key</key>
-			<string>PULSE_FREQUENCY_DETECTOR_MIN_HIGH_AMPLITUDE</string>
+			<string>PULSE_WIDTH_DETECTOR_MIN_HIGH_AMPLITUDE</string>
 			<key>KeyboardType</key>
 			<string>NumbersAndPunctuation</string>
 			<key>Title</key>
-			<string>PULSE_FREQUENCY_DETECTOR_MIN_HIGH_AMPLITUDE</string>
+			<string>PULSE_WIDTH_DETECTOR_MIN_HIGH_AMPLITUDE</string>
 			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 		</dict>
@@ -58,11 +58,11 @@
 			<key>DefaultValue</key>
 			<integer>22050</integer>
 			<key>Key</key>
-			<string>PULSE_FREQUENCY_DETECTOR_MAX_PULSE_2_PULSE_WIDTH</string>
+			<string>PULSE_WIDTH_DETECTOR_MAX_PULSE_2_PULSE_WIDTH</string>
 			<key>KeyboardType</key>
 			<string>NumbersAndPunctuation</string>
 			<key>Title</key>
-			<string>PULSE_FREQUENCY_DETECTOR_MAX_PULSE_2_PULSE_WIDTH</string>
+			<string>PULSE_WIDTH_DETECTOR_MAX_PULSE_2_PULSE_WIDTH</string>
 			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 		</dict>
@@ -72,11 +72,11 @@
 			<key>DefaultValue</key>
 			<real>1.0</real>
 			<key>Key</key>
-			<string>PULSE_FREQUENCY_DETECTOR_SCALING</string>
+			<string>PULSE_WIDTH_DETECTOR_SCALING</string>
 			<key>KeyboardType</key>
 			<string>NumbersAndPunctuation</string>
 			<key>Title</key>
-			<string>PULSE_FREQUENCY_DETECTOR_SCALING</string>
+			<string>PULSE_WIDTH_DETECTOR_SCALING</string>
 			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 		</dict>
@@ -86,11 +86,11 @@
 			<key>DefaultValue</key>
 			<integer>5</integer>
 			<key>Key</key>
-			<string>PULSE_FREQUENCY_DETECTOR_SMOOTHING</string>
+			<string>PULSE_WIDTH_DETECTOR_SMOOTHING</string>
 			<key>KeyboardType</key>
 			<string>NumbersAndPunctuation</string>
 			<key>Title</key>
-			<string>PULSE_FREQUENCY_DETECTOR_SMOOTHING</string>
+			<string>PULSE_WIDTH_DETECTOR_SMOOTHING</string>
 			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 		</dict>

@@ -1,19 +1,17 @@
 //
-//  PulseFrequencyDetectorTests.mm
-//  Datac
+// -*- Mode: ObjC -*-
 //
-//  Created by Brad Howes on 5/25/11.
-//  Copyright 2011 Brad Howes. All rights reserved.
+// Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
 #import <vector>
 #import <AudioToolbox/ExtendedAudioFile.h>
 #import <SenTestingKit/SenTestingKit.h>
 
-#import "PulseFrequencyDetector.h"
+#import "PulseWidthDetector.h"
 #import "WeightedAverager.h"
 
-@interface PulseFrequencyDetectorTests : SenTestCase<PulseFrequencyDetectorProtocol> {
+@interface PulseWidthDetectorTests : SenTestCase<PulseWidthDetectorProtocol> {
     std::vector<int> rawWidths;
     std::vector<Float32> filteredWidths;
     std::vector<Float32> samples;
@@ -22,7 +20,7 @@
 
 @end
 
-@implementation PulseFrequencyDetectorTests
+@implementation PulseWidthDetectorTests
 
 - (void)pulseDetected:(NSUInteger)thePulseToPulseWidth filtered:(Float32)filteredValue
 {
@@ -82,7 +80,7 @@
 
 - (void)testOne
 {
-    PulseFrequencyDetector* pfd = [PulseFrequencyDetector create];
+    PulseWidthDetector* pfd = [PulseWidthDetector create];
     pfd.smoother = [WeightedAverager createForSize:3];
     pfd.observer = self;
     pfd.lowLevel = -0.1;

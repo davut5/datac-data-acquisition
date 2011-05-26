@@ -1,4 +1,5 @@
 // -*- Mode: ObjC -*-
+// -*- Mode: ObjC -*-
 //
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //

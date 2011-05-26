@@ -297,7 +297,9 @@ static const CGFloat kYMax =  1.0;
 
 - (void)switchStateChanged:(MicSwitchDetector *)sender
 {
-    [self toggleRecord];
+    if (appDelegate.dataCapture.pluggedIn == YES) {
+        [self toggleRecord];
+    }
 }
 
 - (void)drawView:(SampleView*)sender

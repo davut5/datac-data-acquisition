@@ -25,16 +25,6 @@
 			<string>PSTextFieldSpecifier</string>
 		</dict>
 		<dict>
-			<key>DefaultValue</key>
-			<false/>
-			<key>Key</key>
-			<string>INPUT_VIEW_INVERT</string>
-			<key>Title</key>
-			<string>INPUT_VIEW_INVERT</string>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-		</dict>
-		<dict>
 			<key>FooterText</key>
 			<string>INPUT_VIEW_SCALE_FOOTER</string>
 			<key>Title</key>
