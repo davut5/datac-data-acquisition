@@ -1,9 +1,6 @@
+// -*- Mode: ObjC -*-
 //
-//  GuideViewController.h
-//  Datac
-//
-//  Created by Brad Howes on 5/11/11.
-//  Copyright 2011 Brad Howes. All rights reserved.
+// Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

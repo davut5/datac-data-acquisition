@@ -3,19 +3,19 @@
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
-#import "PulseFrequencyDetector.h"
-#import "PulseFrequencyDetectorController.h"
+#import "PulseWidthDetector.h"
+#import "PulseWidthDetectorController.h"
 #import "SampleView.h"
 #import "UserSettings.h"
 
-@implementation PulseFrequencyDetectorController
+@implementation PulseWidthDetectorController
 
-+ (id)createWithDetector:(PulseFrequencyDetector*)theDetector
++ (id)createWithDetector:(PulseWidthDetector*)theDetector
 {
-    return [[[PulseFrequencyDetectorController alloc] initWithDetector:theDetector] autorelease];
+    return [[[PulseWidthDetectorController alloc] initWithDetector:theDetector] autorelease];
 }
 
-- (id)initWithDetector:(PulseFrequencyDetector*)theDetector
+- (id)initWithDetector:(PulseWidthDetector*)theDetector
 {
     if (self = [super init]) {
         detector = theDetector;
@@ -92,15 +92,15 @@ struct HitInfo
 	if (newLevel < -1.0) newLevel = -1.0;
         if (gestureKind == kAdjustLowLevel) {
             detector.lowLevel = newLevel;
-            key = kSettingsPulseFrequencyDetectorLowLevelKey;
+            key = kSettingsPulseWidthDetectorDetectorLowLevelKey;
         }
         else if (gestureKind == kAdjustHighLevel) {
             detector.highLevel = newLevel;
-            key = kSettingsPulseFrequencyDetectorHighLevelKey;
+            key = kSettingsPulseWidthDetectorDetectorHighLevelKey;
         }
         else {
             detector.minHighPulseAmplitude = newLevel;
-            key = kSettingsPulseFrequencyDetectorMinHighAmplitudeKey;
+            key = kSettingsPulseWidthDetectorDetectorMinHighAmplitudeKey;
         }
 
         if (recognizer.state == UIGestureRecognizerStateEnded) {

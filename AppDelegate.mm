@@ -18,7 +18,7 @@
 #import "RecordingsViewController.h"
 #import "SampleRecorder.h"
 #import "LevelDetector.h"
-#import "PulseFrequencyDetector.h"
+#import "PulseWidthDetector.h"
 #import "SampleViewController.h"
 #import "SettingsViewController.h"
 #import "UserSettings.h"
@@ -51,10 +51,12 @@
 
     self.dataCapture = [DataCapture create];
     // self.signalDetector = [LevelDetector create];
-    self.signalDetector = [PulseFrequencyDetector create];
+    self.signalDetector = [PulseWidthDetector create];
     self.switchDetector = [MicSwitchDetector createWithSampleRate:dataCapture.sampleRate];
     self.vertexBufferManager = [VertexBufferManager createForDuration:1.0 sampleRate:dataCapture.sampleRate];
 
+    dataCapture.invertSignal = [[NSUserDefaults standardUserDefaults]
+                                boolForKey:kSettingsSignalProcessingInvertSignalKey];
     dataCapture.sampleProcessor = [self.signalDetector sampleProcessor];
     dataCapture.switchDetector = switchDetector;
     dataCapture.vertexBufferManager = vertexBufferManager;
@@ -186,7 +188,7 @@
 - (void)updateFromSettings
 {
     NSUserDefaults* settings = [NSUserDefaults standardUserDefaults];
-    dataCapture.invertSignal = [settings boolForKey:kSettingsInputViewInvertKey];
+    dataCapture.invertSignal = [settings boolForKey:kSettingsSignalProcessingInvertSignalKey];
 
     [samplesViewController updateFromSettings];
     [detectionsViewController updateFromSettings];

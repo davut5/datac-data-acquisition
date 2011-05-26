@@ -1,24 +1,21 @@
+// -*- Mode: ObjC -*-
 //
-//  PulseFrequencyDetector.mm
-//  Datac
-//
-//  Created by Brad Howes on 5/25/11.
-//  Copyright 2011 Brad Howes. All rights reserved.
+// Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
-#import "PulseFrequencyDetector.h"
-#import "PulseFrequencyDetectorController.h"
+#import "PulseWidthDetector.h"
+#import "PulseWidthDetectorController.h"
 #import "UserSettings.h"
 #import "WeightedAverager.h"
 
-@implementation PulseFrequencyDetector
+@implementation PulseWidthDetector
 
 @synthesize sampleProcessor, lowLevel, highLevel, observer, minHighPulseAmplitude, smoother, smootherValues;
 @synthesize maxPulseToPulseWidth;
 
-+ (PulseFrequencyDetector*)create
++ (PulseWidthDetector*)create
 {
-    return [[[PulseFrequencyDetector alloc] init] autorelease];
+    return [[[PulseWidthDetector alloc] init] autorelease];
 }
 
 - (id)init
@@ -47,9 +44,9 @@
 - (void)updateFromSettings
 {
     NSUserDefaults* settings = [NSUserDefaults standardUserDefaults];
-    self.lowLevel = [settings floatForKey:kSettingsPulseFrequencyDetectorLowLevelKey];
-    self.highLevel = [settings floatForKey:kSettingsPulseFrequencyDetectorHighLevelKey];
-    self.minHighPulseAmplitude = [settings floatForKey:kSettingsPulseFrequencyDetectorMinHighAmplitudeKey];
+    self.lowLevel = [settings floatForKey:kSettingsPulseWidthDetectorDetectorLowLevelKey];
+    self.highLevel = [settings floatForKey:kSettingsPulseWidthDetectorDetectorHighLevelKey];
+    self.minHighPulseAmplitude = [settings floatForKey:kSettingsPulseWidthDetectorDetectorMinHighAmplitudeKey];
     [self reset];
 }
 
@@ -84,7 +81,7 @@
 - (SignalProcessorController*)controller
 {
     if (controller == nil) {
-        controller = [[PulseFrequencyDetectorController createWithDetector:self] retain];
+        controller = [[PulseWidthDetectorController createWithDetector:self] retain];
     }
     
     return controller;

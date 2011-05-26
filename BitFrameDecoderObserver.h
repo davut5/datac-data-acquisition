@@ -1,9 +1,6 @@
+// -*- Mode: ObjC -*-
 //
-//  BitFrameDecoderObserver.h
-//  Datac
-//
-//  Created by Brad Howes on 5/10/11.
-//  Copyright 2011 Brad Howes. All rights reserved.
+// Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

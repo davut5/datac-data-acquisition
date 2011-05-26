@@ -108,6 +108,46 @@
 		</dict>
 		<dict>
 			<key>FooterText</key>
+			<string>SIGNAL_PROCESSING_FOOTER</string>
+			<key>Title</key>
+			<string>SIGNAL_PROCESSING</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
+			<string>PulseWidthDetector</string>
+			<key>Key</key>
+			<string>SIGNAL_PROCESSING_ACTIVE_DETECTOR</string>
+			<key>Title</key>
+			<string>SIGNAL_PROCESSING_ACTIVE_DETECTOR</string>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Titles</key>
+			<array>
+				<string>Peak</string>
+				<string>Pulse Width</string>
+				<string>ASFK</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>LevelDetector</string>
+				<string>PulseWidthDetector</string>
+				<string>ASFK</string>
+			</array>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
+			<false/>
+			<key>Key</key>
+			<string>SIGNAL_PROCESSING_INVERT_SIGNAL</string>
+			<key>Title</key>
+			<string>SIGNAL_PROCESSING_INVERT_SIGNAL</string>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
 			<string>DETECTORS_FOOTER</string>
 			<key>Title</key>
 			<string>DETECTORS</string>
@@ -126,7 +166,7 @@
 			<key>File</key>
 			<string>PulseFrequencyDetector</string>
 			<key>Title</key>
-			<string>PULSE_FREQUENCY_DETECTOR</string>
+			<string>PULSE_WIDTH_DETECTOR</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

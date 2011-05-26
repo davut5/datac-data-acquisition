@@ -5,9 +5,11 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString* kSettingsSignalProcessingActiveDetectorKey;
+extern NSString* kSettingsSignalProcessingInvertSignalKey;
+
 extern NSString* kSettingsInputViewUpdateRateKey;
 extern NSString* kSettingsInputViewScaleKey;
-extern NSString* kSettingsInputViewInvertKey;
 
 extern NSString* kSettingsDetectionsViewDurationKey;
 extern NSString* kSettingsDetectionsViewUpdateRateKey;
@@ -31,10 +33,10 @@ extern NSString* kSettingsBitStreamFrameDetectorPrefixKey;
 extern NSString* kSettingsBitStreamFrameDetectorSuffixKey;
 extern NSString* kSettingsBitStreamFrameDetectorContentSizeKey;
 
-extern NSString* kSettingsPulseFrequencyDetectorLowLevelKey;
-extern NSString* kSettingsPulseFrequencyDetectorHighLevelKey;
-extern NSString* kSettingsPulseFrequencyDetectorMinHighAmplitudeKey;
-extern NSString* kSettingsPulseFrequencyDetectorMaxPulse2PulseWidthKey;
+extern NSString* kSettingsPulseWidthDetectorDetectorLowLevelKey;
+extern NSString* kSettingsPulseWidthDetectorDetectorHighLevelKey;
+extern NSString* kSettingsPulseWidthDetectorDetectorMinHighAmplitudeKey;
+extern NSString* kSettingsPulseWidthDetectorDetectorMaxPulse2PulseWidthKey;
 
 extern NSString* kSettingsRecordingsFileFormatKey;
 

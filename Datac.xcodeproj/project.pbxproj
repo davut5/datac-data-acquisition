@@ -197,11 +197,11 @@
 		BDDD47231341DC8E001A574B /* db_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = BDDD46F71341DC8E001A574B /* db_logo.png */; };
 		BDDD47241341DC8E001A574B /* db_logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BDDD46F81341DC8E001A574B /* db_logo@2x.png */; };
 		BDDD473D1341DCB0001A574B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDDD473C1341DCB0001A574B /* Security.framework */; };
-		BDE413B6138CECAC00892C35 /* PulseFrequencyDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE413B5138CECAC00892C35 /* PulseFrequencyDetector.mm */; };
-		BDE413C7138CF08000892C35 /* PulseFrequencyDetectorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE413C6138CF08000892C35 /* PulseFrequencyDetectorController.mm */; };
-		BDE41435138CFC4D00892C35 /* PulseFrequencyDetectorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE41434138CFC4D00892C35 /* PulseFrequencyDetectorTests.mm */; };
-		BDE41445138D016D00892C35 /* PulseFrequencyDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE413B5138CECAC00892C35 /* PulseFrequencyDetector.mm */; };
-		BDE4144A138D019700892C35 /* PulseFrequencyDetectorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE413C6138CF08000892C35 /* PulseFrequencyDetectorController.mm */; };
+		BDE413B6138CECAC00892C35 /* PulseWidthDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE413B5138CECAC00892C35 /* PulseWidthDetector.mm */; };
+		BDE413C7138CF08000892C35 /* PulseWidthDetectorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE413C6138CF08000892C35 /* PulseWidthDetectorController.mm */; };
+		BDE41435138CFC4D00892C35 /* PulseWidthDetectorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE41434138CFC4D00892C35 /* PulseWidthDetectorTests.mm */; };
+		BDE41445138D016D00892C35 /* PulseWidthDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE413B5138CECAC00892C35 /* PulseWidthDetector.mm */; };
+		BDE4144A138D019700892C35 /* PulseWidthDetectorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE413C6138CF08000892C35 /* PulseWidthDetectorController.mm */; };
 		BDE4146E138D021400892C35 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD7FDAB41316C4B0001D1FBF /* OpenGLES.framework */; };
 		BDE41471138D022E00892C35 /* SignalProcessorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2FC23B137443AC004BEA40 /* SignalProcessorController.mm */; };
 		BDE414A0138D22F500892C35 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD7FDAA41316C4B0001D1FBF /* AudioToolbox.framework */; };
@@ -519,11 +519,11 @@
 		BDDD46F71341DC8E001A574B /* db_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = db_logo.png; sourceTree = "<group>"; };
 		BDDD46F81341DC8E001A574B /* db_logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "db_logo@2x.png"; sourceTree = "<group>"; };
 		BDDD473C1341DCB0001A574B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		BDE413B4138CECAC00892C35 /* PulseFrequencyDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PulseFrequencyDetector.h; sourceTree = "<group>"; };
-		BDE413B5138CECAC00892C35 /* PulseFrequencyDetector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PulseFrequencyDetector.mm; sourceTree = "<group>"; };
-		BDE413C5138CF08000892C35 /* PulseFrequencyDetectorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PulseFrequencyDetectorController.h; sourceTree = "<group>"; };
-		BDE413C6138CF08000892C35 /* PulseFrequencyDetectorController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PulseFrequencyDetectorController.mm; sourceTree = "<group>"; };
-		BDE41434138CFC4D00892C35 /* PulseFrequencyDetectorTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PulseFrequencyDetectorTests.mm; sourceTree = "<group>"; };
+		BDE413B4138CECAC00892C35 /* PulseWidthDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PulseWidthDetector.h; sourceTree = "<group>"; };
+		BDE413B5138CECAC00892C35 /* PulseWidthDetector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PulseWidthDetector.mm; sourceTree = "<group>"; };
+		BDE413C5138CF08000892C35 /* PulseWidthDetectorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PulseWidthDetectorController.h; sourceTree = "<group>"; };
+		BDE413C6138CF08000892C35 /* PulseWidthDetectorController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PulseWidthDetectorController.mm; sourceTree = "<group>"; };
+		BDE41434138CFC4D00892C35 /* PulseWidthDetectorTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PulseWidthDetectorTests.mm; sourceTree = "<group>"; };
 		BDE414AE138D23C600892C35 /* audio.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = audio.wav; sourceTree = "<group>"; };
 		BDE41538138D2F5E00892C35 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		BDEB620E138D388F001AE9EE /* invertedAudio.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = invertedAudio.wav; sourceTree = "<group>"; };
@@ -710,7 +710,7 @@
 				BD14B4CA1357296E00F39A4B /* SampleCircularBufferTests.mm */,
 				BDB66FEA136E93D1009FF047 /* WaveCycleDetectorTests.mm */,
 				BDB66ECE136B176F009FF047 /* WeightedAveragerTests.mm */,
-				BDE41434138CFC4D00892C35 /* PulseFrequencyDetectorTests.mm */,
+				BDE41434138CFC4D00892C35 /* PulseWidthDetectorTests.mm */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -819,7 +819,7 @@
 				BDB66EBF136AAED7009FF047 /* WeightedAverager.h */,
 				BDB66EC0136AAED7009FF047 /* WeightedAverager.mm */,
 				BD7E79581358AA1C00F38E0F /* AFSK Processor */,
-				BDE413B3138CEC1B00892C35 /* Pulse Frequency Detection */,
+				BDE413B3138CEC1B00892C35 /* Pulse Width Detection */,
 				BDB1DB3B1378014D0051F5B9 /* Hi-Low Level Processor */,
 				BD7E79591358AA4300F38E0F /* Hi Level Processor */,
 				BD7E79881358AC9600F38E0F /* Mic Switch Detection */,
@@ -993,15 +993,15 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		BDE413B3138CEC1B00892C35 /* Pulse Frequency Detection */ = {
+		BDE413B3138CEC1B00892C35 /* Pulse Width Detection */ = {
 			isa = PBXGroup;
 			children = (
-				BDE413B4138CECAC00892C35 /* PulseFrequencyDetector.h */,
-				BDE413B5138CECAC00892C35 /* PulseFrequencyDetector.mm */,
-				BDE413C5138CF08000892C35 /* PulseFrequencyDetectorController.h */,
-				BDE413C6138CF08000892C35 /* PulseFrequencyDetectorController.mm */,
+				BDE413B4138CECAC00892C35 /* PulseWidthDetector.h */,
+				BDE413B5138CECAC00892C35 /* PulseWidthDetector.mm */,
+				BDE413C5138CF08000892C35 /* PulseWidthDetectorController.h */,
+				BDE413C6138CF08000892C35 /* PulseWidthDetectorController.mm */,
 			);
-			name = "Pulse Frequency Detection";
+			name = "Pulse Width Detection";
 			sourceTree = "<group>";
 		};
 		BDEF5BDF13869AAE0074E93A /* Tabs */ = {
@@ -1503,8 +1503,8 @@
 				BDBA134D137A7E4500AD9A95 /* GuideViewController.mm in Sources */,
 				BD2F285C1383B613000E69AE /* AUOutputBL.cpp in Sources */,
 				BDEF5A0D138660950074E93A /* AboveLevelCounter.mm in Sources */,
-				BDE413B6138CECAC00892C35 /* PulseFrequencyDetector.mm in Sources */,
-				BDE413C7138CF08000892C35 /* PulseFrequencyDetectorController.mm in Sources */,
+				BDE413B6138CECAC00892C35 /* PulseWidthDetector.mm in Sources */,
+				BDE413C7138CF08000892C35 /* PulseWidthDetectorController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1530,9 +1530,9 @@
 				BDB670EF136EF90E009FF047 /* FrequencyDetectorTests.mm in Sources */,
 				BDEF5A0313865F590074E93A /* AboveLevelCounterTests.mm in Sources */,
 				BDEF5A42138667030074E93A /* AboveLevelCounter.mm in Sources */,
-				BDE41435138CFC4D00892C35 /* PulseFrequencyDetectorTests.mm in Sources */,
-				BDE41445138D016D00892C35 /* PulseFrequencyDetector.mm in Sources */,
-				BDE4144A138D019700892C35 /* PulseFrequencyDetectorController.mm in Sources */,
+				BDE41435138CFC4D00892C35 /* PulseWidthDetectorTests.mm in Sources */,
+				BDE41445138D016D00892C35 /* PulseWidthDetector.mm in Sources */,
+				BDE4144A138D019700892C35 /* PulseWidthDetectorController.mm in Sources */,
 				BDE41471138D022E00892C35 /* SignalProcessorController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
