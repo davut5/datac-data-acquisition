@@ -369,6 +369,7 @@
 		BD5EB0F213460E2700B01DC7 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		BD5EB0F313460E2700B01DC7 /* Reachability.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Reachability.mm; sourceTree = "<group>"; };
 		BD5EB0F713460E7200B01DC7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		BD7339A1138EAEE900FFBF28 /* LogicTestsDebug-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LogicTestsDebug-Info.plist"; sourceTree = "<group>"; };
 		BD7E79821358ABED00F38E0F /* RecordingInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordingInfo.h; sourceTree = "<group>"; };
 		BD7E798D1358AD1B00F38E0F /* SampleProcessorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleProcessorProtocol.h; sourceTree = "<group>"; };
 		BD7E79B01358D37100F38E0F /* BitStreamFrameDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitStreamFrameDetector.h; sourceTree = "<group>"; };
@@ -436,6 +437,7 @@
 		BDBA13BE137B1E0C00AD9A95 /* input@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "input@2x.png"; path = "Images/input@2x.png"; sourceTree = "<group>"; };
 		BDBA13D3137B240A00AD9A95 /* detections.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = detections.png; path = Images/detections.png; sourceTree = "<group>"; };
 		BDBA13D5137B240F00AD9A95 /* detections@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "detections@2x.png"; path = "Images/detections@2x.png"; sourceTree = "<group>"; };
+		BDD8B256138F9EBF00474B82 /* LogicTests-Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LogicTests-Info copy.plist"; sourceTree = "<group>"; };
 		BDDD46A31341DC8E001A574B /* DBAccountInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBAccountInfo.h; sourceTree = "<group>"; };
 		BDDD46A41341DC8E001A574B /* DBAccountInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBAccountInfo.m; sourceTree = "<group>"; };
 		BDDD46A51341DC8E001A574B /* DBCreateAccountController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBCreateAccountController.h; sourceTree = "<group>"; };
@@ -632,6 +634,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				BD7339A1138EAEE900FFBF28 /* LogicTestsDebug-Info.plist */,
 			);
 			name = Tabby;
 			sourceTree = "<group>";
@@ -670,6 +673,7 @@
 				BD14B4AA135728D500F39A4B /* LogicTests-Info.plist */,
 				BD86CC5513277AD4001B7D82 /* Localizable.strings */,
 				BD2303731331FCBA006ADDC4 /* taps.txt */,
+				BDD8B256138F9EBF00474B82 /* LogicTests-Info copy.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1397,7 +1401,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		BD14B4A7135728D500F39A4B /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -1405,8 +1409,8 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+			shellPath = /bin/bash;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n#\"${HOME}/bin/otest\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
