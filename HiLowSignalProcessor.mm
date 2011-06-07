@@ -12,7 +12,7 @@
 
 @implementation HiLowSignalProcessor
 
-@synthesize bitDetector, bitFrameDecoder, bitStreamFrameDetector;
+@synthesize bitDetector, bitFrameDecoder, bitStreamFrameDetector, maxLowLevel, minHighLevel;
 
 + (HiLowSignalProcessor*)create
 {
@@ -41,6 +41,26 @@
     [super dealloc];
 }
 
+- (void)setMaxLowLevel:(Float32)value
+{
+    bitDetector.maxLowLevel = value;
+}
+
+- (Float32)maxLowLevel
+{
+    return bitDetector.maxLowLevel;
+}
+
+- (void)setMinHighLevel:(Float32)value
+{
+    bitDetector.minHighLevel = value;
+}
+
+- (Float32)minHighLevel
+{
+    return bitDetector.minHighLevel;
+}
+
 - (void)reset
 {
     [bitDetector reset];
@@ -57,7 +77,7 @@
 - (SignalProcessorController*)controller
 {
     if (controller == nil) {
-        controller = [[HiLowSignalProcessorController createWithSignalProcessor:self] retain];
+        controller = [[HiLowSignalProcessorController createWithDetector:self] retain];
     }
     
     return controller;

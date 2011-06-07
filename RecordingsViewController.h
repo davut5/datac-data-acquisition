@@ -6,11 +6,12 @@
 #import <CoreData/CoreData.h>
 #import <UIKit/UIKit.h>
 
+#import "DropboxUploader.h"
+
 @class AppDelegate;
-@class DropboxUploader;
 @class RecordingInfo;
 
-@interface RecordingsViewController : UITableViewController <NSFetchedResultsControllerDelegate> {
+@interface RecordingsViewController : UITableViewController <NSFetchedResultsControllerDelegate, DropboxUploaderMonitor> {
 @private
     AppDelegate* appDelegate;
     NSManagedObjectModel* managedObjectModel;
@@ -29,7 +30,9 @@
 
 - (void)updateFromSettings;
 
-- (RecordingInfo*)makeRecording;
+- (RecordingInfo*)startRecording;
+
+- (void)stopRecording;
 
 - (void)saveContext;
 

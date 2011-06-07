@@ -20,16 +20,6 @@
 
 @synthesize dropboxCell;
 
-- (id)initWithCoder:(NSCoder*)decoder
-{
-    NSLog(@"SettingsViewControll.initWithCoder");
-    if (self = [super initWithCoder:decoder]) {
-
-    }
-    
-    return self;
-}
-
 - (void)viewDidLoad
 {
     NSLog(@"SettingsViewController.viewDidLoad");
@@ -42,6 +32,7 @@
 {
     NSLog(@"SettingsViewController.viewDidUnload");
     appDelegate = nil;
+    [super setDelegate:nil];
     [super viewDidUnload];
 }
 

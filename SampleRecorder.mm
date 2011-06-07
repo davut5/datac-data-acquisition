@@ -107,7 +107,6 @@
 - (void)close
 {
     ExtAudioFileDispose(file);
-    [recording finalizeSize];
     self.recording = nil;
     file = nil;
 }

@@ -10,18 +10,18 @@
 #import "SampleProcessorProtocol.h"
 #import "SignalProcessorProtocol.h"
 
-@class AboveLevelCounter;
-@class LevelDetectorController;
+@class PeakCounter;
+@class PeakDetectorController;
 @class LowPassFilter;
 
 /** Simple signal detector that looks for and counts the rising edges of peaks above a user-settable level. Periodically
-    reports these peak counts in a notification named kLevelDetectorCounterUpdateNotification.
+    reports these peak counts in a notification named kPeakDetectorCounterUpdateNotification.
 */
 
-@interface LevelDetector : NSObject <SignalProcessorProtocol> {
+@interface PeakDetector : NSObject <SignalProcessorProtocol> {
 @private
-    AboveLevelCounter* sampleProcessor;
-    LevelDetectorController* controller;
+    PeakCounter* sampleProcessor;
+    PeakDetectorController* controller;
     LowPassFilter* counterDecayFilter;
 
     Float32 detectionScale;
@@ -32,7 +32,7 @@
     size_t counterHistorySize;
 }
 
-@property (nonatomic, retain) AboveLevelCounter* sampleProcessor;
+@property (nonatomic, retain) PeakCounter* sampleProcessor;
 @property (nonatomic, retain) LowPassFilter* counterDecayFilter;
 @property (nonatomic, assign) Float32 level;
 
@@ -40,7 +40,7 @@
 @property (nonatomic, readonly) Float32 counterScale;
 @property (nonatomic, readonly) Float32 lastDetection;
 
-+ (LevelDetector*)create;
++ (PeakDetector*)create;
 
 - (id)init;
 

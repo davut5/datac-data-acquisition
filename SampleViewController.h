@@ -11,7 +11,7 @@
 
 @class AppDelegate;
 @class IndicatorButton;
-@class InfoOverlayViewController;
+@class LevelSettingView;
 @class SignalProcessorController;
 @class VertexBufferManager;
 
@@ -31,6 +31,7 @@
     IBOutlet UILabel* yZeroLabel;
     IBOutlet UILabel* yNeg05Label;
     IBOutlet UITextView* infoOverlay;
+    IBOutlet LevelSettingView* levelOverlay;
 
     VertexBufferManager* vertexBufferManager;
     SignalProcessorController* signalProcessorController;
@@ -61,7 +62,9 @@
 @property (nonatomic, retain) IBOutlet UILabel* yZeroLabel;
 @property (nonatomic, retain) IBOutlet UILabel* yNeg05Label;
 @property (nonatomic, retain) IBOutlet UIView* infoOverlay;
-@property (nonatomic, retain) SignalProcessorController* signalProcessorController;
+@property (nonatomic, retain) IBOutlet LevelSettingView* levelOverlay;
+
+@property (nonatomic, readonly) SignalProcessorController* signalProcessorController;
 @property (nonatomic, assign) CGFloat xMin;
 @property (nonatomic, assign) CGFloat yMin;
 @property (nonatomic, assign) CGFloat scale;

@@ -56,8 +56,6 @@ typedef void (*DataCaptureProcessSamplesProc)(id, SEL, AudioBufferList*, UInt32,
 @property (nonatomic, assign) BOOL invertSignal;
 
 @property (nonatomic, assign, readonly) Float64 sampleRate;
-@property (nonatomic, assign, readonly) SEL processSamplesSelector;
-@property (nonatomic, assign, readonly) DataCaptureProcessSamplesProc processSamplesProc;
 @property (nonatomic, retain) SampleRecorder* sampleRecorder;
 @property (nonatomic, assign, readonly) CAStreamBasicDescription* streamFormat;
 

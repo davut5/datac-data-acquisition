@@ -40,7 +40,6 @@
     id <SampleViewDelegate> delegate;
     NSTimer* animationTimer;
     NSTimeInterval animationInterval;
-    BOOL applicationResignedActive;
 }
 
 - (void)startAnimation;
@@ -50,6 +49,5 @@
 @property (nonatomic, retain) NSTimer* animationTimer;
 @property (nonatomic, assign) NSTimeInterval animationInterval;
 @property (nonatomic, assign) id <SampleViewDelegate> delegate;
-@property (nonatomic, assign) BOOL applicationResignedActive;
 
 @end

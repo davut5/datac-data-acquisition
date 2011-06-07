@@ -14,11 +14,11 @@ NSString* kSettingsInputViewScaleKey = @"INPUT_VIEW_SCALE";
 NSString* kSettingsDetectionsViewDurationKey = @"DETECTIONS_VIEW_DURATION";
 NSString* kSettingsDetectionsViewUpdateRateKey = @"DETECTIONS_VIEW_UPDATE_RATE";
 
-NSString* kSettingsLevelDetectorLevelKey = @"LEVEL_DETECTOR_LEVEL";
-NSString* kSettingsLevelDetectorScalingKey = @"LEVEL_DETECTOR_SCALING";
-NSString* kSettingsLevelDetectorUseLowPassFilterKey = @"LEVEL_DETECTOR_USE_LOW_PASS_FILTER";
-NSString* kSettingsLevelDetectorLowPassFilterFileNameKey = @"LEVEL_DETECTOR_LOW_PASS_FILTER_FILENAME";
-NSString* kSettingsLevelDetectorCountsDecayDurationKey = @"LEVEL_DETECTOR_COUNTS_DECAY_DURATION";
+NSString* kSettingsPeakDetectorLevelKey = @"LEVEL_DETECTOR_LEVEL";
+NSString* kSettingsPeakDetectorScalingKey = @"LEVEL_DETECTOR_SCALING";
+NSString* kSettingsPeakDetectorUseLowPassFilterKey = @"LEVEL_DETECTOR_USE_LOW_PASS_FILTER";
+NSString* kSettingsPeakDetectorLowPassFilterFileNameKey = @"LEVEL_DETECTOR_LOW_PASS_FILTER_FILENAME";
+NSString* kSettingsPeakDetectorCountsDecayDurationKey = @"LEVEL_DETECTOR_COUNTS_DECAY_DURATION";
 
 NSString* kSettingsBitDetectorMaxLowLevelKey = @"BIT_DETECTOR_MAX_LOW_LEVEL";
 NSString* kSettingsBitDetectorMinHighLevelKey = @"BIT_DETECTOR_MIN_HIGH_LEVEL";
@@ -35,21 +35,23 @@ NSString* kSettingsCloudStorageEnableKey = @"CLOUD_STORAGE_ENABLE";
 
 NSString* kSettingsRecordingsFileFormatKey = @"RECORDINGS_FILE_FORMAT";
 
-NSString* kSettingsPulseWidthDetectorDetectorLowLevelKey = @"PULSE_WIDTH_DETECTOR_LOW_LEVEL";
-NSString* kSettingsPulseWidthDetectorDetectorHighLevelKey = @"PULSE_WIDTH_DETECTOR_HIGH_LEVEL";
-NSString* kSettingsPulseWidthDetectorDetectorMinHighAmplitudeKey = @"PULSE_WIDTH_DETECTOR_MIN_HIGH_AMPLITUDE";
-NSString* kSettingsPulseWidthDetectorDetectorMaxPulse2PulseWidthKey = @"PULSE_WIDTH_DETECTOR_MAX_PULSE_2_PULSE_WIDTH";
-NSString* kSettingsPulseWidthDetectorDetectorScalingKey = @"PULSE_WIDTH_DETECTOR_SCALING";
-NSString* kSettingsPulseWidthDetectorDetectorSmoothingKey = @"PULSE_WIDTH_DETECTOR_SMOOTHING";
+NSString* kSettingsPulseWidthDetectorLowLevelKey = @"PULSE_WIDTH_DETECTOR_LOW_LEVEL";
+NSString* kSettingsPulseWidthDetectorHighLevelKey = @"PULSE_WIDTH_DETECTOR_HIGH_LEVEL";
+NSString* kSettingsPulseWidthDetectorMinHighAmplitudeKey = @"PULSE_WIDTH_DETECTOR_MIN_HIGH_AMPLITUDE";
+NSString* kSettingsPulseWidthDetectorMaxPulse2PulseWidthKey = @"PULSE_WIDTH_DETECTOR_MAX_PULSE_2_PULSE_WIDTH";
+NSString* kSettingsPulseWidthDetectorScalingKey = @"PULSE_WIDTH_DETECTOR_SCALING";
+NSString* kSettingsPulseWidthDetectorSmoothingKey = @"PULSE_WIDTH_DETECTOR_SMOOTHING";
 
 @implementation UserSettings
 
 + (NSUserDefaults*)registerDefaults
 {
+    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     [defaults registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
 
-                                @"PulseWidth", kSettingsSignalProcessingActiveDetectorKey,
+                                @"PeakDetector", kSettingsSignalProcessingActiveDetectorKey,
                                 [NSNumber numberWithBool:NO], kSettingsSignalProcessingInvertSignalKey,
 
                                 [NSNumber numberWithFloat:20.0], kSettingsInputViewUpdateRateKey,
@@ -58,11 +60,11 @@ NSString* kSettingsPulseWidthDetectorDetectorSmoothingKey = @"PULSE_WIDTH_DETECT
                                 [NSNumber numberWithFloat:30.0], kSettingsDetectionsViewDurationKey,
                                 [NSNumber numberWithFloat:4], kSettingsDetectionsViewUpdateRateKey,
 
-                                [NSNumber numberWithFloat:0.3333], kSettingsLevelDetectorLevelKey,
-                                [NSNumber numberWithFloat:(1000.0/33.0)], kSettingsLevelDetectorScalingKey,
-                                [NSNumber numberWithBool:YES], kSettingsLevelDetectorUseLowPassFilterKey,
-                                @"taps", kSettingsLevelDetectorLowPassFilterFileNameKey,
-                                [NSNumber numberWithInt:4], kSettingsLevelDetectorCountsDecayDurationKey,
+                                [NSNumber numberWithFloat:0.3333], kSettingsPeakDetectorLevelKey,
+                                [NSNumber numberWithFloat:(1000.0/33.0)], kSettingsPeakDetectorScalingKey,
+                                [NSNumber numberWithBool:YES], kSettingsPeakDetectorUseLowPassFilterKey,
+                                @"taps", kSettingsPeakDetectorLowPassFilterFileNameKey,
+                                [NSNumber numberWithInt:4], kSettingsPeakDetectorCountsDecayDurationKey,
 
                                 [NSNumber numberWithFloat:0.33], kSettingsBitDetectorMaxLowLevelKey,
                                 [NSNumber numberWithFloat:0.66], kSettingsBitDetectorMinHighLevelKey,
@@ -79,14 +81,16 @@ NSString* kSettingsPulseWidthDetectorDetectorSmoothingKey = @"PULSE_WIDTH_DETECT
 
                                 @"caf", kSettingsRecordingsFileFormatKey,
 
-                                [NSNumber numberWithFloat:-0.1], kSettingsPulseWidthDetectorDetectorLowLevelKey,
-                                [NSNumber numberWithFloat: 0.0], kSettingsPulseWidthDetectorDetectorHighLevelKey,
-                                [NSNumber numberWithFloat: 0.7], kSettingsPulseWidthDetectorDetectorMinHighAmplitudeKey,
-                                [NSNumber numberWithInt:22050], kSettingsPulseWidthDetectorDetectorMaxPulse2PulseWidthKey,
-                                [NSNumber numberWithFloat:1.0], kSettingsPulseWidthDetectorDetectorScalingKey,
-                                [NSNumber numberWithInt:5], kSettingsPulseWidthDetectorDetectorSmoothingKey,
+                                [NSNumber numberWithFloat:-0.1], kSettingsPulseWidthDetectorLowLevelKey,
+                                [NSNumber numberWithFloat: 0.0], kSettingsPulseWidthDetectorHighLevelKey,
+                                [NSNumber numberWithFloat: 0.7], kSettingsPulseWidthDetectorMinHighAmplitudeKey,
+                                [NSNumber numberWithInt:22050], kSettingsPulseWidthDetectorMaxPulse2PulseWidthKey,
+                                [NSNumber numberWithFloat:1.0], kSettingsPulseWidthDetectorScalingKey,
+                                [NSNumber numberWithInt:5], kSettingsPulseWidthDetectorSmoothingKey,
 
                                 nil]];
+    [pool drain];
+
     return defaults;
 }
 
@@ -124,15 +128,15 @@ NSString* kSettingsPulseWidthDetectorDetectorSmoothingKey = @"PULSE_WIDTH_DETECT
     [UserSettings validateFloatNamed:kSettingsInputViewUpdateRateKey minValue:1.0 maxValue:60.0];
     [UserSettings validateFloatNamed:kSettingsInputViewScaleKey minValue:0.0001 maxValue:1.0];
     [UserSettings validateFloatNamed:kSettingsDetectionsViewUpdateRateKey minValue:0.1 maxValue:60.0];
-    [UserSettings validateFloatNamed:kSettingsLevelDetectorLevelKey minValue:0.0 maxValue:1.0];
-    [UserSettings validateFloatNamed:kSettingsLevelDetectorScalingKey minValue:0.1 maxValue:10000.0];
-    [UserSettings validateIntegerNamed:kSettingsLevelDetectorCountsDecayDurationKey minValue:0 maxValue:10];
+    [UserSettings validateFloatNamed:kSettingsPeakDetectorLevelKey minValue:0.0 maxValue:1.0];
+    [UserSettings validateFloatNamed:kSettingsPeakDetectorScalingKey minValue:0.1 maxValue:10000.0];
+    [UserSettings validateIntegerNamed:kSettingsPeakDetectorCountsDecayDurationKey minValue:0 maxValue:10];
 
-    [UserSettings validateFloatNamed:kSettingsPulseWidthDetectorDetectorLowLevelKey minValue:-1.0 maxValue:1.0];
-    [UserSettings validateFloatNamed:kSettingsPulseWidthDetectorDetectorHighLevelKey minValue:-1.0 maxValue:1.0];
-    [UserSettings validateFloatNamed:kSettingsPulseWidthDetectorDetectorMinHighAmplitudeKey minValue:-1.0 maxValue:1.0];
-    [UserSettings validateIntegerNamed:kSettingsPulseWidthDetectorDetectorMaxPulse2PulseWidthKey minValue:1 maxValue:44100];
-    [UserSettings validateIntegerNamed:kSettingsPulseWidthDetectorDetectorSmoothingKey minValue:0 maxValue:100];
+    [UserSettings validateFloatNamed:kSettingsPulseWidthDetectorLowLevelKey minValue:-1.0 maxValue:1.0];
+    [UserSettings validateFloatNamed:kSettingsPulseWidthDetectorHighLevelKey minValue:-1.0 maxValue:1.0];
+    [UserSettings validateFloatNamed:kSettingsPulseWidthDetectorMinHighAmplitudeKey minValue:-1.0 maxValue:1.0];
+    [UserSettings validateIntegerNamed:kSettingsPulseWidthDetectorMaxPulse2PulseWidthKey minValue:1 maxValue:44100];
+    [UserSettings validateIntegerNamed:kSettingsPulseWidthDetectorSmoothingKey minValue:0 maxValue:100];
 
     Float32 maxLowValue = [defaults floatForKey:kSettingsBitDetectorMaxLowLevelKey];
     if (maxLowValue < -0.99) maxLowValue = -0.99;

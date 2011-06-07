@@ -71,7 +71,7 @@ static const Float32 kQ824ToFloat = Float32(1.0) / Float32(kFloatToQ824);
 @implementation DataCapture
 
 @synthesize audioUnit, maxAudioSampleCount, vertexBufferManager, sampleProcessor, switchDetector, sampleRecorder;
-@synthesize audioUnitRunning, emittingPowerSignal, pluggedIn, sampleRate, processSamplesSelector, processSamplesProc;
+@synthesize audioUnitRunning, emittingPowerSignal, pluggedIn, sampleRate;
 @synthesize invertSignal;
 
 + (DataCapture*)create
@@ -93,12 +93,6 @@ static const Float32 kQ824ToFloat = Float32(1.0) / Float32(kFloatToQ824);
 	audioUnitRunning = NO;
 	emittingPowerSignal = NO;
 	pluggedIn = NO;
-        sampleBuffer.clear();
-
-	processSamplesSelector = @selector(processSamples:frameCount:);
-	processSamplesProc = (DataCaptureProcessSamplesProc)[self methodForSelector:processSamplesSelector];
-
-	audioUnitRenderProcContext = new AudioUnitRenderProcContext;
 	[self initializeAudioSession];
     }
 
@@ -239,10 +233,15 @@ audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, co
 	// Install aspects of ourselves into the context object.
 	//
 	bus = 0;
+
+	audioUnitRenderProcContext = new AudioUnitRenderProcContext;
+        SEL processSamplesSelector = @selector(processSamples:frameCount:);
+	audioUnitRenderProcContext->processSamplesSelector = processSamplesSelector;
+	audioUnitRenderProcContext->processSamplesProc = 
+            (DataCaptureProcessSamplesProc)[self methodForSelector:processSamplesSelector];
+
 	audioUnitRenderProcContext->self = self;
 	audioUnitRenderProcContext->audioUnit = audioUnit;
-	audioUnitRenderProcContext->processSamplesSelector = processSamplesSelector;
-	audioUnitRenderProcContext->processSamplesProc = processSamplesProc;
         renderCallback.inputProc = audioUnitRenderProc;
         renderCallback.inputProcRefCon = audioUnitRenderProcContext;
 	XThrowIfError(AudioUnitSetProperty(audioUnit,

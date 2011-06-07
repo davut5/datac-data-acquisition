@@ -6,26 +6,26 @@
 #import <iterator>
 #import <sstream>
 
-#import "AboveLevelCounter.h"
+#import "PeakCounter.h"
 #import "LowPassFilter.h"
-#import "LevelDetector.h"
-#import "LevelDetectorController.h"
+#import "PeakDetector.h"
+#import "PeakDetectorController.h"
 #import "SignalProcessorController.h"
 #import "UserSettings.h"
 
-@implementation LevelDetector
+@implementation PeakDetector
 
 @synthesize sampleProcessor, counterDecayFilter, level, detectionScale, counterScale, lastDetection;
 
 + (id)create
 {
-    return [[[LevelDetector alloc] init] autorelease];
+    return [[[PeakDetector alloc] init] autorelease];
 }
 
 - (id)init
 {
     if ((self = [super init])) {
-        self.sampleProcessor = [AboveLevelCounter createWithLevel:0.0];
+        self.sampleProcessor = [PeakCounter createWithLevel:0.0];
         controller = nil;
         counterDecayFilter = nil;
         counterScale = -1.0;
@@ -52,7 +52,7 @@
     NSUserDefaults* settings = [NSUserDefaults standardUserDefaults];
     
     counterScale = [settings floatForKey:kSettingsDetectionsViewUpdateRateKey];
-    int decaySteps = [settings floatForKey:kSettingsLevelDetectorCountsDecayDurationKey] * counterScale;
+    int decaySteps = [settings floatForKey:kSettingsPeakDetectorCountsDecayDurationKey] * counterScale;
     
     if (counterDecayFilter == nil || decaySteps != [counterDecayFilter size]) {
         NSNumber* weight = [NSNumber numberWithFloat:1.0/decaySteps];
@@ -65,10 +65,10 @@
         [self reset];
     }
 
-    sampleProcessor.level = [settings floatForKey:kSettingsLevelDetectorLevelKey];
+    sampleProcessor.level = [settings floatForKey:kSettingsPeakDetectorLevelKey];
 
-    if ([settings boolForKey:kSettingsLevelDetectorUseLowPassFilterKey] == YES) {
-        NSString* fileName = [settings stringForKey:kSettingsLevelDetectorLowPassFilterFileNameKey];
+    if ([settings boolForKey:kSettingsPeakDetectorUseLowPassFilterKey] == YES) {
+        NSString* fileName = [settings stringForKey:kSettingsPeakDetectorLowPassFilterFileNameKey];
         LowPassFilter* lowPassFilter = sampleProcessor.lowPassFilter;
         if (lowPassFilter == nil || [lowPassFilter.fileName isEqualToString:fileName] != YES) {
             sampleProcessor.lowPassFilter = [LowPassFilter createFromFile:fileName];
@@ -78,7 +78,7 @@
         sampleProcessor.lowPassFilter = nil;
     }
 
-    detectionScale = [settings floatForKey:kSettingsLevelDetectorScalingKey] * counterScale;
+    detectionScale = [settings floatForKey:kSettingsPeakDetectorScalingKey] * counterScale;
 
     counterHistorySize = counterScale * 10;
     while (counterHistory.size() < counterHistorySize) {
@@ -102,7 +102,7 @@
 - (SignalProcessorController*)controller
 {
     if (controller == nil) {
-        controller = [[LevelDetectorController createWithLevelDetector:self] retain];
+        controller = [[PeakDetectorController createWithPeakDetector:self] retain];
     }
 
     return controller;

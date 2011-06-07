@@ -4,22 +4,25 @@
 //
 
 #import "DropboxUploader.h"
+#import "NetworkActivityIndicator.h"
 #import "RecordingInfo.h"
 
 @interface DropboxUploader ()
 
+- (void)startReachabilityService;
 - (void)networkReachabilityChanged:(NSNotification*)notification;
 - (void)startRestClient;
 - (void)warnNetworkAvailable;
 - (void)stopRestClient;
 - (void)warnNetworkUnavailable;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+- (void)readyToUpload;
 
 @end
 
 @implementation DropboxUploader
 
-@synthesize uploadingFile, postedAlert;
+@synthesize uploadingFile, postedAlert, monitor, networkActivityIndicator;
 
 + (id)createWithSession:(DBSession*)session
 {
@@ -30,18 +33,13 @@
 {
     if (self = [super init]) {
 	session = [theSession retain];
-	hasFolder = NO;
 	warnedUser = NO;
 	postedAlert = nil;
-	self.uploadingFile = nil;
-	serverReachability = [Reachability reachabilityWithHostName:@"dropbox.com"];
-	[serverReachability retain];
-	[[NSNotificationCenter defaultCenter] addObserver:self
-						 selector:@selector(networkReachabilityChanged:) 
-						     name:kReachabilityChangedNotification
-						   object:serverReachability];
-	[serverReachability startNotifier];
-        [self networkReachabilityChanged: nil];
+        monitor = nil;
+	uploadingFile = nil;
+        networkActivityIndicator = nil;
+        [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(startReachabilityService)
+                                       userInfo:nil repeats:NO];
     }
 
     return self;
@@ -55,6 +53,7 @@
     [self stopRestClient];
 
     self.postedAlert = nil;
+    self.networkActivityIndicator = nil;
 
     [serverReachability stopNotifier];
     [serverReachability release];
@@ -64,6 +63,18 @@
     session = nil;
 
     [super dealloc];
+}
+
+- (void)startReachabilityService
+{
+    serverReachability = [Reachability reachabilityWithHostName:@"dropbox.com"];
+    [serverReachability retain];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(networkReachabilityChanged:) 
+                                                 name:kReachabilityChangedNotification
+                                               object:serverReachability];
+    [serverReachability startNotifier];
+    [self networkReachabilityChanged: nil];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -76,7 +87,7 @@
 {
     if (restClient) {
 	[restClient cancelAllUploads];
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        self.networkActivityIndicator = nil;
     }
 }
 
@@ -84,10 +95,7 @@
 {
     restClient = [[DBRestClient alloc] initWithSession:session];
     restClient.delegate = self;
-    if (hasFolder == NO) {
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-	[restClient createFolder:@"/Datac"];
-    }
+    [restClient loadAccountInfo];
 }
 
 - (void)stopRestClient
@@ -98,7 +106,14 @@
 	restClient = nil;
     }
 
-    self.uploadingFile = nil;
+    if (uploadingFile != nil) {
+        uploadingFile.uploading = NO;
+        uploadingFile.progress = 0.0;
+        [uploadingFile release];
+        uploadingFile = nil;
+    }
+
+    self.networkActivityIndicator = nil;
 }
 
 - (void)setPostedAlert:(UIAlertView *)alert
@@ -125,6 +140,18 @@
     }
 }
 
+- (void)warnNetworkUnavailable
+{
+    if (warnedUser == NO) {
+	self.postedAlert = [[UIAlertView alloc] initWithTitle:@"Network Unavailable" 
+						      message:@"Unable to upload files to Dropbox account." 
+						     delegate:nil
+					    cancelButtonTitle:@"OK" 
+					    otherButtonTitles:nil];
+	warnedUser = YES;
+    }
+}
+
 - (void)networkReachabilityChanged:(NSNotification *)notification
 {
     ReachabilityState state = [serverReachability currentReachabilityState];
@@ -143,38 +170,10 @@
     }
 }
 
-- (void)warnNetworkUnavailable
-{
-    if (warnedUser == NO) {
-	self.postedAlert = [[UIAlertView alloc] initWithTitle:@"Network Unavailable" 
-						      message:@"Unable to upload files to Dropbox account." 
-						     delegate:nil
-					    cancelButtonTitle:@"OK" 
-					    otherButtonTitles:nil];
-	warnedUser = YES;
-    }
-}
-
 - (void)setUploadingFile:(RecordingInfo*)recording
 {
-    if (recording == nil) {
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-	if (uploadingFile != nil) {
-	    uploadingFile.uploading = NO;
-	    uploadingFile.progress = 0.0;
-	    [uploadingFile release];
-	    uploadingFile = nil;
-	}
-	return;
-    }
-
-    if (restClient == nil) {
-	return;
-    }
-
-    if (hasFolder == NO || uploadingFile != nil) {
-	return;
-    }
+    if (restClient == nil) return;
+    if (uploadingFile != nil) return;
 
     uploadingFile = [recording retain];
     uploadingFile.uploading = YES;
@@ -184,28 +183,40 @@
     [restClient uploadFile:[uploadingFile.filePath lastPathComponent]
 		    toPath:@"/Datac"
 		  fromPath:uploadingFile.filePath];
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+
+    self.networkActivityIndicator = [NetworkActivityIndicator create];
 }
 
-- (void)restClientDidLogin:(DBRestClient*)client
+- (void)restClient:(DBRestClient*)client loadedAccountInfo:(DBAccountInfo*)info
 {
-    NSLog(@"DropboxUploader.restClientDidLogin");
+    NSLog(@"DropboxUploader.restClient:loadedAccountInfo:");
+    self.networkActivityIndicator = [NetworkActivityIndicator create];
+    [restClient createFolder:@"/Datac"];
+}
+
+- (void)restClient:(DBRestClient*)client loadAccountInfoFailedWithError:(NSError*)error
+{
+    NSLog(@"DropboxUploader.restClient:loadAccountInfoFailedWithError: %@, %@", error, [error userInfo]);
+
+    //
+    // Hmmm. Retry later.
+    //
+    [NSTimer scheduledTimerWithTimeInterval:10.0 target:restClient selector:@selector(loadAccountInfo) userInfo:nil 
+                                    repeats:NO];
 }
 
 - (void)restClient:(DBRestClient*)client createdFolder:(DBMetadata*)folder
 {
     NSLog(@"DropboxUploader.restClient:createdFolder:");
-    hasFolder = YES;
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    [self readyToUpload];
 }
 
 - (void)restClient:(DBRestClient*)client createFolderFailedWithError:(NSError*)error
 {
     NSLog(@"DropboxUploader.restClient:createFolderFailedWithError: %@, %@", error, [error userInfo]);
-    if ([[error domain] isEqualToString:@"dropbox.com"] && [error code] == 403) {
-	hasFolder = YES;
+    if ([error code] == 403) {
+        [self readyToUpload];
     }
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 
 - (void)restClient:(DBRestClient*)client uploadProgress:(CGFloat)progress 
@@ -219,13 +230,27 @@
 {
     NSLog(@"DropboxUploader.restClient:uploadedFile");
     uploadingFile.uploaded = YES;
-    self.uploadingFile = nil;
+    [self readyToUpload];
 }
 
 - (void)restClient:(DBRestClient*)client uploadFileFailedWithError:(NSError*)error
 {
     NSLog(@"DropboxUploader.restClient:uploadFileFailedWithError: - %@, %@", error, [error userInfo]);
-    self.uploadingFile = nil;
+    [self readyToUpload];
+}
+
+- (void)readyToUpload
+{
+    if (uploadingFile != nil) {
+        uploadingFile.uploading = NO;
+        uploadingFile.progress = 0.0;
+        [uploadingFile release];
+        uploadingFile = nil;
+    }
+
+    self.networkActivityIndicator = nil;
+
+    [monitor readyToUpload];
 }
 
 @end

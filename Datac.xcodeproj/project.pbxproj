@@ -68,12 +68,19 @@
 		BD232B7F1333FA9D006ADDC4 /* YellowButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BD232B6C1333FA9D006ADDC4 /* YellowButton@2x.png */; };
 		BD232B821333FAC5006ADDC4 /* DimGreenButton.opacity in Resources */ = {isa = PBXBuildFile; fileRef = BD232B801333FAC5006ADDC4 /* DimGreenButton.opacity */; };
 		BD232B831333FAC5006ADDC4 /* SplashScreen.opacity in Resources */ = {isa = PBXBuildFile; fileRef = BD232B811333FAC5006ADDC4 /* SplashScreen.opacity */; };
+		BD24DE8D139AB1B9005C7D0C /* LevelSettingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD24DE8C139AB1B9005C7D0C /* LevelSettingView.mm */; };
+		BD24DE8E139AB1B9005C7D0C /* LevelSettingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD24DE8C139AB1B9005C7D0C /* LevelSettingView.mm */; };
+		BD24DF86139AD9D6005C7D0C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765070DF74369002DB57D /* CoreGraphics.framework */; };
 		BD2647D5134B4746005CC79E /* 159-voicemail.png in Resources */ = {isa = PBXBuildFile; fileRef = BD2647D4134B4746005CC79E /* 159-voicemail.png */; };
 		BD29187C1328456500FE5395 /* SampleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD29187B1328456500FE5395 /* SampleView.xib */; };
 		BD2F285C1383B613000E69AE /* AUOutputBL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD2F285A1383B613000E69AE /* AUOutputBL.cpp */; };
-		BD2FC1B81373F643004BEA40 /* LevelDetectorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2FC1B71373F643004BEA40 /* LevelDetectorController.mm */; };
+		BD2FC1B81373F643004BEA40 /* PeakDetectorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2FC1B71373F643004BEA40 /* PeakDetectorController.mm */; };
 		BD2FC23C137443AC004BEA40 /* SignalProcessorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2FC23B137443AC004BEA40 /* SignalProcessorController.mm */; };
 		BD2FC35A137483C6004BEA40 /* HiLowSignalProcessorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2FC359137483C6004BEA40 /* HiLowSignalProcessorController.mm */; };
+		BD43CB9D13979A86000308B8 /* BlackPushButton.png in Resources */ = {isa = PBXBuildFile; fileRef = BD43CB9C13979A84000308B8 /* BlackPushButton.png */; };
+		BD43CB9F13979D1D000308B8 /* BlackPushButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BD43CB9E13979D1B000308B8 /* BlackPushButton@2x.png */; };
+		BD5739F7139E7AE5003DD328 /* NetworkActivityIndicator.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5739F6139E7AE5003DD328 /* NetworkActivityIndicator.mm */; };
+		BD5739F8139E7AE5003DD328 /* NetworkActivityIndicator.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5739F6139E7AE5003DD328 /* NetworkActivityIndicator.mm */; };
 		BD5EAF311345CABC00B01DC7 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF221345CABC00B01DC7 /* AppDelegate.mm */; };
 		BD5EAF331345CABC00B01DC7 /* DataCapture.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF261345CABC00B01DC7 /* DataCapture.mm */; };
 		BD5EAF341345CABC00B01DC7 /* DropboxUploader.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF281345CABC00B01DC7 /* DropboxUploader.mm */; };
@@ -86,7 +93,7 @@
 		BD5EAF551345CADF00B01DC7 /* SampleRecorder.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF421345CADF00B01DC7 /* SampleRecorder.mm */; };
 		BD5EAF561345CADF00B01DC7 /* SampleView.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF441345CADF00B01DC7 /* SampleView.mm */; };
 		BD5EAF571345CADF00B01DC7 /* SettingsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF461345CADF00B01DC7 /* SettingsViewController.mm */; };
-		BD5EAF581345CADF00B01DC7 /* LevelDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF481345CADF00B01DC7 /* LevelDetector.mm */; };
+		BD5EAF581345CADF00B01DC7 /* PeakDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF481345CADF00B01DC7 /* PeakDetector.mm */; };
 		BD5EAF591345CADF00B01DC7 /* SampleViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF4A1345CADF00B01DC7 /* SampleViewController.mm */; };
 		BD5EAF5A1345CADF00B01DC7 /* MicSwitchDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF4C1345CADF00B01DC7 /* MicSwitchDetector.mm */; };
 		BD5EAF5B1345CADF00B01DC7 /* UserSettings.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF4E1345CADF00B01DC7 /* UserSettings.mm */; };
@@ -122,7 +129,6 @@
 		BD937579134B53000015CC8D /* IASKAppSettingsWebViewController+Customizations.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD937578134B53000015CC8D /* IASKAppSettingsWebViewController+Customizations.mm */; };
 		BD9D943B134919920054C7E8 /* copyrights.html in Resources */ = {isa = PBXBuildFile; fileRef = BD9D9439134919920054C7E8 /* copyrights.html */; };
 		BDB1D7D913773C000051F5B9 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB1D7D813773C000051F5B9 /* libCorePlot-CocoaTouch.a */; };
-		BDB1D9511377D12E0051F5B9 /* LevelDetectorInfoOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = BDB1D9501377D12E0051F5B9 /* LevelDetectorInfoOverlay.xib */; };
 		BDB1D9CD1377E6EA0051F5B9 /* AFSK.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1D9CC1377E6EA0051F5B9 /* AFSK.mm */; };
 		BDB1DB61137806AF0051F5B9 /* HiLowSignalProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1DB60137806AF0051F5B9 /* HiLowSignalProcessor.mm */; };
 		BDB1DC34137895850051F5B9 /* 159-voicemail.opacity in Resources */ = {isa = PBXBuildFile; fileRef = BDB1DC33137895830051F5B9 /* 159-voicemail.opacity */; };
@@ -138,7 +144,6 @@
 		BDB670A8136EBBCF009FF047 /* FrequencyDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB670A7136EBBCF009FF047 /* FrequencyDetector.mm */; };
 		BDB670A9136EBBCF009FF047 /* FrequencyDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB670A7136EBBCF009FF047 /* FrequencyDetector.mm */; };
 		BDB670EF136EF90E009FF047 /* FrequencyDetectorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB670EE136EF90E009FF047 /* FrequencyDetectorTests.mm */; };
-		BDB671C3137034C2009FF047 /* AFSKInfoOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = BDB671C2137034C2009FF047 /* AFSKInfoOverlay.xib */; };
 		BDB83003135991A30026F11B /* BitFrameDecoderTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB82FFF135991600026F11B /* BitFrameDecoderTests.mm */; };
 		BDB833B0135C50740026F11B /* LowPassFilterTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB833AB135C50350026F11B /* LowPassFilterTests.mm */; };
 		BDBA132A137A768B00AD9A95 /* guide.html in Resources */ = {isa = PBXBuildFile; fileRef = BDBA1328137A768B00AD9A95 /* guide.html */; };
@@ -209,13 +214,15 @@
 		BDEB620F138D388F001AE9EE /* invertedAudio.wav in Resources */ = {isa = PBXBuildFile; fileRef = BDEB620E138D388F001AE9EE /* invertedAudio.wav */; };
 		BDEB64C2138D7D16001AE9EE /* ZoomMin.png in Resources */ = {isa = PBXBuildFile; fileRef = BDEB64C1138D7D14001AE9EE /* ZoomMin.png */; };
 		BDEB64C4138D7D69001AE9EE /* ZoomMax.png in Resources */ = {isa = PBXBuildFile; fileRef = BDEB64C3138D7D68001AE9EE /* ZoomMax.png */; };
-		BDEF5A0313865F590074E93A /* AboveLevelCounterTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEF5A0213865F590074E93A /* AboveLevelCounterTests.mm */; };
-		BDEF5A0D138660950074E93A /* AboveLevelCounter.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEF5A0C138660950074E93A /* AboveLevelCounter.mm */; };
-		BDEF5A42138667030074E93A /* AboveLevelCounter.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEF5A0C138660950074E93A /* AboveLevelCounter.mm */; };
+		BDEF5A0313865F590074E93A /* PeakCounterTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEF5A0213865F590074E93A /* PeakCounterTests.mm */; };
+		BDEF5A0D138660950074E93A /* PeakCounter.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEF5A0C138660950074E93A /* PeakCounter.mm */; };
+		BDEF5A42138667030074E93A /* PeakCounter.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEF5A0C138660950074E93A /* PeakCounter.mm */; };
 		BDEF5E711387259F0074E93A /* iphone.css in Resources */ = {isa = PBXBuildFile; fileRef = BDEF5E6F1387259E0074E93A /* iphone.css */; };
 		BDEF5EC41387329D0074E93A /* stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = BDEF5EC21387329D0074E93A /* stripes.png */; };
 		BDEF5ED8138732F00074E93A /* ipad.css in Resources */ = {isa = PBXBuildFile; fileRef = BDEF5ED6138732F00074E93A /* ipad.css */; };
 		BDEF5F5013873A5D0074E93A /* ios.css in Resources */ = {isa = PBXBuildFile; fileRef = BDEF5F4E13873A5C0074E93A /* ios.css */; };
+		BDF07791138FF28A005529BC /* RunningAverager.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDF07790138FF28A005529BC /* RunningAverager.mm */; };
+		BDF07792138FF28A005529BC /* RunningAverager.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDF07790138FF28A005529BC /* RunningAverager.mm */; };
 		BDF9D9C91326E9A5004DC652 /* IASKAppSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDF9D9A31326E9A5004DC652 /* IASKAppSettingsViewController.m */; };
 		BDF9D9CA1326E9A5004DC652 /* IASKSpecifierValuesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDF9D9A51326E9A5004DC652 /* IASKSpecifierValuesViewController.m */; };
 		BDF9D9CB1326E9A5004DC652 /* IASKAppSettingsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDF9D9A71326E9A5004DC652 /* IASKAppSettingsWebViewController.m */; };
@@ -320,16 +327,22 @@
 		BD232B6C1333FA9D006ADDC4 /* YellowButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "YellowButton@2x.png"; path = "Images/YellowButton@2x.png"; sourceTree = "<group>"; };
 		BD232B801333FAC5006ADDC4 /* DimGreenButton.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = DimGreenButton.opacity; path = Images/DimGreenButton.opacity; sourceTree = "<group>"; };
 		BD232B811333FAC5006ADDC4 /* SplashScreen.opacity */ = {isa = PBXFileReference; lastKnownFileType = file; name = SplashScreen.opacity; path = Images/SplashScreen.opacity; sourceTree = "<group>"; };
+		BD24DE8B139AB1B9005C7D0C /* LevelSettingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelSettingView.h; sourceTree = "<group>"; };
+		BD24DE8C139AB1B9005C7D0C /* LevelSettingView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LevelSettingView.mm; sourceTree = "<group>"; };
 		BD2647D4134B4746005CC79E /* 159-voicemail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "159-voicemail.png"; path = "Images/159-voicemail.png"; sourceTree = "<group>"; };
 		BD29187B1328456500FE5395 /* SampleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SampleView.xib; sourceTree = "<group>"; };
 		BD2F285A1383B613000E69AE /* AUOutputBL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AUOutputBL.cpp; sourceTree = "<group>"; };
 		BD2F285B1383B613000E69AE /* AUOutputBL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AUOutputBL.h; sourceTree = "<group>"; };
-		BD2FC1B61373F643004BEA40 /* LevelDetectorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelDetectorController.h; sourceTree = "<group>"; };
-		BD2FC1B71373F643004BEA40 /* LevelDetectorController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LevelDetectorController.mm; sourceTree = "<group>"; };
+		BD2FC1B61373F643004BEA40 /* PeakDetectorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeakDetectorController.h; sourceTree = "<group>"; };
+		BD2FC1B71373F643004BEA40 /* PeakDetectorController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PeakDetectorController.mm; sourceTree = "<group>"; };
 		BD2FC1B91374372D004BEA40 /* SignalProcessorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignalProcessorController.h; sourceTree = "<group>"; };
 		BD2FC23B137443AC004BEA40 /* SignalProcessorController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SignalProcessorController.mm; sourceTree = "<group>"; };
 		BD2FC358137483C6004BEA40 /* HiLowSignalProcessorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HiLowSignalProcessorController.h; sourceTree = "<group>"; };
 		BD2FC359137483C6004BEA40 /* HiLowSignalProcessorController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HiLowSignalProcessorController.mm; sourceTree = "<group>"; };
+		BD43CB9C13979A84000308B8 /* BlackPushButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlackPushButton.png; path = Images/BlackPushButton.png; sourceTree = "<group>"; };
+		BD43CB9E13979D1B000308B8 /* BlackPushButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BlackPushButton@2x.png"; path = "Images/BlackPushButton@2x.png"; sourceTree = "<group>"; };
+		BD5739F5139E7AE5003DD328 /* NetworkActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkActivityIndicator.h; sourceTree = "<group>"; };
+		BD5739F6139E7AE5003DD328 /* NetworkActivityIndicator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NetworkActivityIndicator.mm; sourceTree = "<group>"; };
 		BD5EAF211345CABC00B01DC7 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BD5EAF221345CABC00B01DC7 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; wrapsLines = 0; };
 		BD5EAF251345CABC00B01DC7 /* DataCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataCapture.h; sourceTree = "<group>"; };
@@ -353,8 +366,8 @@
 		BD5EAF441345CADF00B01DC7 /* SampleView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SampleView.mm; sourceTree = "<group>"; };
 		BD5EAF451345CADF00B01DC7 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		BD5EAF461345CADF00B01DC7 /* SettingsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsViewController.mm; sourceTree = "<group>"; };
-		BD5EAF471345CADF00B01DC7 /* LevelDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelDetector.h; sourceTree = "<group>"; };
-		BD5EAF481345CADF00B01DC7 /* LevelDetector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LevelDetector.mm; sourceTree = "<group>"; };
+		BD5EAF471345CADF00B01DC7 /* PeakDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeakDetector.h; sourceTree = "<group>"; };
+		BD5EAF481345CADF00B01DC7 /* PeakDetector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PeakDetector.mm; sourceTree = "<group>"; };
 		BD5EAF491345CADF00B01DC7 /* SampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleViewController.h; sourceTree = "<group>"; };
 		BD5EAF4A1345CADF00B01DC7 /* SampleViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SampleViewController.mm; sourceTree = "<group>"; };
 		BD5EAF4B1345CADF00B01DC7 /* MicSwitchDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MicSwitchDetector.h; sourceTree = "<group>"; };
@@ -401,7 +414,6 @@
 		BD937578134B53000015CC8D /* IASKAppSettingsWebViewController+Customizations.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "IASKAppSettingsWebViewController+Customizations.mm"; sourceTree = "<group>"; };
 		BD9D943A134919920054C7E8 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = English; path = English.lproj/copyrights.html; sourceTree = "<group>"; };
 		BDB1D7D813773C000051F5B9 /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libCorePlot-CocoaTouch.a"; path = "CorePlot/libCorePlot-CocoaTouch.a"; sourceTree = "<group>"; };
-		BDB1D9501377D12E0051F5B9 /* LevelDetectorInfoOverlay.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LevelDetectorInfoOverlay.xib; sourceTree = "<group>"; };
 		BDB1D9CB1377E6EA0051F5B9 /* AFSK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFSK.h; sourceTree = "<group>"; };
 		BDB1D9CC1377E6EA0051F5B9 /* AFSK.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AFSK.mm; sourceTree = "<group>"; };
 		BDB1D9EB1377E92E0051F5B9 /* SignalProcessorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignalProcessorProtocol.h; sourceTree = "<group>"; };
@@ -422,7 +434,6 @@
 		BDB670A6136EBBCF009FF047 /* FrequencyDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrequencyDetector.h; sourceTree = "<group>"; };
 		BDB670A7136EBBCF009FF047 /* FrequencyDetector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FrequencyDetector.mm; sourceTree = "<group>"; };
 		BDB670EE136EF90E009FF047 /* FrequencyDetectorTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FrequencyDetectorTests.mm; sourceTree = "<group>"; };
-		BDB671C2137034C2009FF047 /* AFSKInfoOverlay.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AFSKInfoOverlay.xib; sourceTree = "<group>"; };
 		BDB82FFF135991600026F11B /* BitFrameDecoderTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BitFrameDecoderTests.mm; sourceTree = "<group>"; };
 		BDB833AB135C50350026F11B /* LowPassFilterTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LowPassFilterTests.mm; sourceTree = "<group>"; };
 		BDBA1329137A768B00AD9A95 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = English; path = English.lproj/guide.html; sourceTree = "<group>"; };
@@ -531,13 +542,15 @@
 		BDEB620E138D388F001AE9EE /* invertedAudio.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = invertedAudio.wav; sourceTree = "<group>"; };
 		BDEB64C1138D7D14001AE9EE /* ZoomMin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ZoomMin.png; path = Images/ZoomMin.png; sourceTree = "<group>"; };
 		BDEB64C3138D7D68001AE9EE /* ZoomMax.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ZoomMax.png; path = Images/ZoomMax.png; sourceTree = "<group>"; };
-		BDEF5A0213865F590074E93A /* AboveLevelCounterTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AboveLevelCounterTests.mm; sourceTree = "<group>"; };
-		BDEF5A0B138660950074E93A /* AboveLevelCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboveLevelCounter.h; sourceTree = "<group>"; };
-		BDEF5A0C138660950074E93A /* AboveLevelCounter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AboveLevelCounter.mm; sourceTree = "<group>"; };
+		BDEF5A0213865F590074E93A /* PeakCounterTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PeakCounterTests.mm; sourceTree = "<group>"; };
+		BDEF5A0B138660950074E93A /* PeakCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeakCounter.h; sourceTree = "<group>"; };
+		BDEF5A0C138660950074E93A /* PeakCounter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PeakCounter.mm; sourceTree = "<group>"; };
 		BDEF5E701387259E0074E93A /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = English; path = English.lproj/iphone.css; sourceTree = "<group>"; };
 		BDEF5EC31387329D0074E93A /* English */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = English; path = English.lproj/stripes.png; sourceTree = "<group>"; };
 		BDEF5ED7138732F00074E93A /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = English; path = English.lproj/ipad.css; sourceTree = "<group>"; };
 		BDEF5F4F13873A5C0074E93A /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = English; path = English.lproj/ios.css; sourceTree = "<group>"; };
+		BDF0778F138FF28A005529BC /* RunningAverager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RunningAverager.h; sourceTree = "<group>"; };
+		BDF07790138FF28A005529BC /* RunningAverager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RunningAverager.mm; sourceTree = "<group>"; };
 		BDF9D9A21326E9A5004DC652 /* IASKAppSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IASKAppSettingsViewController.h; sourceTree = "<group>"; };
 		BDF9D9A31326E9A5004DC652 /* IASKAppSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IASKAppSettingsViewController.m; sourceTree = "<group>"; };
 		BDF9D9A41326E9A5004DC652 /* IASKSpecifierValuesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IASKSpecifierValuesViewController.h; sourceTree = "<group>"; };
@@ -609,6 +622,7 @@
 			files = (
 				BDE4146E138D021400892C35 /* OpenGLES.framework in Frameworks */,
 				BDE414A0138D22F500892C35 /* AudioToolbox.framework in Frameworks */,
+				BD24DF86139AD9D6005C7D0C /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -661,9 +675,7 @@
 				BDEF5F9313873DBB0074E93A /* HTML */,
 				BD937541134B51D70015CC8D /* Dropbox.keys */,
 				BD5EAFA91345DE4400B01DC7 /* RecordingInfo.xcdatamodel */,
-				BDB671C2137034C2009FF047 /* AFSKInfoOverlay.xib */,
 				BDBA1347137A7C9400AD9A95 /* Guide.xib */,
-				BDB1D9501377D12E0051F5B9 /* LevelDetectorInfoOverlay.xib */,
 				28AD73870D9D96C1002E5188 /* MainWindow.xib */,
 				BD230B881333A366006ADDC4 /* RpmView.xib */,
 				BD29187B1328456500FE5395 /* SampleView.xib */,
@@ -709,8 +721,8 @@
 				BDB82FFF135991600026F11B /* BitFrameDecoderTests.mm */,
 				BD7E79E11358DB0200F38E0F /* BitStreamFrameDetectorTests.mm */,
 				BDB670EE136EF90E009FF047 /* FrequencyDetectorTests.mm */,
-				BDEF5A0213865F590074E93A /* AboveLevelCounterTests.mm */,
 				BDB833AB135C50350026F11B /* LowPassFilterTests.mm */,
+				BDEF5A0213865F590074E93A /* PeakCounterTests.mm */,
 				BD14B4CA1357296E00F39A4B /* SampleCircularBufferTests.mm */,
 				BDB66FEA136E93D1009FF047 /* WaveCycleDetectorTests.mm */,
 				BDB66ECE136B176F009FF047 /* WeightedAveragerTests.mm */,
@@ -755,17 +767,17 @@
 			name = "AFSK Processor";
 			sourceTree = "<group>";
 		};
-		BD7E79591358AA4300F38E0F /* Hi Level Processor */ = {
+		BD7E79591358AA4300F38E0F /* Peak Detector Processor */ = {
 			isa = PBXGroup;
 			children = (
-				BDEF5A0B138660950074E93A /* AboveLevelCounter.h */,
-				BDEF5A0C138660950074E93A /* AboveLevelCounter.mm */,
-				BD5EAF471345CADF00B01DC7 /* LevelDetector.h */,
-				BD5EAF481345CADF00B01DC7 /* LevelDetector.mm */,
-				BD2FC1B61373F643004BEA40 /* LevelDetectorController.h */,
-				BD2FC1B71373F643004BEA40 /* LevelDetectorController.mm */,
+				BDEF5A0B138660950074E93A /* PeakCounter.h */,
+				BDEF5A0C138660950074E93A /* PeakCounter.mm */,
+				BD5EAF471345CADF00B01DC7 /* PeakDetector.h */,
+				BD5EAF481345CADF00B01DC7 /* PeakDetector.mm */,
+				BD2FC1B61373F643004BEA40 /* PeakDetectorController.h */,
+				BD2FC1B71373F643004BEA40 /* PeakDetectorController.mm */,
 			);
-			name = "Hi Level Processor";
+			name = "Peak Detector Processor";
 			sourceTree = "<group>";
 		};
 		BD7E79751358AB6300F38E0F /* LED Indicator Button */ = {
@@ -790,6 +802,8 @@
 				BD5EAF3E1345CADF00B01DC7 /* RecordingsViewController.mm */,
 				BD5EAF411345CADF00B01DC7 /* SampleRecorder.h */,
 				BD5EAF421345CADF00B01DC7 /* SampleRecorder.mm */,
+				BD5739F5139E7AE5003DD328 /* NetworkActivityIndicator.h */,
+				BD5739F6139E7AE5003DD328 /* NetworkActivityIndicator.mm */,
 			);
 			name = "Recordings Tab";
 			sourceTree = "<group>";
@@ -797,6 +811,8 @@
 		BD7E79861358AC1F00F38E0F /* Input Tab */ = {
 			isa = PBXGroup;
 			children = (
+				BD24DE8B139AB1B9005C7D0C /* LevelSettingView.h */,
+				BD24DE8C139AB1B9005C7D0C /* LevelSettingView.mm */,
 				BD5EAF431345CADF00B01DC7 /* SampleView.h */,
 				BD5EAF441345CADF00B01DC7 /* SampleView.mm */,
 				BD5EAF491345CADF00B01DC7 /* SampleViewController.h */,
@@ -814,6 +830,8 @@
 			children = (
 				BD5EAF2D1345CABC00B01DC7 /* LowPassFilter.h */,
 				BD5EAF2E1345CABC00B01DC7 /* LowPassFilter.mm */,
+				BDF0778F138FF28A005529BC /* RunningAverager.h */,
+				BDF07790138FF28A005529BC /* RunningAverager.mm */,
 				BD7E798D1358AD1B00F38E0F /* SampleProcessorProtocol.h */,
 				BDB1D9EB1377E92E0051F5B9 /* SignalProcessorProtocol.h */,
 				BD2FC1B91374372D004BEA40 /* SignalProcessorController.h */,
@@ -825,7 +843,7 @@
 				BD7E79581358AA1C00F38E0F /* AFSK Processor */,
 				BDE413B3138CEC1B00892C35 /* Pulse Width Detection */,
 				BDB1DB3B1378014D0051F5B9 /* Hi-Low Level Processor */,
-				BD7E79591358AA4300F38E0F /* Hi Level Processor */,
+				BD7E79591358AA4300F38E0F /* Peak Detector Processor */,
 				BD7E79881358AC9600F38E0F /* Mic Switch Detection */,
 			);
 			name = "Signal Processors";
@@ -1106,6 +1124,8 @@
 				BDBA13D5137B240F00AD9A95 /* detections@2x.png */,
 				BD14DFF91381E8E70007F4B9 /* DimRedButton.png */,
 				BD14DFFB1381E8ED0007F4B9 /* DimRedButton@2x.png */,
+				BD43CB9C13979A84000308B8 /* BlackPushButton.png */,
+				BD43CB9E13979D1B000308B8 /* BlackPushButton@2x.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -1353,8 +1373,6 @@
 				BD9D943B134919920054C7E8 /* copyrights.html in Resources */,
 				BD2647D5134B4746005CC79E /* 159-voicemail.png in Resources */,
 				BD937542134B51D70015CC8D /* Dropbox.keys in Resources */,
-				BDB671C3137034C2009FF047 /* AFSKInfoOverlay.xib in Resources */,
-				BDB1D9511377D12E0051F5B9 /* LevelDetectorInfoOverlay.xib in Resources */,
 				BDB1DC34137895850051F5B9 /* 159-voicemail.opacity in Resources */,
 				BDB1DC40137897350051F5B9 /* 159-voicemail@2x.png in Resources */,
 				BDB1DC581378988B0051F5B9 /* icon.opacity in Resources */,
@@ -1384,6 +1402,8 @@
 				BDEF5F5013873A5D0074E93A /* ios.css in Resources */,
 				BDEB64C2138D7D16001AE9EE /* ZoomMin.png in Resources */,
 				BDEB64C4138D7D69001AE9EE /* ZoomMax.png in Resources */,
+				BD43CB9D13979A86000308B8 /* BlackPushButton.png in Resources */,
+				BD43CB9F13979D1D000308B8 /* BlackPushButton@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1483,7 +1503,7 @@
 				BD5EAF551345CADF00B01DC7 /* SampleRecorder.mm in Sources */,
 				BD5EAF561345CADF00B01DC7 /* SampleView.mm in Sources */,
 				BD5EAF571345CADF00B01DC7 /* SettingsViewController.mm in Sources */,
-				BD5EAF581345CADF00B01DC7 /* LevelDetector.mm in Sources */,
+				BD5EAF581345CADF00B01DC7 /* PeakDetector.mm in Sources */,
 				BD5EAF591345CADF00B01DC7 /* SampleViewController.mm in Sources */,
 				BD5EAF5A1345CADF00B01DC7 /* MicSwitchDetector.mm in Sources */,
 				BD5EAF5B1345CADF00B01DC7 /* UserSettings.mm in Sources */,
@@ -1499,16 +1519,19 @@
 				BDB66E911369FE05009FF047 /* WaveCycleDetector.mm in Sources */,
 				BDB66EC1136AAED7009FF047 /* WeightedAverager.mm in Sources */,
 				BDB670A8136EBBCF009FF047 /* FrequencyDetector.mm in Sources */,
-				BD2FC1B81373F643004BEA40 /* LevelDetectorController.mm in Sources */,
+				BD2FC1B81373F643004BEA40 /* PeakDetectorController.mm in Sources */,
 				BD2FC23C137443AC004BEA40 /* SignalProcessorController.mm in Sources */,
 				BD2FC35A137483C6004BEA40 /* HiLowSignalProcessorController.mm in Sources */,
 				BDB1D9CD1377E6EA0051F5B9 /* AFSK.mm in Sources */,
 				BDB1DB61137806AF0051F5B9 /* HiLowSignalProcessor.mm in Sources */,
 				BDBA134D137A7E4500AD9A95 /* GuideViewController.mm in Sources */,
 				BD2F285C1383B613000E69AE /* AUOutputBL.cpp in Sources */,
-				BDEF5A0D138660950074E93A /* AboveLevelCounter.mm in Sources */,
+				BDEF5A0D138660950074E93A /* PeakCounter.mm in Sources */,
 				BDE413B6138CECAC00892C35 /* PulseWidthDetector.mm in Sources */,
 				BDE413C7138CF08000892C35 /* PulseWidthDetectorController.mm in Sources */,
+				BDF07792138FF28A005529BC /* RunningAverager.mm in Sources */,
+				BD24DE8E139AB1B9005C7D0C /* LevelSettingView.mm in Sources */,
+				BD5739F8139E7AE5003DD328 /* NetworkActivityIndicator.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1532,12 +1555,15 @@
 				BDB66FEC136E940D009FF047 /* WaveCycleDetectorTests.mm in Sources */,
 				BDB670A9136EBBCF009FF047 /* FrequencyDetector.mm in Sources */,
 				BDB670EF136EF90E009FF047 /* FrequencyDetectorTests.mm in Sources */,
-				BDEF5A0313865F590074E93A /* AboveLevelCounterTests.mm in Sources */,
-				BDEF5A42138667030074E93A /* AboveLevelCounter.mm in Sources */,
+				BDEF5A0313865F590074E93A /* PeakCounterTests.mm in Sources */,
+				BDEF5A42138667030074E93A /* PeakCounter.mm in Sources */,
 				BDE41435138CFC4D00892C35 /* PulseWidthDetectorTests.mm in Sources */,
 				BDE41445138D016D00892C35 /* PulseWidthDetector.mm in Sources */,
 				BDE4144A138D019700892C35 /* PulseWidthDetectorController.mm in Sources */,
 				BDE41471138D022E00892C35 /* SignalProcessorController.mm in Sources */,
+				BDF07791138FF28A005529BC /* RunningAverager.mm in Sources */,
+				BD24DE8D139AB1B9005C7D0C /* LevelSettingView.mm in Sources */,
+				BD5739F7139E7AE5003DD328 /* NetworkActivityIndicator.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1809,9 +1835,14 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 3;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_MODEL_TUNING = "";
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_THUMB_SUPPORT = NO;
+				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
+				"GCC_THUMB_SUPPORT[arch=armv7]" = YES;
 				HEADER_SEARCH_PATHS = "CorePlot/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
@@ -1831,6 +1862,9 @@
 				CURRENT_PROJECT_VERSION = 3;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_THUMB_SUPPORT = NO;
+				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
+				"GCC_THUMB_SUPPORT[arch=armv7]" = YES;
 				HEADER_SEARCH_PATHS = "CorePlot/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";

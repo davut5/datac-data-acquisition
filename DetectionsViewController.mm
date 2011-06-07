@@ -5,7 +5,7 @@
 
 #import "AppDelegate.h"
 #import "DetectionsViewController.h"
-#import "LevelDetector.h"
+#import "PeakDetector.h"
 #import "UserSettings.h"
 
 @interface DetectionsViewController(Private)
@@ -22,6 +22,10 @@
 - (id)initWithCoder:(NSCoder*)decoder
 {
     NSLog(@"RpmViewController.initWithCoder");
+    
+    //
+    // We override initWithCoder since we need to run a timer task even if our view is not loaded or shown.
+    //
     if (self = [super initWithCoder:decoder]) {
         graph = nil;
         detector = nil;
@@ -80,7 +84,7 @@
 - (void)updateFromSettings
 {
     NSLog(@"RpmViewController.updateFromSettings");
-    NSUserDefaults* settings = [UserSettings registerDefaults];
+    NSUserDefaults* settings = [NSUserDefaults standardUserDefaults];
     
     Float32 maxX = [settings floatForKey:kSettingsDetectionsViewDurationKey];
     xScale = 1.0 / [settings floatForKey:kSettingsDetectionsViewUpdateRateKey];
@@ -171,10 +175,6 @@
     CPMutableLineStyle *minorGridLineStyle = [CPMutableLineStyle lineStyle];
     minorGridLineStyle.lineWidth = 0.25;
     minorGridLineStyle.lineColor = [[CPColor whiteColor] colorWithAlphaComponent:0.1];
-    
-    CPMutableLineStyle *redLineStyle = [CPMutableLineStyle lineStyle];
-    redLineStyle.lineWidth = 10.0;
-    redLineStyle.lineColor = [[CPColor redColor] colorWithAlphaComponent:0.5];
     
     CPMutableTextStyle *textStyle = [CPTextStyle textStyle];
     textStyle.color = [CPColor colorWithGenericGray:0.75];

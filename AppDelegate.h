@@ -13,7 +13,7 @@
 @class DataCapture;
 @class BitDetector;
 @class DetectionsViewController;
-@class LevelDetector;
+@class PeakDetector;
 @class MicSwitchDetector;
 @class RecordingInfo;
 @class RecordingsViewController;

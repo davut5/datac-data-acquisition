@@ -19,7 +19,7 @@
 
 @implementation SampleView
 
-@synthesize animationTimer, animationInterval, applicationResignedActive, delegate;
+@synthesize animationTimer, animationInterval, delegate;
 
 + (Class) layerClass
 {
@@ -38,12 +38,8 @@
 						     kEAGLDrawablePropertyColorFormat, 
 						     nil];
 	context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
-	if (!context || ![EAGLContext setCurrentContext:context] || ![self createFramebuffer]) {
-	    [self release];
-	    return nil;
-	}
-
-	[self setupView];
+        viewFramebuffer = 0;
+//	[self setupView];
             //	[self drawView];
     }
 
@@ -56,6 +52,7 @@
     [self destroyFramebuffer];
     [self createFramebuffer];
     [self setupView];
+    [self drawView:nil];
 }
 
 -(BOOL)createFramebuffer
@@ -79,10 +76,12 @@
 
 - (void)destroyFramebuffer
 {
-    glDeleteFramebuffersOES(1, &viewFramebuffer);
-    viewFramebuffer = 0;
-    glDeleteRenderbuffersOES(1, &viewRenderbuffer);
-    viewRenderbuffer = 0;
+    if (viewFramebuffer != 0) {
+        glDeleteFramebuffersOES(1, &viewFramebuffer);
+        viewFramebuffer = 0;
+        glDeleteRenderbuffersOES(1, &viewRenderbuffer);
+        viewRenderbuffer = 0;
+    }
 }
 
 - (void)startAnimation
@@ -110,8 +109,6 @@
 
 - (void)drawView:(NSTimer*)timer
 {
-    if (animationTimer == nil) return;
-    if (applicationResignedActive) return;
     [EAGLContext setCurrentContext:context];
     glBindFramebufferOES(GL_FRAMEBUFFER_OES, viewFramebuffer);
     [delegate drawView:self];
@@ -127,11 +124,11 @@
 - (void)dealloc
 {
     [self stopAnimation];
-	
-    if([EAGLContext currentContext] == context) {
+    [self destroyFramebuffer];
+    if ([EAGLContext currentContext] == context) {
 	[EAGLContext setCurrentContext:nil];
     }
-	
+
     [context release];
     context = nil;
 	

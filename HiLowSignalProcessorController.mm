@@ -2,23 +2,58 @@
 //
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //
+#import <memory>
 
 #import "HiLowSignalProcessor.h"
 #import "HiLowSignalProcessorController.h"
-#import "SampleView.h"
 #import "UserSettings.h"
+
+@interface HiLowSignalProcessorController (Private)
+
++ (NSString**)levelNames;
++ (NSString**)keyNames;
+
+@end
 
 @implementation HiLowSignalProcessorController
 
-+ (id)createWithSignalProcessor:(HiLowSignalProcessor*)signalProcessor
+enum GestureKind {
+    kAdjustMaxLowLevel,
+    kAdjustMinHighLevel,
+    kAdjustUnknown,
+};
+
++ (NSString**)levelNames
 {
-    return [[[HiLowSignalProcessorController alloc] initWithSignalProcessor:signalProcessor] autorelease];
+    static NSString* levelNames[] = {
+        [NSLocalizedString(@"Low Level", "Name of low level") retain],
+        [NSLocalizedString(@"High Level", "Name of high level") retain],
+        nil
+    };
+
+    return levelNames;
 }
 
-- (id)initWithSignalProcessor:(HiLowSignalProcessor*)theSignalProcessor
++ (NSString**)keyNames
+{
+    static NSString* keyNames[] = {
+        kSettingsBitDetectorMaxLowLevelKey,
+        kSettingsBitDetectorMinHighLevelKey,
+        nil
+    };
+    
+    return keyNames;
+}
+
++ (id)createWithDetector:(HiLowSignalProcessor*)detector
+{
+    return [[[HiLowSignalProcessorController alloc] initWithDetector:detector] autorelease];
+}
+
+- (id)initWithDetector:(HiLowSignalProcessor*)theDetector
 {
     if (self = [super init]) {
-        signalProcessor = theSignalProcessor;
+        detector = theDetector;
     }
 
     return self;
@@ -26,77 +61,75 @@
 
 - (void)dealloc
 {
-    signalProcessor = nil;
+    detector = nil;
     [super dealloc];
 }
 
 - (void)drawOnSampleView:(GLfloat*)vertices
 {
-#if 0
-    vertices[1] = bitDetector.maxLowLevel;
-    vertices[3] = bitDetector.maxLowLevel;
+    vertices[1] = detector.maxLowLevel;
+    vertices[3] = detector.maxLowLevel;
     glLineWidth(2.0);
     glColor4f(1., 1., 0., 1.0);
     glDrawArrays(GL_LINES, 0, 2);
-    vertices[1] = bitDetector.minHighLevel;
-    vertices[3] = bitDetector.minHighLevel;
+    vertices[1] = detector.minHighLevel;
+    vertices[3] = detector.minHighLevel;
     glColor4f(1., 0., 1., 1.0);
     glDrawArrays(GL_LINES, 0, 2);
-#endif
 }
 
-enum GestureType {
-    kGestureUnknown,
-    kGestureSetMinHighLevel,
-    kGestureSetMaxLowLevel
+struct HitInfo
+{
+    GestureKind kind;
+    CGFloat level;
+    CGFloat delta;
+    HitInfo(GestureKind k, CGFloat l, CGFloat y)
+    : kind(k), level(l), delta(fabs(l - y)) 
+    {}
+    
+    bool operator<(const HitInfo& rhs) const { return delta < rhs.delta; }
 };
 
-- (void)handlePanGesture:(UIPanGestureRecognizer*)recognizer
+- (Float32)distanceFromLevel:(Float32)value
 {
-#if 0
-    CGFloat height = sampleView.bounds.size.height;
-    if (recognizer.state == UIGestureRecognizerStateBegan) {
-        gestureType = kGestureUnknown;
-        CGPoint location = [recognizer locationInView:sampleView];
-        CGFloat y = 1.0 - location.y * 2 / height;
-        CGFloat minHighLevel = bitDetector.minHighLevel;
-        CGFloat maxLowLevel = bitDetector.maxLowLevel;
-        CGFloat dMin = fabs(y - minHighLevel);
-        CGFloat dMax = fabs(y - maxLowLevel);
-        if (dMin < dMax) {
-            if (dMin < 0.10) {
-                gestureType = kGestureSetMinHighLevel;
-                gestureStart = minHighLevel;
-            }
+    HitInfo a(kAdjustMaxLowLevel, detector.maxLowLevel, value);
+    HitInfo b(kAdjustMinHighLevel, detector.minHighLevel, value);
+    if (b < a) std::swap(b, a);
+    return a.delta;
+}
+
+- (void)handlePanGesture:(UIPanGestureRecognizer*)recognizer viewPoint:(CGPoint)pos
+{
+    if (recognizer.state == UIGestureRecognizerStateEnded) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:gestureLevel]
+                                                  forKey:[HiLowSignalProcessorController keyNames][gestureKind]];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        gestureKind = kAdjustUnknown;
+    }
+    else {
+        if (recognizer.state == UIGestureRecognizerStateBegan) {
+            HitInfo a(kAdjustMaxLowLevel, detector.maxLowLevel, pos.y);
+            HitInfo b(kAdjustMinHighLevel, detector.minHighLevel, pos.y);
+            if (b < a) std::swap(b, a);
+            gestureKind = a.kind;
+            gestureStart = pos.y;
+            gestureLevel = a.level;
         }
         else {
-            if (dMax < 0.10) {
-                gestureType = kGestureSetMaxLowLevel;
-                gestureStart = maxLowLevel;
+            gestureLevel += (pos.y - gestureStart);
+            gestureStart = pos.y;
+            if (gestureLevel > 1.0) gestureLevel = 1.0;
+            if (gestureLevel < -1.0) gestureLevel = -1.0;
+            if (gestureKind == kAdjustMaxLowLevel) {
+                detector.maxLowLevel = gestureLevel;
+            }
+            else {
+                detector.minHighLevel = gestureLevel;
             }
         }
+
+        [self showLevelOverlay:[HiLowSignalProcessorController levelNames][gestureKind] withValue:gestureLevel];
     }
-    else if (gestureType != kGestureUnknown) {
-        CGPoint translate = [recognizer translationInView:sampleView];
-        Float32 newLevel = gestureStart - translate.y * 2 / height;
-	if (newLevel > 1.0) newLevel = 1.0;
-	if (newLevel < -1.0) newLevel = -1.0;
-        if (gestureType == kGestureSetMinHighLevel) {
-            bitDetector.minHighLevel = newLevel;
-            if (recognizer.state == UIGestureRecognizerStateEnded) {
-                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:newLevel]
-                                                          forKey:kSettingsPulseDecoderMinHighLevelKey];
-            }
-        }
-        else if (gestureType == kGestureSetMaxLowLevel) {
-            bitDetector.maxLowLevel = newLevel;
-            if (recognizer.state == UIGestureRecognizerStateEnded) {
-                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:newLevel]
-                                                          forKey:kSettingsPulseDecoderMaxLowLevelKey];
-            }
-        }
-    }
-#endif
 }
 
 @end

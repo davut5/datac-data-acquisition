@@ -5,8 +5,8 @@
 
 #import "PulseWidthDetector.h"
 #import "PulseWidthDetectorController.h"
+#import "RunningAverager.h"
 #import "UserSettings.h"
-#import "WeightedAverager.h"
 
 @implementation PulseWidthDetector
 
@@ -24,7 +24,6 @@
         self.sampleProcessor = [WaveCycleDetector createWithLowLevel:-0.33 highLevel:0.33];
         sampleProcessor.observer = self;
         controller = nil;
-        self.smoother = [WeightedAverager createForSize:10];
         observer = nil;
         maxPulseToPulseWidth = 22000;   // 0.5 seconds of samples
         [self updateFromSettings];
@@ -44,15 +43,17 @@
 - (void)updateFromSettings
 {
     NSUserDefaults* settings = [NSUserDefaults standardUserDefaults];
-    self.lowLevel = [settings floatForKey:kSettingsPulseWidthDetectorDetectorLowLevelKey];
-    self.highLevel = [settings floatForKey:kSettingsPulseWidthDetectorDetectorHighLevelKey];
-    self.minHighPulseAmplitude = [settings floatForKey:kSettingsPulseWidthDetectorDetectorMinHighAmplitudeKey];
+    self.lowLevel = [settings floatForKey:kSettingsPulseWidthDetectorLowLevelKey];
+    self.highLevel = [settings floatForKey:kSettingsPulseWidthDetectorHighLevelKey];
+    self.minHighPulseAmplitude = [settings floatForKey:kSettingsPulseWidthDetectorMinHighAmplitudeKey];
+    self.smoother = [RunningAverager createForSize:[settings integerForKey:kSettingsPulseWidthDetectorSmoothingKey]];
     [self reset];
 }
 
 - (void)reset
 {
     [sampleProcessor reset];
+    [smoother reset];
     state = kUnknownState;
     pulseToPulseWidth = 0;
     currentValue = 0.0;
