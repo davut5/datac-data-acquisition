@@ -5,20 +5,20 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
-#import "AboveLevelCounter.h"
+#import "PeakCounter.h"
 #import "WeightedAverager.h"
 
-@interface AboveLevelCounterTests : SenTestCase {
+@interface PeakCounterTests : SenTestCase {
     
 }
 
 @end
 
-@implementation AboveLevelCounterTests
+@implementation PeakCounterTests
 
 - (void)testOne
 {
-    AboveLevelCounter* alc = [AboveLevelCounter createWithLevel:0.4f];
+    PeakCounter* alc = [PeakCounter createWithLevel:0.4f];
     STAssertEquals(0.4f, alc.level, @"");
     STAssertEquals(0ul, alc.counter, @"");
 

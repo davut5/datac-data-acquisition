@@ -17,7 +17,7 @@ enum EdgeKind {
 /** Simple processor that detects when the signal rises above a given level. Maintains a count of the number of times
     this occurs.
 */
-@interface AboveLevelCounter : NSObject<SampleProcessorProtocol> {
+@interface PeakCounter : NSObject<SampleProcessorProtocol> {
 @private
     Float32 level;
     LowPassFilter* lowPassFilter;
@@ -30,7 +30,7 @@ enum EdgeKind {
 @property (nonatomic, readonly) EdgeKind currentEdge;
 @property (nonatomic, readonly) UInt32 counter;
 
-+ (AboveLevelCounter*)createWithLevel:(Float32)level;
++ (PeakCounter*)createWithLevel:(Float32)level;
 
 - (id)initWithLevel:(Float32)level;
 

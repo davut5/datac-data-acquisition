@@ -17,13 +17,19 @@
 #import "RecordingInfo.h"
 #import "RecordingsViewController.h"
 #import "SampleRecorder.h"
-#import "LevelDetector.h"
+#import "PeakDetector.h"
 #import "PulseWidthDetector.h"
 #import "SampleViewController.h"
 #import "SettingsViewController.h"
 #import "UserSettings.h"
 #import "VertexBufferManager.h"
 #import "WaveCycleDetector.h"
+
+@interface AppDelegate (Private)
+
+- (void)makeSignalDetector;
+
+@end
 
 @implementation AppDelegate
 
@@ -38,6 +44,8 @@
 {
     NSLog(@"AppDelegate.application:didFinishLaunchingWithOptions:");
 
+    NSUserDefaults* settings = [NSUserDefaults standardUserDefaults];
+
     //
     // Dropbox SDK initialization
     //
@@ -48,28 +56,43 @@
     [DBSession setSharedSession:dropboxSession];
 
     [application setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
-
+    
     self.dataCapture = [DataCapture create];
-    // self.signalDetector = [LevelDetector create];
+    [self makeSignalDetector];
+
+#if 0
+    // self.signalDetector = [PeakDetector create];
     self.signalDetector = [PulseWidthDetector create];
+#endif
+    
     self.switchDetector = [MicSwitchDetector createWithSampleRate:dataCapture.sampleRate];
     self.vertexBufferManager = [VertexBufferManager createForDuration:1.0 sampleRate:dataCapture.sampleRate];
 
-    dataCapture.invertSignal = [[NSUserDefaults standardUserDefaults]
-                                boolForKey:kSettingsSignalProcessingInvertSignalKey];
-    dataCapture.sampleProcessor = [self.signalDetector sampleProcessor];
+    dataCapture.invertSignal = [settings boolForKey:kSettingsSignalProcessingInvertSignalKey];
     dataCapture.switchDetector = switchDetector;
     dataCapture.vertexBufferManager = vertexBufferManager;
     
-    self.detectionsViewController.detector = self.signalDetector;
-
     application.idleTimerDisabled = YES;
 
     [self.window addSubview:tabBarController.view];
     [self.window makeKeyAndVisible];
 
+    [NSTimer scheduledTimerWithTimeInterval:0.0 target:self selector:@selector(start) userInfo:nil repeats:NO];
+
     NSLog(@"AppDelegate.application:didFinishLaunchingWithOptions: - END");
     return YES;
+}
+
+- (void)makeSignalDetector
+{
+    NSString* detectorClass = [[NSUserDefaults standardUserDefaults]
+                               stringForKey:kSettingsSignalProcessingActiveDetectorKey];
+    NSBundle* bundle = [NSBundle mainBundle];
+    Class cls = [bundle classNamed:detectorClass];
+
+    self.signalDetector = [[cls alloc] init];
+    self.detectionsViewController.detector = self.signalDetector;
+    self.dataCapture.sampleProcessor = [self.signalDetector sampleProcessor];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -90,10 +113,8 @@
 - (void)start
 {
     NSLog(@"AppDelegate.start");
-    if (dataCapture.audioUnitRunning == NO) {
-        [dataCapture start];
-        [signalDetector reset];
-    }
+    [dataCapture start];
+    [signalDetector reset];
 }
 
 - (void)stop
@@ -127,7 +148,8 @@
 - (void)sessionDidReceiveAuthorizationFailure:(DBSession*)session
 {
     NSLog(@"failed to receive authorization");
-    [[[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Dropbox Authorization", @"Dropbox authorization failure alert title.")
+    [[[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Dropbox Authorization",
+                                                           @"Dropbox authorization failure alert title.")
                                  message:NSLocalizedString(@"Failed to access configured Dropbox account.",
                                                            @"Dropbox authorization failure alert text.")
                                 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
@@ -159,7 +181,7 @@
 
 - (void)startRecording
 {
-    RecordingInfo* recording = [recordingsViewController makeRecording];
+    RecordingInfo* recording = [recordingsViewController startRecording];
     dataCapture.sampleRecorder = [SampleRecorder createRecording:recording withFormat:dataCapture.streamFormat];
 }
 
@@ -167,7 +189,7 @@
 {
     samplesViewController.recordIndicator.on = NO;
     dataCapture.sampleRecorder = nil;
-    [recordingsViewController saveContext];
+    [recordingsViewController stopRecording];
 }
 
 - (BOOL)isRecording
@@ -188,6 +210,12 @@
 - (void)updateFromSettings
 {
     NSUserDefaults* settings = [NSUserDefaults standardUserDefaults];
+    NSString* detectorClassName = [settings stringForKey:kSettingsSignalProcessingActiveDetectorKey];
+    NSString* currentClassName = NSStringFromClass([signalDetector class]);
+    if ([detectorClassName isEqualToString:currentClassName] == NO) {
+        [self makeSignalDetector];
+    }
+
     dataCapture.invertSignal = [settings boolForKey:kSettingsSignalProcessingInvertSignalKey];
 
     [samplesViewController updateFromSettings];

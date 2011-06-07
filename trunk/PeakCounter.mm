@@ -3,16 +3,16 @@
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
-#import "AboveLevelCounter.h"
+#import "PeakCounter.h"
 #import "LowPassFilter.h"
 
-@implementation AboveLevelCounter
+@implementation PeakCounter
 
 @synthesize level, lowPassFilter, currentEdge, counter;
 
-+ (AboveLevelCounter*)createWithLevel:(Float32)level
++ (PeakCounter*)createWithLevel:(Float32)level
 {
-    return [[[AboveLevelCounter alloc] initWithLevel:level] autorelease];
+    return [[[PeakCounter alloc] initWithLevel:level] autorelease];
 }
 
 - (id)initWithLevel:(Float32)theLevel

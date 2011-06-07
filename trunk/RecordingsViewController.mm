@@ -12,8 +12,6 @@
 @interface RecordingsViewController ()
 
 - (void)configureCell:(UITableViewCell*)cell withRecordingInfo:(RecordingInfo*)recordingInfo;
-- (void)uploaderCheck:(NSNotification*)notification;
-- (void)updateDropboxUploader;
 - (RecordingInfo*)nextToUpload;
 
 @end
@@ -33,30 +31,21 @@
         persistentStoreCoordinator = nil;
         fetchedResultsController = nil;
         activeRecording = nil;
-        uploadChecker = [[NSTimer scheduledTimerWithTimeInterval:5.0 
-                                                          target:self
-                                                        selector:@selector(uploaderCheck:)
-                                                        userInfo:nil 
-                                                         repeats:YES] retain];
+        [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(updateFromSettings) userInfo:nil repeats:NO];
     }
 
     return self;
 }
 
-#pragma mark -
-#pragma mark Memory management
-
 - (void)dealloc
 {
-    [uploadChecker invalidate];
-    [uploadChecker release];
+    [uploader release];
     [super dealloc];
 }
 
 - (void)viewDidLoad {
     NSLog(@"RecordingsViewController.viewDidLoad");
     appDelegate = static_cast<AppDelegate*>([[UIApplication sharedApplication] delegate]);
-
     self.title = NSLocalizedString(@"Recordings", @"Recordings view title");
     self.tableView.allowsSelection = NO;
     [super viewDidLoad];
@@ -87,11 +76,6 @@
 
 - (void)updateFromSettings
 {
-    [self updateDropboxUploader];
-}
-
-- (void)updateDropboxUploader
-{
     //
     // Only carry around a DropboxUploader if configured to use Dropbox.
     //
@@ -100,6 +84,7 @@
 	[dropboxSession isLinked] == YES) {
 	if (uploader == nil) {
 	    uploader = [[DropboxUploader createWithSession:dropboxSession] retain];
+            uploader.monitor = self;
 	}
     }
     else {
@@ -110,14 +95,11 @@
     }
 }
 
-- (void)uploaderCheck:(NSNotification*)notification
+- (void)readyToUpload
 {
-    [self updateDropboxUploader];
-    if (uploader != nil && uploader.uploadingFile == nil) {
-        RecordingInfo* recordingInfo = [self nextToUpload];
-        if (recordingInfo != nil) {
-            uploader.uploadingFile = recordingInfo;
-        }
+    RecordingInfo* recordingInfo = [self nextToUpload];
+    if (recordingInfo != nil) {
+        uploader.uploadingFile = recordingInfo;
     }
 }
 
@@ -359,7 +341,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     return fetchedResultsController;
 }
 
-- (RecordingInfo*)makeRecording
+- (RecordingInfo*)startRecording
 {
     RecordingInfo* recording = [NSEntityDescription insertNewObjectForEntityForName:@"RecordingInfo"
 							     inManagedObjectContext:self.managedObjectContext];
@@ -368,13 +350,26 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     return recording;
 }
 
+- (void)stopRecording
+{
+    if (activeRecording != nil) {
+        RecordingInfo* recording = activeRecording;
+        activeRecording = nil;
+        [recording finalizeSize];
+        [self saveContext];
+        if (uploader != nil && uploader.uploadingFile == nil) {
+            RecordingInfo* recording = [self nextToUpload];
+            uploader.uploadingFile = recording;
+        }
+    }
+}
+
 - (void)saveContext
 {
     NSError* error;
     if (managedObjectContext != nil && [managedObjectContext hasChanges] && [managedObjectContext save:&error] != YES) {
 	NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
-    activeRecording = nil;
 }
 
 - (RecordingInfo*)nextToUpload
@@ -393,4 +388,3 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 }
 
 @end
-

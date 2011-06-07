@@ -8,9 +8,9 @@
 #import "DataCapture.h"
 #import "IndicatorButton.h"
 #import "IndicatorLight.h"
-#import "LevelDetector.h"
+#import "LevelSettingView.h"
+#import "PeakDetector.h"
 #import "SampleRecorder.h"
-#import "LevelDetector.h"
 #import "SignalProcessorController.h"
 #import "SampleViewController.h"
 #import "UserSettings.h"
@@ -31,7 +31,7 @@
 
 @implementation SampleViewController
 
-@synthesize sampleView, powerIndicator, connectedIndicator, recordIndicator, infoOverlay;
+@synthesize sampleView, powerIndicator, connectedIndicator, recordIndicator, infoOverlay, levelOverlay;
 @synthesize xMinLabel, xMaxLabel, yMaxLabel, yPos05Label, yZeroLabel, yNeg05Label, signalProcessorController;
 @synthesize xMin, yMin, scale;
 
@@ -46,6 +46,13 @@ static const CGFloat kXMax =  1.0;
 static const CGFloat kYMin = -1.0;
 static const CGFloat kYMax =  1.0;
 
+enum GestureType {
+    kGestureUnknown,
+    kGestureScale,
+    kGesturePan,
+    kGestureDetector,
+};
+
 - (id)initWithCoder:(NSCoder*)decoder
 {
     NSLog(@"SampleViewController.initWithCoder");
@@ -56,8 +63,12 @@ static const CGFloat kYMax =  1.0;
     return self;
 }
 
-- (void)dealloc {
-    self.signalProcessorController = nil;
+- (void)dealloc
+{
+    if (signalProcessorController) {
+        [signalProcessorController release];
+        signalProcessorController = nil;
+    }
     [super dealloc];
 }
 
@@ -89,17 +100,17 @@ static const CGFloat kYMax =  1.0;
     //
     // Set widgets so that they will appear behind the graph view when we rotate to the landscape view.
     //
-    powerIndicator.layer.zPosition = -1;
     connectedIndicator.layer.zPosition = -1;
+    connectedIndicator.on = NO;
+
     recordIndicator.layer.zPosition = -1;
-    
     recordIndicator.light.onState = kRed;
     recordIndicator.light.blankedState = kDimRed;
-    recordIndicator.light.blinkingInterval = 0.20;
-    
-    powerIndicator.on = NO;
-    connectedIndicator.on = NO;
+    recordIndicator.light.blinkingInterval = 0.25;
     recordIndicator.on = NO;
+    
+    powerIndicator.layer.zPosition = -1;
+    powerIndicator.on = NO;
 
     //
     // Install single-tap gesture to freeze the display.
@@ -116,7 +127,7 @@ static const CGFloat kYMax =  1.0;
                                     initWithTarget:self action:@selector(handlePanGesture:)]
                                    autorelease];
     pgr.minimumNumberOfTouches = 1;
-    pgr.maximumNumberOfTouches = 2;
+    pgr.maximumNumberOfTouches = 1;
     [sampleView addGestureRecognizer:pgr];
 
     //
@@ -139,6 +150,16 @@ static const CGFloat kYMax =  1.0;
     self.scale = 1.0;   // Use self.scale to update xMaxLabel and set xSpan, ySpan
 
     [super viewDidLoad];
+}
+
+- (SignalProcessorController*)signalProcessorController
+{
+    if (signalProcessorController == nil) {
+        signalProcessorController = [[appDelegate.signalDetector controller] retain];
+        signalProcessorController.levelOverlay = levelOverlay;
+    }
+    
+    return signalProcessorController;
 }
 
 - (void)setScale:(CGFloat)value
@@ -202,7 +223,10 @@ static const CGFloat kYMax =  1.0;
 {
     NSLog(@"SampleViewController.viewDidUnload");
     [self stop];
-    self.signalProcessorController = nil;
+    if (signalProcessorController) {
+        [signalProcessorController release];
+        signalProcessorController = nil;
+    }
     [super viewDidUnload];
 }
 
@@ -211,10 +235,6 @@ static const CGFloat kYMax =  1.0;
     NSLog(@"SampleViewController.viewWillAppear");
     [self adaptViewToOrientation:0];
     [self start];
-    [appDelegate start];
-    self.signalProcessorController = [appDelegate.signalDetector controller];
-    signalProcessorController.sampleView = sampleView;
-    signalProcessorController.infoOverlay = infoOverlay;
     [super viewWillAppear:animated];
 }
 
@@ -222,7 +242,10 @@ static const CGFloat kYMax =  1.0;
 {
     NSLog(@"SampleViewController.viewWillDisappear");
     [self stop];
-    self.signalProcessorController = nil;
+    if (signalProcessorController) {
+        [signalProcessorController release];
+        signalProcessorController = nil;
+    }
     [super viewWillDisappear:animated];
 }
 
@@ -326,41 +349,39 @@ static const CGFloat kYMax =  1.0;
     [vertexBufferManager drawVerticesStartingAt:xMin forSpan:xSpan];
     glPopMatrix();
 
+    GLfloat vertices[ 16 ];
+    glVertexPointer(2, GL_FLOAT, 0, vertices);
+    
     GLfloat xMax = xMin + xSpan;
 
     //
     // Draw three horizontal values at Y = -0.5, 0.0, and +0.5
     //
-    GLfloat vertices[ 16 ];
-    glVertexPointer(2, GL_FLOAT, 0, vertices);
-
     vertices[0] = xMin;
     vertices[1] = yAxes[0];
     vertices[2] = xMax;
     vertices[3] = yAxes[0];
-
+    
     vertices[4] = xMin;
     vertices[5] = yAxes[1];
     vertices[6] = xMax;
     vertices[7] = yAxes[1];
-
+    
     vertices[8] = xMin;
     vertices[9] = yAxes[2];
     vertices[10] = xMax;
     vertices[11] = yAxes[2];
-
+    
     vertices[12] = xMin;
     vertices[13] = yAxes[3];
     vertices[14] = xMax;
     vertices[15] = yAxes[3];
-
+    
     glColor4f(.5, .5, .5, 1.0);
     glLineWidth(0.5);
     glDrawArrays(GL_LINES, 0, 8);
 
-    if (signalProcessorController) {
-        [signalProcessorController drawOnSampleView:vertices];
-    }
+    [self.signalProcessorController drawOnSampleView:vertices];
 }
 
 - (void)handleSingleTapGesture:(UITapGestureRecognizer*)recognizer
@@ -378,46 +399,59 @@ static const CGFloat kYMax =  1.0;
     [self toggleInfoOverlay];
 }
 
-enum GestureType {
-    kGestureUnknown,
-    kGestureScale,
-    kGesturePan,
-    kGestureDetector,
-};
-
 - (void)handlePanGesture:(UIPanGestureRecognizer*)recognizer
 {
     if (recognizer.state == UIGestureRecognizerStateBegan) {
-        if ([recognizer numberOfTouches] == 2) {
-            gestureType = kGestureDetector;
+        CGPoint pos = [recognizer locationInView:sampleView];
+        gestureType = kGestureUnknown;
+        if (self.signalProcessorController != nil) {
+            CGFloat height = sampleView.bounds.size.height;
+            pos.y = (1.0 - pos.y / height) * ySpan + yMin;
+            Float32 distance = [signalProcessorController distanceFromLevel:pos.y];
+            NSLog(@"distance: %f %f", distance, distance / ySpan);
+            if (distance / ySpan < 0.05) {
+                gestureType = kGestureDetector;
+                CGFloat width = sampleView.bounds.size.width;
+                pos.x = pos.x / width * xSpan + xMin;
+                [signalProcessorController handlePanGesture:recognizer viewPoint:pos];
+            }
         }
-        else {
+
+        if (gestureType == kGestureUnknown) {
             gestureType = kGesturePan;
-            gesturePoint = [recognizer translationInView:sampleView];
+            gesturePoint = pos;
+            [levelOverlay hide];
         }
+        return;
     }
 
+    CGPoint pos = [recognizer locationInView:sampleView];
+
     if (gestureType == kGestureDetector) {
-        if (signalProcessorController) {
+        if (self.signalProcessorController) {
             CGFloat width = sampleView.bounds.size.width;
             CGFloat height = sampleView.bounds.size.height;
-            CGPoint pos = [recognizer locationInView:sampleView];
             pos.x = pos.x / width * xSpan + xMin;
             pos.y = (1.0 - pos.y / height) * ySpan + yMin;
             [signalProcessorController handlePanGesture:recognizer viewPoint:pos];
         }
+        
+        if (recognizer.state == UIGestureRecognizerStateEnded) {
+            gestureType = kUnknownType;
+        }
+
         return;
     }
 
     if (gestureType == kGesturePan) {
         CGFloat width = sampleView.bounds.size.width;
         CGFloat height = sampleView.bounds.size.height;
-        CGPoint translate = [recognizer translationInView:sampleView];
-        CGFloat dx = (gesturePoint.x - translate.x) / width;
-        CGFloat dy = (translate.y - gesturePoint.y) / height;
+        CGPoint pos = [recognizer translationInView:sampleView];
+        CGFloat dx = (gesturePoint.x - pos.x) / width;
+        CGFloat dy = (pos.y - gesturePoint.y) / height;
         self.xMin = xMin + dx * xSpan;
         self.yMin = yMin + dy * ySpan;
-        gesturePoint = translate;
+        gesturePoint = pos;
         if (recognizer.state == UIGestureRecognizerStateEnded) {
             kineticPanVelocity = [recognizer velocityInView:sampleView];
             kineticPanVelocity.x = int(kineticPanVelocity.x / 20);
@@ -453,6 +487,7 @@ enum GestureType {
 
 - (void)handlePinchGesture:(UIPinchGestureRecognizer*)recognizer
 {
+    [levelOverlay hide];
     CGFloat width = sampleView.bounds.size.width;
     CGFloat height = sampleView.bounds.size.height;
     if (recognizer.state == UIGestureRecognizerStateBegan) {
@@ -539,7 +574,7 @@ enum GestureType {
         t -= 0.25;
     }
 
-    NSString* format = NSLocalizedString(@"%5.4gs", @"Format string for X label");
+    NSString* format = NSLocalizedString(@"%5.4g", @"Format string for Y labels");
 
     yNeg05Label.center = CGPointMake(yNeg05Label.center.x, offset + height * (1 - yAxes[0]) + 
                                      yNeg05Label.bounds.size.height * 0.5 + 1);
@@ -577,7 +612,7 @@ enum GestureType {
 
 - (void)toggleInfoOverlay
 {
-    if ([signalProcessorController showInfoOverlay] == NO) return;
+    if ([self.signalProcessorController showInfoOverlay] == NO) return;
 
     if (infoOverlay.hidden) {
         infoOverlay.hidden = NO;
@@ -585,7 +620,7 @@ enum GestureType {
         //
         // Add the view managed by the infoOverlayController to our infoOverlay view and make them visible.
         //
-        [signalProcessorController infoOverlayWillAppear];
+        [self.signalProcessorController infoOverlayWillAppear: infoOverlay];
 
         //
         // Reveal the infoOverlay view by popping it up from the tab bar at the bottom of the screen. End when
@@ -605,7 +640,7 @@ enum GestureType {
         // Hide the infoOverlay view by dropping it into the tab bar at the bottom of the screen. When the 
         // animation is done, invoke hideInfoOverlayDone to remove the custom view from our infoOverlay view.
         //
-        [signalProcessorController infoOverlayWillDisappear];
+        [self.signalProcessorController infoOverlayWillDisappear];
         [UIView beginAnimations:@"" context:nil];
         [UIView setAnimationDelegate:self];
         [UIView setAnimationDidStopSelector:@selector(hideInfoOverlayDone:finished:context:)];

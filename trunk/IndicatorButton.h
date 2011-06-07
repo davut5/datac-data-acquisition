@@ -7,8 +7,8 @@
 #import "IndicatorLight.h"
 
 /** A UIControl that contains an on/off indicator and a text label.
-    The on property controls the state of the indicator.
-*/
+ The on property controls the state of the indicator.
+ */
 @interface IndicatorButton : UIControl {
 @private
     IBOutlet IndicatorLight* light;

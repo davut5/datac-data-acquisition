@@ -4,20 +4,20 @@
 //
 
 #import <Foundation/Foundation.h>
-
 #import "SignalProcessorController.h"
 
-@class BitDetector;
+@class HiLowSignalProcessor;
 
 @interface HiLowSignalProcessorController : SignalProcessorController {
 @private
-    HiLowSignalProcessor* signalProcessor;
+    HiLowSignalProcessor* detector;
+    int gestureKind;
     CGFloat gestureStart;
-    int gestureType;
+    CGFloat gestureLevel;
 }
 
-+ (id)createWithSignalProcessor:(HiLowSignalProcessor*)signalProcessor;
++ (id)createWithDetector:(HiLowSignalProcessor*)detector;
 
-- (id)initWithSignalProcessor:(HiLowSignalProcessor*)signalProcessor;
+- (id)initWithDetector:(HiLowSignalProcessor*)detector;
 
 @end

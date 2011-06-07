@@ -12,7 +12,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>1.4 (15)</string>
+			<string>1.5 (16)</string>
 			<key>Key</key>
 			<string>version</string>
 			<key>Title</key>
@@ -121,17 +121,17 @@
 			<string>SIGNAL_PROCESSING_ACTIVE_DETECTOR</string>
 			<key>Title</key>
 			<string>SIGNAL_PROCESSING_ACTIVE_DETECTOR</string>
-			<key>Type</key>
-			<string>PSMultiValueSpecifier</string>
 			<key>Titles</key>
 			<array>
 				<string>Peak</string>
 				<string>Pulse Width</string>
 				<string>ASFK</string>
 			</array>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
 			<key>Values</key>
 			<array>
-				<string>LevelDetector</string>
+				<string>PeakDetector</string>
 				<string>PulseWidthDetector</string>
 				<string>ASFK</string>
 			</array>

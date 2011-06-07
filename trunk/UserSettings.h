@@ -14,11 +14,11 @@ extern NSString* kSettingsInputViewScaleKey;
 extern NSString* kSettingsDetectionsViewDurationKey;
 extern NSString* kSettingsDetectionsViewUpdateRateKey;
 
-extern NSString* kSettingsLevelDetectorLevelKey;
-extern NSString* kSettingsLevelDetectorScalingKey;
-extern NSString* kSettingsLevelDetectorUseLowPassFilterKey;
-extern NSString* kSettingsLevelDetectorLowPassFilterFileNameKey;
-extern NSString* kSettingsLevelDetectorCountsDecayDurationKey;
+extern NSString* kSettingsPeakDetectorLevelKey;
+extern NSString* kSettingsPeakDetectorScalingKey;
+extern NSString* kSettingsPeakDetectorUseLowPassFilterKey;
+extern NSString* kSettingsPeakDetectorLowPassFilterFileNameKey;
+extern NSString* kSettingsPeakDetectorCountsDecayDurationKey;
 
 extern NSString* kSettingsBitDetectorMaxLowLevelKey;
 extern NSString* kSettingsBitDetectorMinHighLevelKey;
@@ -33,10 +33,11 @@ extern NSString* kSettingsBitStreamFrameDetectorPrefixKey;
 extern NSString* kSettingsBitStreamFrameDetectorSuffixKey;
 extern NSString* kSettingsBitStreamFrameDetectorContentSizeKey;
 
-extern NSString* kSettingsPulseWidthDetectorDetectorLowLevelKey;
-extern NSString* kSettingsPulseWidthDetectorDetectorHighLevelKey;
-extern NSString* kSettingsPulseWidthDetectorDetectorMinHighAmplitudeKey;
-extern NSString* kSettingsPulseWidthDetectorDetectorMaxPulse2PulseWidthKey;
+extern NSString* kSettingsPulseWidthDetectorLowLevelKey;
+extern NSString* kSettingsPulseWidthDetectorHighLevelKey;
+extern NSString* kSettingsPulseWidthDetectorMinHighAmplitudeKey;
+extern NSString* kSettingsPulseWidthDetectorMaxPulse2PulseWidthKey;
+extern NSString* kSettingsPulseWidthDetectorSmoothingKey;
 
 extern NSString* kSettingsRecordingsFileFormatKey;
 

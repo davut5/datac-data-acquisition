@@ -24,6 +24,8 @@
 @property (nonatomic, retain) BitDetector* bitDetector;
 @property (nonatomic, retain) BitStreamFrameDetector* bitStreamFrameDetector;
 @property (nonatomic, retain) BitFrameDecoder* bitFrameDecoder;
+@property (nonatomic, assign) Float32 maxLowLevel;
+@property (nonatomic, assign) Float32 minHighLevel;
 
 + (HiLowSignalProcessor*)create;
 
