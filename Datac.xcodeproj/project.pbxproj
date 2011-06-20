@@ -25,9 +25,9 @@
 		BD0B0182133BD6A90086B23B /* ekg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BD0B0181133BD6A80086B23B /* ekg@2x.png */; };
 		BD0B018E133BDA0C0086B23B /* rpm.png in Resources */ = {isa = PBXBuildFile; fileRef = BD0B018D133BDA0C0086B23B /* rpm.png */; };
 		BD0B0190133BDA100086B23B /* rpm@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BD0B018F133BDA100086B23B /* rpm@2x.png */; };
+		BD1242F613A4B9FE005D19C1 /* SampleCircularBufferTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD14B4CA1357296E00F39A4B /* SampleCircularBufferTests.mm */; };
+		BD1242F713A4B9FF005D19C1 /* SampleCircularBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD14B4701357247000F39A4B /* SampleCircularBuffer.mm */; };
 		BD14B43F13571CD400F39A4B /* BitDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD14B43E13571CD400F39A4B /* BitDetector.mm */; };
-		BD14B4CC1357298100F39A4B /* SampleCircularBufferTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD14B4CA1357296E00F39A4B /* SampleCircularBufferTests.mm */; };
-		BD14B5441357357400F39A4B /* SampleCircularBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD14B4701357247000F39A4B /* SampleCircularBuffer.mm */; };
 		BD14DFFA1381E8E80007F4B9 /* DimRedButton.png in Resources */ = {isa = PBXBuildFile; fileRef = BD14DFF91381E8E70007F4B9 /* DimRedButton.png */; };
 		BD14DFFC1381E8EF0007F4B9 /* DimRedButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BD14DFFB1381E8ED0007F4B9 /* DimRedButton@2x.png */; };
 		BD14E00B1381E92C0007F4B9 /* 77-ekg.opacity in Resources */ = {isa = PBXBuildFile; fileRef = BD14E0031381E92B0007F4B9 /* 77-ekg.opacity */; };
@@ -102,7 +102,6 @@
 		BD5EAFAA1345DE4400B01DC7 /* RecordingInfo.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAFA91345DE4400B01DC7 /* RecordingInfo.xcdatamodel */; };
 		BD5EB0F413460E2700B01DC7 /* Reachability.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EB0F313460E2700B01DC7 /* Reachability.mm */; };
 		BD5EB0F813460E7200B01DC7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD5EB0F713460E7200B01DC7 /* SystemConfiguration.framework */; };
-		BD7E792F1358A96F00F38E0F /* SampleCircularBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD14B4701357247000F39A4B /* SampleCircularBuffer.mm */; };
 		BD7E79B21358D37100F38E0F /* BitStreamFrameDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD7E79B11358D37100F38E0F /* BitStreamFrameDetector.mm */; };
 		BD7E79EC1358DB8600F38E0F /* BitStreamFrameDetectorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD7E79E11358DB0200F38E0F /* BitStreamFrameDetectorTests.mm */; };
 		BD7E7A141358DE6A00F38E0F /* BitStreamFrameDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD7E79B11358D37100F38E0F /* BitStreamFrameDetector.mm */; };
@@ -723,7 +722,6 @@
 				BDB670EE136EF90E009FF047 /* FrequencyDetectorTests.mm */,
 				BDB833AB135C50350026F11B /* LowPassFilterTests.mm */,
 				BDEF5A0213865F590074E93A /* PeakCounterTests.mm */,
-				BD14B4CA1357296E00F39A4B /* SampleCircularBufferTests.mm */,
 				BDB66FEA136E93D1009FF047 /* WaveCycleDetectorTests.mm */,
 				BDB66ECE136B176F009FF047 /* WeightedAveragerTests.mm */,
 				BDE41434138CFC4D00892C35 /* PulseWidthDetectorTests.mm */,
@@ -752,6 +750,7 @@
 			children = (
 				BD14B46F1357247000F39A4B /* SampleCircularBuffer.h */,
 				BD14B4701357247000F39A4B /* SampleCircularBuffer.mm */,
+				BD14B4CA1357296E00F39A4B /* SampleCircularBufferTests.mm */,
 			);
 			name = Attic;
 			sourceTree = "<group>";
@@ -1513,7 +1512,6 @@
 				BD5EB0F413460E2700B01DC7 /* Reachability.mm in Sources */,
 				BD937579134B53000015CC8D /* IASKAppSettingsWebViewController+Customizations.mm in Sources */,
 				BD14B43F13571CD400F39A4B /* BitDetector.mm in Sources */,
-				BD7E792F1358A96F00F38E0F /* SampleCircularBuffer.mm in Sources */,
 				BD7E79B21358D37100F38E0F /* BitStreamFrameDetector.mm in Sources */,
 				BD7E7A7A1358E39B00F38E0F /* BitFrameDecoder.mm in Sources */,
 				BDB66E911369FE05009FF047 /* WaveCycleDetector.mm in Sources */,
@@ -1539,8 +1537,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD14B4CC1357298100F39A4B /* SampleCircularBufferTests.mm in Sources */,
-				BD14B5441357357400F39A4B /* SampleCircularBuffer.mm in Sources */,
 				BD7E79EC1358DB8600F38E0F /* BitStreamFrameDetectorTests.mm in Sources */,
 				BD7E7A141358DE6A00F38E0F /* BitStreamFrameDetector.mm in Sources */,
 				BD7E7A151358DE6E00F38E0F /* BitDetector.mm in Sources */,
@@ -1564,6 +1560,8 @@
 				BDF07791138FF28A005529BC /* RunningAverager.mm in Sources */,
 				BD24DE8D139AB1B9005C7D0C /* LevelSettingView.mm in Sources */,
 				BD5739F7139E7AE5003DD328 /* NetworkActivityIndicator.mm in Sources */,
+				BD1242F613A4B9FE005D19C1 /* SampleCircularBufferTests.mm in Sources */,
+				BD1242F713A4B9FF005D19C1 /* SampleCircularBuffer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

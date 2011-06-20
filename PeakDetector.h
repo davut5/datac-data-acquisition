@@ -5,7 +5,7 @@
 
 #import <deque>
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 #import "SampleProcessorProtocol.h"
 #import "SignalProcessorProtocol.h"

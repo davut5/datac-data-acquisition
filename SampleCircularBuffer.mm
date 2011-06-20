@@ -32,11 +32,11 @@
     return [[[SampleCircularBuffer alloc] initWithCapacity:capacity initialValue:initialValue] autorelease];
 }
 
-- (id)initWithCapacity:(NSUInteger)capacity initialValue:(Float32)initialValue
+- (id)initWithCapacity:(NSUInteger)capacity initialValue:(Float32)theInitialValue
 {
     if (self = [super init]) {
-	samples.resize(capacity, initialValue);
-        defaultValue = initialValue;
+	samples.resize(capacity, theInitialValue);
+        initialValue = theInitialValue;
         tail = 0;
     }
     return self;
@@ -47,14 +47,13 @@
     tail = 0;
     size_t size = samples.size();
     samples.clear();
-    samples.resize(size, defaultValue);
+    samples.resize(size, initialValue);
 }
 
 - (void)addSample:(Float32)value
 {
-    size_t pos = tail++;
+    samples[tail++] = value;
     if (tail == samples.size()) tail = 0;
-    samples[pos] = value;
 }
 
 - (Float32)valueAt:(NSUInteger)index
@@ -84,7 +83,7 @@
 - (NSArray*)valueSpans
 {
     //
-    // There will only ever be a max of two SampleSpan objects. There may be one.
+    // There will only ever be a max of two SampleSpan objects; at times there may only be one.
     //
     NSUInteger count;
     Float32* ptr = [self valuesStartingAt:0 count:&count];

@@ -8,7 +8,7 @@
 
 #import "LowPassFilter.h"
 
-@interface LowPassFilter (Private)
+@interface LowPassFilter ()
 
 - (void)loadFile:(NSString *)path;
 
@@ -22,11 +22,23 @@
 {
     B.clear();
     Z.clear();
-	
-    fileName = [theFileName retain];
+
+    if (fileName != nil) {
+        [fileName autorelease];
+        fileName = nil;
+    }
+
+    if (theFileName == nil) return;
+
+    NSString* extension = [theFileName pathExtension];
+    if ([extension length] == 0) {
+        extension = @"txt";
+    }
+
+    NSString* baseName = [theFileName stringByDeletingPathExtension];
 
     //
-    // Locate the file to read. First, look in the user directory.
+    // Locate the file to read. First, look in the user directory inside the 'Filters' folder.
     //
     NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString* documentsDirectory = [paths objectAtIndex:0];
@@ -44,10 +56,11 @@
         }
     }
 
-    path = [path stringByAppendingPathComponent:fileName];
-    path = [path stringByAppendingPathExtension:@"txt"];
+    path = [path stringByAppendingPathComponent:baseName];
+    path = [path stringByAppendingPathExtension:extension];
     if ([fileManager fileExistsAtPath:path] == YES) {
         [self loadFile:path];
+        fileName = [theFileName retain];
         return;
     }
 
@@ -55,19 +68,19 @@
     // Attempt to locate the file in the application bundle.
     //
     NSBundle* bundle = [NSBundle mainBundle];
-    path = [bundle pathForResource:fileName ofType:@"txt"];
+    path = [bundle pathForResource:baseName ofType:extension];
     if (path != nil) {
         [self loadFile:path];
+        fileName = [theFileName retain];
         return;
     }
-    
-    NSLog(@"did not find resource file '%@.txt'", fileName);
-    return;
+
+    NSLog(@"did not find resource file '%@.%@'", baseName, extension);
 }
 
-+ (id)createFromFile:(NSString *)fileName
++ (id)createFromFile:(NSString *)theFileName
 {
-    return [[[LowPassFilter alloc] initFromFile: fileName] autorelease];
+    return [[[LowPassFilter alloc] initFromFile:theFileName] autorelease];
 }
 
 + (id)createFromArray:(NSArray *)array
@@ -79,6 +92,7 @@
 {
     self = [super init];
     if (self == nil) return self;
+    fileName = nil;
     self.fileName = theFileName;
     return self;
 }
@@ -87,6 +101,7 @@
 {
     self = [super init];
     if (self == nil) return self;
+    fileName = nil;
     if (taps == nil) {
         @throw [NSException exceptionWithName:@"NullTaps" reason:@"" userInfo:nil];
     }
@@ -101,6 +116,7 @@
 
 - (void)dealloc
 {
+    self.fileName = nil;
     B.clear();
     Z.clear();
     [super dealloc];
@@ -141,10 +157,6 @@
     std::string s(os.str());
     return [NSString stringWithCString:s.c_str() encoding:[NSString defaultCStringEncoding]];
 }
-
-@end
-
-@implementation LowPassFilter (Private)
 
 - (void)loadFile:(NSString*)path
 {
