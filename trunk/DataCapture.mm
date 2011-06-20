@@ -113,13 +113,15 @@ static const Float32 kQ824ToFloat = Float32(1.0) / Float32(kFloatToQ824);
 
 - (void)start
 {
+    NSLog(@"DataCapture.start");
     if (audioUnit == nil) {
 	self.pluggedIn = [self isPluggedIn];
 	if (pluggedIn == NO) 
 	    self.emittingPowerSignal = NO;
-
+        NSLog(@"initializing AudioUnit");
 	[self initializeAudioUnit];
 	if (audioUnit) {
+            NSLog(@"starting AudioUnit");
 	    [self startAudioUnit];
 	}
     }
@@ -127,7 +129,9 @@ static const Float32 kQ824ToFloat = Float32(1.0) / Float32(kFloatToQ824);
 
 - (void)stop
 {
+    NSLog(@"DataCapture.stop");
     if (audioUnit) {
+        NSLog(@"stopping AudioUnit");
 	[self stopAudioUnit];
 	AudioComponentInstanceDispose(audioUnit);
 	audioUnit = nil;

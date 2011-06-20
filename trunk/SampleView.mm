@@ -86,6 +86,7 @@
 
 - (void)startAnimation
 {
+    NSLog(@"SampleView.startAnimation");
     self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:animationInterval
 							   target:self 
                                                          selector:@selector(drawView:) 
@@ -95,6 +96,7 @@
 
 - (void)stopAnimation
 {
+    NSLog(@"SampleView.stopAnimation");
     [animationTimer invalidate];
     self.animationTimer = nil;
 }

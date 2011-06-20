@@ -2,7 +2,6 @@
 //
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //
-
 #import <iterator>
 #import <sstream>
 
@@ -13,9 +12,15 @@
 #import "SignalProcessorController.h"
 #import "UserSettings.h"
 
+@interface PeakDetector () <UIAlertViewDelegate>
+
+@property (nonatomic, retain) UIAlertView* postedAlert;
+
+@end
+
 @implementation PeakDetector
 
-@synthesize sampleProcessor, counterDecayFilter, level, detectionScale, counterScale, lastDetection;
+@synthesize sampleProcessor, counterDecayFilter, level, detectionScale, counterScale, lastDetection, postedAlert;
 
 + (id)create
 {
@@ -28,6 +33,7 @@
         self.sampleProcessor = [PeakCounter createWithLevel:0.0];
         controller = nil;
         counterDecayFilter = nil;
+        postedAlert = nil;
         counterScale = -1.0;
         counterHistory.clear();
 	[self updateFromSettings];
@@ -39,6 +45,7 @@
 {
     self.sampleProcessor = nil;
     self.counterDecayFilter = nil;
+    self.postedAlert = nil;
     [controller release];
     counterHistory.clear();
     [super dealloc];
@@ -46,6 +53,11 @@
 
 #pragma mark -
 #pragma mark SignalProcessorProtocol
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    self.postedAlert = nil;
+}
 
 - (void)updateFromSettings
 {
@@ -60,7 +72,7 @@
         while ([weights count] < decaySteps) {
             [weights addObject:weight];
         }
-        
+
         self.counterDecayFilter = [LowPassFilter createFromArray:weights];
         [self reset];
     }
@@ -72,6 +84,18 @@
         LowPassFilter* lowPassFilter = sampleProcessor.lowPassFilter;
         if (lowPassFilter == nil || [lowPassFilter.fileName isEqualToString:fileName] != YES) {
             sampleProcessor.lowPassFilter = [LowPassFilter createFromFile:fileName];
+            if (sampleProcessor.lowPassFilter.fileName == nil) {
+                NSString* title = NSLocalizedString(@"Missing Filter File",
+                                                    @"Missing Filter File");
+                NSString* msgFormat = NSLocalizedString(@"Unable to locate file '%@' for low-pass filter weights.",
+                                                        @"Unable to locate file '@%' for low-pass filter weights.");
+                postedAlert = [[UIAlertView alloc] initWithTitle:title
+                                                         message:[NSString stringWithFormat:msgFormat, fileName]
+                                                        delegate:self
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
+                [postedAlert show];
+            }
         }
     }
     else {

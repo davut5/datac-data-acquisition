@@ -149,6 +149,8 @@ enum GestureType {
     yMin = -1.0;
     self.scale = 1.0;   // Use self.scale to update xMaxLabel and set xSpan, ySpan
 
+    [self updateFromSettings];
+
     [super viewDidLoad];
 }
 
@@ -252,7 +254,7 @@ enum GestureType {
 - (void)start
 {
     if (! [sampleView isAnimating]) {
-	[self updateFromSettings];
+        NSLog(@"SampleViewController.start");
 	[sampleView startAnimation];
     }
 }
@@ -260,6 +262,7 @@ enum GestureType {
 - (void)stop
 {
     if ([sampleView isAnimating]) {
+        NSLog(@"SampleViewController.stop");
 	[sampleView stopAnimation];
     }
 }
@@ -271,7 +274,7 @@ enum GestureType {
     Float32 rate = 1.0 / [[NSUserDefaults standardUserDefaults] floatForKey:kSettingsInputViewUpdateRateKey];
     if (rate != sampleView.animationInterval) {
 	sampleView.animationInterval = rate;
-	if (sampleView.animationTimer != nil) {
+	if ([sampleView isAnimating]) {
 	    [sampleView stopAnimation];
 	    [sampleView startAnimation];
 	}

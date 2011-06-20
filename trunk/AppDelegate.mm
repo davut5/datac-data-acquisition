@@ -59,12 +59,6 @@
     
     self.dataCapture = [DataCapture create];
     [self makeSignalDetector];
-
-#if 0
-    // self.signalDetector = [PeakDetector create];
-    self.signalDetector = [PulseWidthDetector create];
-#endif
-    
     self.switchDetector = [MicSwitchDetector createWithSampleRate:dataCapture.sampleRate];
     self.vertexBufferManager = [VertexBufferManager createForDuration:1.0 sampleRate:dataCapture.sampleRate];
 
@@ -95,25 +89,29 @@
     self.dataCapture.sampleProcessor = [self.signalDetector sampleProcessor];
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application {
+- (void)applicationWillResignActive:(UIApplication *)application
+{
     NSLog(@"applicationWillResignActive");
     [self stop];
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application {
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
     NSLog(@"applicationDidBecomeActive");
-    // [self start];
+    [dataCapture start];
+    [self start];
 }
 
-- (void)applicationWillTerminate:(UIApplication *)application {
+- (void)applicationWillTerminate:(UIApplication *)application
+{
     NSLog(@"applicationWillTerminate");
+    [dataCapture stop];
     [self stop];
 }
 
 - (void)start
 {
     NSLog(@"AppDelegate.start");
-    [dataCapture start];
     [signalDetector reset];
 }
 
@@ -121,7 +119,6 @@
 {
     NSLog(@"AppDelegate.stop");
     [self stopRecording];
-    [dataCapture stop];
     [recordingsViewController saveContext];
 }
 
