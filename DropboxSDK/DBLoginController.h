@@ -16,7 +16,7 @@
     id<DBLoginControllerDelegate> delegate;
     
     UITableView* tableView;
-    UILabel* descriptionLabel;
+    UIImageView* descriptionLabel;
     UITableViewCell* emailCell;
     UITextField* emailField;
     UITableViewCell* passwordCell;

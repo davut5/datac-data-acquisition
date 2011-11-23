@@ -306,7 +306,7 @@ audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, co
                                            0,
 					   &maxAudioSampleCount, 
                                            &size), "failed to get max sample count");
-	NSLog(@"maxAudioSampleCount: %d", maxAudioSampleCount);
+	NSLog(@"maxAudioSampleCount: %lu", maxAudioSampleCount);
 
         sampleBuffer.clear();
         sampleBuffer.resize(maxAudioSampleCount, 0.0f);
@@ -371,7 +371,7 @@ audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, co
 	[self startAudioUnit];
     }
     else {
-	NSLog(@"AudioSession unknown interruption - %d\n", kind);
+	NSLog(@"AudioSession unknown interruption - %lu\n", kind);
     }
 }
 
@@ -381,7 +381,7 @@ audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, co
     UInt32 size = sizeof(value);
     XThrowIfError(AudioSessionGetProperty(kAudioSessionProperty_AudioInputAvailable, &size, &value),
 		  "failed to get AudioInputAvailable property value");
-    NSLog(@"hasAudioInput: %d", value);
+    NSLog(@"hasAudioInput: %lu", value);
     return value;
 }
 
@@ -396,7 +396,7 @@ audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, co
     UInt32 size = sizeof(CFStringRef);
     OSStatus err = AudioSessionGetProperty(kAudioSessionProperty_AudioRoute, &size, &audioRoute);
     if (err) {
-	NSLog(@"failed to get audio route: %d", err);
+	NSLog(@"failed to get audio route: %ld", err);
 	return NO;
     }
 
@@ -413,7 +413,7 @@ audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, co
     UInt32 value;
     CFNumberRef routeChangeReasonRef = (CFNumberRef)CFDictionaryGetValue(dict, CFSTR(kAudioSession_AudioRouteChangeKey_Reason));
     CFNumberGetValue(routeChangeReasonRef, kCFNumberSInt32Type, &value);
-    NSLog(@"route change reason: %d", value);
+    NSLog(@"route change reason: %lu", value);
 
     BOOL audioInputAvailable = [self hasAudioInput];
     self.pluggedIn = [self isPluggedIn];

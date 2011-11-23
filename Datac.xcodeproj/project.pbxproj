@@ -79,6 +79,7 @@
 		BD2FC35A137483C6004BEA40 /* HiLowSignalProcessorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2FC359137483C6004BEA40 /* HiLowSignalProcessorController.mm */; };
 		BD43CB9D13979A86000308B8 /* BlackPushButton.png in Resources */ = {isa = PBXBuildFile; fileRef = BD43CB9C13979A84000308B8 /* BlackPushButton.png */; };
 		BD43CB9F13979D1D000308B8 /* BlackPushButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BD43CB9E13979D1B000308B8 /* BlackPushButton@2x.png */; };
+		BD472E8E141798B200C62F7A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BD86CA071326FB90001B7D82 /* Settings.bundle */; };
 		BD5739F7139E7AE5003DD328 /* NetworkActivityIndicator.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5739F6139E7AE5003DD328 /* NetworkActivityIndicator.mm */; };
 		BD5739F8139E7AE5003DD328 /* NetworkActivityIndicator.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5739F6139E7AE5003DD328 /* NetworkActivityIndicator.mm */; };
 		BD5EAF311345CABC00B01DC7 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF221345CABC00B01DC7 /* AppDelegate.mm */; };
@@ -122,7 +123,6 @@
 		BD7FDAB31316C4B0001D1FBF /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD7FDAB21316C4B0001D1FBF /* MapKit.framework */; };
 		BD7FDAB51316C4B0001D1FBF /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD7FDAB41316C4B0001D1FBF /* OpenGLES.framework */; };
 		BD7FDAB71316C4B0001D1FBF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD7FDAB61316C4B0001D1FBF /* QuartzCore.framework */; };
-		BD86CA081326FB90001B7D82 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BD86CA071326FB90001B7D82 /* Settings.bundle */; };
 		BD86CC5613277AD4001B7D82 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BD86CC5513277AD4001B7D82 /* Localizable.strings */; };
 		BD937542134B51D70015CC8D /* Dropbox.keys in Resources */ = {isa = PBXBuildFile; fileRef = BD937541134B51D70015CC8D /* Dropbox.keys */; };
 		BD937579134B53000015CC8D /* IASKAppSettingsWebViewController+Customizations.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD937578134B53000015CC8D /* IASKAppSettingsWebViewController+Customizations.mm */; };
@@ -406,7 +406,7 @@
 		BD7FDAB21316C4B0001D1FBF /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		BD7FDAB41316C4B0001D1FBF /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BD7FDAB61316C4B0001D1FBF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		BD86CA071326FB90001B7D82 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		BD86CA071326FB90001B7D82 /* Settings.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = Settings.bundle; sourceTree = "<group>"; };
 		BD86CC32132778D0001B7D82 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BD937541134B51D70015CC8D /* Dropbox.keys */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Dropbox.keys; sourceTree = "<group>"; };
 		BD937577134B53000015CC8D /* IASKAppSettingsWebViewController+Customizations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IASKAppSettingsWebViewController+Customizations.h"; sourceTree = "<group>"; };
@@ -447,7 +447,6 @@
 		BDBA13BE137B1E0C00AD9A95 /* input@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "input@2x.png"; path = "Images/input@2x.png"; sourceTree = "<group>"; };
 		BDBA13D3137B240A00AD9A95 /* detections.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = detections.png; path = Images/detections.png; sourceTree = "<group>"; };
 		BDBA13D5137B240F00AD9A95 /* detections@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "detections@2x.png"; path = "Images/detections@2x.png"; sourceTree = "<group>"; };
-		BDD8B256138F9EBF00474B82 /* LogicTests-Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LogicTests-Info copy.plist"; sourceTree = "<group>"; };
 		BDDD46A31341DC8E001A574B /* DBAccountInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBAccountInfo.h; sourceTree = "<group>"; };
 		BDDD46A41341DC8E001A574B /* DBAccountInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBAccountInfo.m; sourceTree = "<group>"; };
 		BDDD46A51341DC8E001A574B /* DBCreateAccountController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBCreateAccountController.h; sourceTree = "<group>"; };
@@ -684,7 +683,6 @@
 				BD14B4AA135728D500F39A4B /* LogicTests-Info.plist */,
 				BD86CC5513277AD4001B7D82 /* Localizable.strings */,
 				BD2303731331FCBA006ADDC4 /* taps.txt */,
-				BDD8B256138F9EBF00474B82 /* LogicTests-Info copy.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1236,6 +1234,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Datac" */;
 			buildPhases = (
+				BD3B78761417970600CF72B2 /* Run Script */,
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
@@ -1274,6 +1273,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0420;
 				ORGANIZATIONNAME = "Brad Howes";
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Datac" */;
@@ -1304,6 +1304,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD472E8E141798B200C62F7A /* Settings.bundle in Resources */,
 				28AD73880D9D96C1002E5188 /* MainWindow.xib in Resources */,
 				BDF9D9D81326E9A5004DC652 /* IASKAppSettingsView.xib in Resources */,
 				BDF9D9D91326E9A5004DC652 /* IASKPSSliderSpecifierViewCell.xib in Resources */,
@@ -1311,7 +1312,6 @@
 				BDF9D9DB1326E9A5004DC652 /* IASKPSToggleSwitchSpecifierViewCell.xib in Resources */,
 				BDF9D9DC1326E9A5004DC652 /* IASKSpecifierValuesView.xib in Resources */,
 				BDF9D9DD1326E9A5004DC652 /* IASKAppSettingsWebView.xib in Resources */,
-				BD86CA081326FB90001B7D82 /* Settings.bundle in Resources */,
 				BD86CC5613277AD4001B7D82 /* Localizable.strings in Resources */,
 				BD29187C1328456500FE5395 /* SampleView.xib in Resources */,
 				BD2303741331FCBA006ADDC4 /* taps.txt in Resources */,
@@ -1430,6 +1430,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n#\"${HOME}/bin/otest\"\n";
+		};
+		BD3B78761417970600CF72B2 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "${SHELL} ${SOURCE_ROOT}/bump_version.sh build";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1646,7 +1661,10 @@
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos4.3]" = "";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -1656,11 +1674,13 @@
 				GCC_PREFIX_HEADER = Datac_Prefix.pch;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				INFOPLIST_FILE = "Datac-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/CorePlot\"",
 				);
 				PRODUCT_NAME = Datac;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1668,7 +1688,11 @@
 		1D6058950D05DD3E006BFB54 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Brad Howes (9GE3SKDXJM)";
 				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -1679,11 +1703,15 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				INFOPLIST_FILE = "Datac-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/CorePlot\"",
 				);
 				PRODUCT_NAME = Datac;
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "988848EC-7F8D-45E2-98BD-12EAFAA136D5";
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1699,7 +1727,6 @@
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = UNIT_TESTING;
@@ -1712,7 +1739,6 @@
 					"-framework",
 					UIKit,
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = LogicTests;
 				SDKROOT = iphoneos;
 				WRAPPER_EXTENSION = octest;
@@ -1730,7 +1756,6 @@
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
 				);
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = UNIT_TESTING;
 				INFOPLIST_FILE = "LogicTests-Info.plist";
@@ -1742,7 +1767,6 @@
 					"-framework",
 					UIKit,
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = LogicTests;
 				SDKROOT = iphoneos;
 				WRAPPER_EXTENSION = octest;
@@ -1759,7 +1783,6 @@
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
 				);
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = UNIT_TESTING;
 				INFOPLIST_FILE = "LogicTests-Info.plist";
@@ -1771,7 +1794,6 @@
 					"-framework",
 					UIKit,
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = LogicTests;
 				SDKROOT = iphoneos;
 				WRAPPER_EXTENSION = octest;
@@ -1786,6 +1808,7 @@
 				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_VERSION = "";
 				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
 				HEADER_SEARCH_PATHS = "CorePlot/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
@@ -1794,13 +1817,13 @@
 					"-all_load",
 					"-ObjC",
 				);
-				PREBINDING = NO;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				RUN_CLANG_STATIC_ANALYZER = NO;
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos5.0;
 				SEPARATE_STRIP = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = armv6;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Distribution;
@@ -1808,20 +1831,27 @@
 		BD878CA5134B353D00FA143C /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Brad Howes (9GE3SKDXJM)";
+				CURRENT_PROJECT_VERSION = 4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Datac_Prefix.pch;
-				GCC_THUMB_SUPPORT = NO;
+				GCC_THUMB_SUPPORT = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				INFOPLIST_FILE = "Datac-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/CorePlot\"",
 				);
 				PRODUCT_NAME = Datac;
+				PROVISIONING_PROFILE = "988848EC-7F8D-45E2-98BD-12EAFAA136D5";
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
@@ -1830,14 +1860,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos4.3]" = "iPhone Developer: Brad Howes (9GE3SKDXJM)";
 				CURRENT_PROJECT_VERSION = 3;
 				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_MODEL_TUNING = "";
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_THUMB_SUPPORT = NO;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				"GCC_THUMB_SUPPORT[arch=armv7]" = YES;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = "CorePlot/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1845,9 +1872,11 @@
 					"-all_load",
 					"-ObjC",
 				);
-				PREBINDING = NO;
-				SDKROOT = iphoneos;
+				"PROVISIONING_PROFILE[sdk=iphoneos4.3]" = "988848EC-7F8D-45E2-98BD-12EAFAA136D5";
+				RUN_CLANG_STATIC_ANALYZER = NO;
+				SDKROOT = iphoneos5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = armv6;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1856,13 +1885,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 3;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_THUMB_SUPPORT = NO;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				"GCC_THUMB_SUPPORT[arch=armv7]" = YES;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = "CorePlot/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
@@ -1870,10 +1897,11 @@
 					"-all_load",
 					"-ObjC",
 				);
-				PREBINDING = NO;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = armv6;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

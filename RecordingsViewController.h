@@ -19,7 +19,6 @@
     NSPersistentStoreCoordinator* persistentStoreCoordinator;
     NSFetchedResultsController* fetchedResultsController;
     DropboxUploader* uploader;
-    NSTimer* uploadChecker;
     RecordingInfo* activeRecording;
 }
 

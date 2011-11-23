@@ -33,11 +33,11 @@
 {
     if (self = [super init]) {
         self.recording = theRecording;
-	runningSize = 0;
-	updateCounter = 0;
-
+        runningSize = 0;
+        updateCounter = 0;
+        
         AudioFileTypeID audioFileType = [RecordingInfo getCurrentAudioFileType];
-
+        
         //
         // Create format to use for the file. We base it off of the given AudioUnit format, but we make it a normal
         // PCM file.
@@ -49,16 +49,16 @@
         if (audioFileType == kAudioFileAIFFType) {
             outputFormat.mFormatFlags |= kAudioFormatFlagIsBigEndian;
         }
-
+        
         outputFormat.mBytesPerPacket = outputFormat.mBytesPerFrame = 2 * inputFormat->mChannelsPerFrame;
         outputFormat.mChannelsPerFrame = inputFormat->mChannelsPerFrame;
         outputFormat.mFramesPerPacket = 1;
         outputFormat.mBitsPerChannel = 16;
-
+        
         NSLog(@"initRecording: path: %@", theRecording.filePath);
         NSLog(@"initRecording: input format: %s", inputFormat->toString().c_str());
         NSLog(@"initRecording: output format: %s", outputFormat.toString().c_str());
-
+        
         OSStatus err = ExtAudioFileCreateWithURL((CFURLRef)[NSURL fileURLWithPath:theRecording.filePath],
                                                  //kAudioFileCAFType,
                                                  audioFileType,
@@ -66,21 +66,25 @@
                                                  NULL,
                                                  kAudioFileFlags_EraseFile,
                                                  &file);
-        err = ExtAudioFileSetProperty(file, 
-                                      kExtAudioFileProperty_ClientDataFormat, 
-                                      sizeof(*inputFormat), 
-                                      inputFormat);
-
         if (err) {
-            NSLog(@"failed ExtAudioFileCreateWithURL: %d", err);
+            NSLog(@"failed ExtAudioFileCreateWithURL: %ld", err);
         }
         else {
-            err = ExtAudioFileWriteAsync(file, 0, 0);
+            err = ExtAudioFileSetProperty(file, 
+                                          kExtAudioFileProperty_ClientDataFormat, 
+                                          sizeof(*inputFormat), 
+                                          inputFormat);
             if (err) {
-                NSLog(@"failed ExtAudioFileWriteAsync: %d", err);
+                NSLog(@"failed ExtAudioFileSetProperty: %ld", err);
+            }
+            else {
+                err = ExtAudioFileWriteAsync(file, 0, 0);
+                if (err) {
+                    NSLog(@"failed ExtAudioFileWriteAsync: %ld", err);
+                }
             }
         }
-
+        
         //
         // Allocate some buffers to use to hold sample values while ExtAudioFileWriteAsync runs.
         //
@@ -89,7 +93,6 @@
             buffers.push_back(buffer);
         }
     }
-
     return self;
 }
 
@@ -99,7 +102,7 @@
         delete buffers.back();
         buffers.pop_back();
     }
-
+    
     [self close];
     [super dealloc];
 }
@@ -120,17 +123,17 @@
     AUOutputBL* buffer = buffers.back();
     buffers.pop_back();
     buffers.push_front(buffer);
-
+    
     buffer->Allocate(frameCount);
     buffer->Prepare(frameCount);
     AudioBufferList* abl = buffer->ABL();
-
+    
     AudioBuffer& from = ioData->mBuffers[0];
     AudioBuffer& to = abl->mBuffers[0];
     memcpy(to.mData, from.mData, from.mDataByteSize);
     to.mDataByteSize = from.mDataByteSize;
     runningSize += to.mDataByteSize;
-
+    
     ExtAudioFileWriteAsync(file, frameCount, abl);
     
     if (++updateCounter == 100) {
