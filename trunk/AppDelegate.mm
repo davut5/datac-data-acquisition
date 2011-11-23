@@ -84,7 +84,7 @@
     NSBundle* bundle = [NSBundle mainBundle];
     Class cls = [bundle classNamed:detectorClass];
 
-    self.signalDetector = [[cls alloc] init];
+    self.signalDetector = [[[cls alloc] init] autorelease];
     self.detectionsViewController.detector = self.signalDetector;
     self.dataCapture.sampleProcessor = [self.signalDetector sampleProcessor];
 }
@@ -191,7 +191,7 @@
 
 - (BOOL)isRecording
 {
-    dataCapture != nil && dataCapture.sampleRecorder != nil;
+    return dataCapture != nil && dataCapture.sampleRecorder != nil;
 }
 
 - (BOOL)isRecordingInto:(RecordingInfo*)recording

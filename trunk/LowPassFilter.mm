@@ -186,7 +186,7 @@
     
     for (NSDecimalNumber* obj in taps) {
 	B.push_back([obj floatValue]);
-	NSLog(@"B[%d]: %f", B.size()-1, B.back());
+	NSLog(@"B[%lu]: %f", B.size()-1, B.back());
 	Z.push_back(0.0);
     }
 }

@@ -119,7 +119,7 @@ NSString* kSettingsPulseWidthDetectorSmoothingKey = @"PULSE_WIDTH_DETECTOR_SMOOT
 	value = maxValue;
     }
     [defaults setInteger:value forKey:key];
-    NSLog(@"validateIntegerNamed: %@ %f", key, value);
+    NSLog(@"validateIntegerNamed: %@ %ld", key, value);
 }
 
 + (NSUserDefaults*)validate

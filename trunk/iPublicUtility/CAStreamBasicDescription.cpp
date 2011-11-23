@@ -127,9 +127,9 @@ char *CAStreamBasicDescription::AsString(char *buf, size_t bufsize) const
 #endif
             sprintf(bitdepth, "%d", (int)mBitsPerChannel);
         
-        nc = snprintf(buf, bufsize, "%s-bit%s%s %s%s%s%s%s",
-                      bitdepth, endian, sign, floatInt, 
-                      commaSpace, packed, align, deinter);
+        snprintf(buf, bufsize, "%s-bit%s%s %s%s%s%s%s",
+                 bitdepth, endian, sign, floatInt, 
+                 commaSpace, packed, align, deinter);
         //buf += nc; bufsize -= nc;
     } else if (mFormatID == 'alac') { // kAudioFormatAppleLossless
         int sourceBits = 0;
@@ -153,12 +153,11 @@ char *CAStreamBasicDescription::AsString(char *buf, size_t bufsize) const
         else
             nc = snprintf(buf, bufsize, "from UNKNOWN source bit depth, ");
         buf += nc; bufsize -= nc;
-        nc = snprintf(buf, bufsize, "%d frames/packet", (int)mFramesPerPacket);
-        //buf += nc; bufsize -= nc;
+        snprintf(buf, bufsize, "%d frames/packet", (int)mFramesPerPacket);
     }
     else
-        nc = snprintf(buf, bufsize, "%d bits/channel, %d bytes/packet, %d frames/packet, %d bytes/frame", 
-                      (int)mBitsPerChannel, (int)mBytesPerPacket, (int)mFramesPerPacket, (int)mBytesPerFrame);
+        snprintf(buf, bufsize, "%d bits/channel, %d bytes/packet, %d frames/packet, %d bytes/frame", 
+                 (int)mBitsPerChannel, (int)mBytesPerPacket, (int)mFramesPerPacket, (int)mBytesPerFrame);
     return theBuffer;
 }
 
@@ -450,7 +449,6 @@ bool operator<(const AudioStreamBasicDescription& x, const AudioStreamBasicDescr
         {
             // more channels is higher quality
             theAnswer = x.mChannelsPerFrame < y.mChannelsPerFrame;
-            isDone = true;
         }
     }
     

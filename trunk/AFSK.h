@@ -12,9 +12,9 @@
 
 @interface AFSK : NSObject<SignalProcessorProtocol> {
 @private
-    AFSKController* controller;
-    AFSKInfoOverlayController* infoOverlayController;
-    NSTimer* intervalTimer;
+//    AFSKController* controller;
+//    AFSKInfoOverlayController* infoOverlayController;
+//    NSTimer* intervalTimer;
 }
 
 + (AFSK*)create;

@@ -100,16 +100,14 @@ enum GestureType {
     //
     // Set widgets so that they will appear behind the graph view when we rotate to the landscape view.
     //
-    connectedIndicator.layer.zPosition = -1;
     connectedIndicator.on = NO;
 
-    recordIndicator.layer.zPosition = -1;
+    // recordIndicator.light.userInteractionEnabled = YES;
     recordIndicator.light.onState = kRed;
     recordIndicator.light.blankedState = kDimRed;
     recordIndicator.light.blinkingInterval = 0.25;
     recordIndicator.on = NO;
     
-    powerIndicator.layer.zPosition = -1;
     powerIndicator.on = NO;
 
     //
@@ -491,8 +489,6 @@ enum GestureType {
 - (void)handlePinchGesture:(UIPinchGestureRecognizer*)recognizer
 {
     [levelOverlay hide];
-    CGFloat width = sampleView.bounds.size.width;
-    CGFloat height = sampleView.bounds.size.height;
     if (recognizer.state == UIGestureRecognizerStateBegan) {
         gestureType = kGestureScale;
         gestureStart = scale;
@@ -537,18 +533,6 @@ enum GestureType {
     //
     SInt32 offset = sampleView.frame.origin.y;
     SInt32 height = sampleView.frame.size.height;
-
-    //
-    // Split view into four vertical positions.
-    //
-    CGFloat spacing = ySpan / 4.0;
-
-    //
-    // Take that spacing, and calculate the number of integral divisions in the [-1, +1] world.
-    //
-    CGFloat N = (kYMax - kYMin) / spacing;
-    N = int(N + 0.5);
-    spacing = (kYMax - kYMin) / N;
     int index = 0;
 
     //

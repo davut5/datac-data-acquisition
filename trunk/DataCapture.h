@@ -31,7 +31,7 @@ typedef void (*DataCaptureProcessSamplesProc)(id, SEL, AudioBufferList*, UInt32,
     AURenderCallbackStruct renderCallback;
     SInt32* powerSignal;
     UInt32 maxAudioSampleCount;
-    NSObject<SampleProcessorProtocol>* signalProcessor;
+    NSObject<SampleProcessorProtocol>* sampleProcessor;
     NSObject<SampleProcessorProtocol>* switchDetector;
     VertexBufferManager* vertexBufferManager;
     SampleRecorder* sampleRecorder;

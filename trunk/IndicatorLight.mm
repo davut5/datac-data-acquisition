@@ -13,12 +13,13 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-	onState = kGreen;
+        onState = kGreen;
         blankedState = kOff;
-	blinker = nil;
-	blanked = NO;
-	blinkingInterval = 0.0;
-	[self setState:kOff];
+        blinker = nil;
+        blanked = NO;
+        blinkingInterval = 0.0;
+        // self.userInteractionEnabled = YES;
+        [self setState:kOff];
     }
     return self;
 }
@@ -27,12 +28,13 @@
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
-	onState = kGreen;
+        onState = kGreen;
         blankedState = kOff;
-	blinker = nil;
-	blanked = NO;
-	blinkingInterval = 0.0;
-	[self setState:kOff];
+        blinker = nil;
+        blanked = NO;
+        blinkingInterval = 0.0;
+        // self.userInteractionEnabled = YES;
+        [self setState:kOff];
     }
     return self;
 }
@@ -51,19 +53,19 @@
 - (void)setIlluminated:(BOOL)value
 {
     if (state != value) {
-	blanked = NO;
-	self.state = (value == YES) ? onState : kOff;
-	if (state == kOff) {
-	    [self.blinker invalidate];
-	    self.blinker = nil;
-	}
-	else if (blinkingInterval > 0.0) {
-	    self.blinker = [NSTimer scheduledTimerWithTimeInterval:blinkingInterval 
-							    target:self
-							  selector:@selector(blink:)
-							  userInfo:nil 
-							   repeats:YES];
-	}
+        blanked = NO;
+        self.state = (value == YES) ? onState : kOff;
+        if (state == kOff) {
+            [self.blinker invalidate];
+            self.blinker = nil;
+        }
+        else if (blinkingInterval > 0.0) {
+            self.blinker = [NSTimer scheduledTimerWithTimeInterval:blinkingInterval 
+                                                            target:self
+                                                          selector:@selector(blink:)
+                                                          userInfo:nil 
+                                                           repeats:YES];
+        }
     }
 }
 

@@ -131,11 +131,11 @@
 - (void)warnNetworkAvailable
 {
     if (warnedUser == YES) {
-	self.postedAlert = [[UIAlertView alloc] initWithTitle:@"Network Available" 
+	self.postedAlert = [[[UIAlertView alloc] initWithTitle:@"Network Available" 
 						      message:@"Uploading files to Dropbox account." 
 						     delegate:self
 					    cancelButtonTitle:@"OK"
-					    otherButtonTitles:nil];
+					    otherButtonTitles:nil] autorelease];
 	warnedUser = NO;
     }
 }
@@ -143,11 +143,11 @@
 - (void)warnNetworkUnavailable
 {
     if (warnedUser == NO) {
-	self.postedAlert = [[UIAlertView alloc] initWithTitle:@"Network Unavailable" 
+	self.postedAlert = [[[UIAlertView alloc] initWithTitle:@"Network Unavailable" 
 						      message:@"Unable to upload files to Dropbox account." 
 						     delegate:nil
 					    cancelButtonTitle:@"OK" 
-					    otherButtonTitles:nil];
+					    otherButtonTitles:nil] autorelease];
 	warnedUser = YES;
     }
 }
