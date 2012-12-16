@@ -235,7 +235,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         [appDelegate recordingDeleted:recordingInfo];
         
         if (uploader != nil && uploader.uploadingFile == recordingInfo)
-            [uploader cancelUploads];
+            [uploader cancelUpload];
 
         NSError* error;
         if ([[NSFileManager defaultManager] removeItemAtPath:recordingInfo.filePath error:&error] == NO) {
