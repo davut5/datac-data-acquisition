@@ -4,8 +4,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <DropboxSDK/DropboxSDK.h>
 
-#import "DBSession.h"
 #import "IASKAppSettingsViewController.h"
 #import "SampleProcessorProtocol.h"
 #import "SignalProcessorProtocol.h"

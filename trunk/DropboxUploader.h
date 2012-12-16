@@ -4,7 +4,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DBRestClient.h"
+#import <DropboxSDK/DropboxSDK.h>
 #import "Reachability.h"
 
 @class NetworkActivityIndicator;
@@ -41,6 +41,6 @@
 
 - (id)initWithSession:(DBSession*)session;
 
-- (void)cancelUploads;
+- (void)cancelUpload;
 
 @end

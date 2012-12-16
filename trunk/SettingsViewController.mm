@@ -3,8 +3,8 @@
 // Copyright (C) 2011, Brad Howes. All rights reserved.
 //
 
+#import <DropboxSDK/DropboxSDK.h>
 #import "AppDelegate.h"
-#import "DropboxSDK.h"
 #import "IASKSpecifier.h"
 #import "IASKSettingsReader.h"
 #import "SettingsViewController.h"
@@ -38,7 +38,6 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    dropboxSession = appDelegate.dropboxSession;
     [super viewWillAppear:animated];
 }
 
@@ -46,15 +45,14 @@
 {
     [super viewWillDisappear:animated];
     self.dropboxCell = nil;
-    dropboxSession = nil;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     IASKSpecifier *specifier  = [self.settingsReader specifierForIndexPath:indexPath];
     self.dropboxCell = nil;
     if ([[specifier type] isEqualToString:kIASKCustomViewSpecifier]) {
-	self.dropboxCell = [tableView cellForRowAtIndexPath:indexPath];
+        self.dropboxCell = [tableView cellForRowAtIndexPath:indexPath];
         [self setupDropbox];
     }
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
@@ -80,14 +78,14 @@
 
 - (void)updateDropboxCell
 {
-    if ([dropboxSession isLinked]) {
+    if ([[DBSession sharedSession] isLinked]) {
         dropboxCell.textLabel.text = NSLocalizedString(@"Account linked",
                                                        @"Name of the Dropbox button shown in the Settings Display");
-	dropboxCell.accessoryType = UITableViewCellAccessoryCheckmark;
+        dropboxCell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
     else {
         dropboxCell.textLabel.text = NSLocalizedString(@"Link account", @"Name of the Dropbox button shown in the Settings Display");
-	dropboxCell.accessoryType = UITableViewCellAccessoryNone;
+        dropboxCell.accessoryType = UITableViewCellAccessoryNone;
     }
     [dropboxCell setNeedsDisplay];
 }
@@ -95,45 +93,33 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == [actionSheet destructiveButtonIndex]) {
-        [dropboxSession unlink];
-	[self updateDropboxCell];
+        [[DBSession sharedSession] unlinkAll];
+        [self updateDropboxCell];
     }
 }
 
 - (void)setupDropbox
 {
-    if (![dropboxSession isLinked]) {
-        DBLoginController* controller = [[DBLoginController new] autorelease];
-        controller.delegate = self;
-        [controller presentFromController:self];
+    if (![[DBSession sharedSession] isLinked]) {
+        [[DBSession sharedSession] linkFromController:self];
     }
     else {
-        
+
         //
         // Request to unlink Dropbox account. Show an action sheet, but don't show a cancel button per iPad UI
         // guidelines.
         //
-	NSString* cancel = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? @"No" : nil;
-	UIActionSheet* actionSheet = [[UIActionSheet alloc] 
+        NSString* cancel = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? @"No" : nil;
+        UIActionSheet* actionSheet = [[UIActionSheet alloc]
                                       initWithTitle:NSLocalizedString(@"Really unlink Dropbox account?",
                                                                       @"Prompt to show before unlinking account")
-                                      delegate:self 
+                                      delegate:self
                                       cancelButtonTitle:cancel
                                       destructiveButtonTitle:NSLocalizedString(@"Unlink", @"Unlink button title")
                                       otherButtonTitles:nil];
-	[actionSheet setDelegate:self];
-	[actionSheet showFromTabBar:[appDelegate.tabBarController tabBar]];
+        [actionSheet setDelegate:self];
+        [actionSheet showFromTabBar:[appDelegate.tabBarController tabBar]];
     }
-}
-
-- (void)loginControllerDidLogin:(DBLoginController *)controller
-{
-    [self updateDropboxCell];
-}
-
-- (void)loginControllerDidCancel:(DBLoginController *)controller
-{
-    ;
 }
 
 - (CGFloat)tableView:(UITableView*)tableView heightForSpecifier:(IASKSpecifier*)specifier {
@@ -143,13 +129,13 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForSpecifier:(IASKSpecifier*)specifier {
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:specifier.key];
     if (!cell) {
-	cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault 
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                        reuseIdentifier:specifier.key] autorelease];
     }
-
+    
     self.dropboxCell = cell;
     [self updateDropboxCell];
-
+    
     return cell;
 }
 

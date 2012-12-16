@@ -8,7 +8,6 @@
 #import "BitFrameDecoder.h"
 #import "BitStreamFrameDetector.h"
 #import "DetectionsViewController.h"
-#import "DropboxSDK.h"
 #import "Dropbox.keys"
 #import "DropboxUploader.h"
 #import "FrequencyDetector.h"
@@ -51,7 +50,7 @@
     //
     NSString* consumerKey = DROPBOX_KEY;
     NSString* consumerSecret = DROPBOX_SECRET;
-    dropboxSession = [[[DBSession alloc] initWithConsumerKey:consumerKey consumerSecret:consumerSecret] autorelease];
+    dropboxSession = [[[DBSession alloc] initWithAppKey:consumerKey appSecret:consumerSecret root:kDBRootDropbox] autorelease];
     dropboxSession.delegate = self;
     [DBSession setSharedSession:dropboxSession];
 
@@ -75,6 +74,18 @@
 
     NSLog(@"AppDelegate.application:didFinishLaunchingWithOptions: - END");
     return YES;
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    if ([[DBSession sharedSession] handleOpenURL:url]) {
+        if ([[DBSession sharedSession] isLinked]) {
+            NSLog(@"App linked successfully!");
+            // At this point you can start making API calls
+        }
+        return YES;
+    }
+    // Add whatever other url handling code your app requires here
+    return NO;
 }
 
 - (void)makeSignalDetector
@@ -142,7 +153,7 @@
 #pragma mark -
 #pragma mark DBSession Delegate Protocol
 
-- (void)sessionDidReceiveAuthorizationFailure:(DBSession*)session
+- (void)sessionDidReceiveAuthorizationFailure:(DBSession *)session userId:(NSString *)userId;
 {
     NSLog(@"failed to receive authorization");
     [[[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Dropbox Authorization",
