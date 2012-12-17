@@ -85,6 +85,7 @@
 		BD472E8E141798B200C62F7A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BD86CA071326FB90001B7D82 /* Settings.bundle */; };
 		BD5739F7139E7AE5003DD328 /* NetworkActivityIndicator.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5739F6139E7AE5003DD328 /* NetworkActivityIndicator.mm */; };
 		BD5739F8139E7AE5003DD328 /* NetworkActivityIndicator.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5739F6139E7AE5003DD328 /* NetworkActivityIndicator.mm */; };
+		BD5B695B167EA3080087DF6B /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD5B695A167EA3080087DF6B /* libCorePlot-CocoaTouch.a */; };
 		BD5EAF311345CABC00B01DC7 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF221345CABC00B01DC7 /* AppDelegate.mm */; };
 		BD5EAF331345CABC00B01DC7 /* DataCapture.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF261345CABC00B01DC7 /* DataCapture.mm */; };
 		BD5EAF341345CABC00B01DC7 /* DropboxUploader.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF281345CABC00B01DC7 /* DropboxUploader.mm */; };
@@ -127,10 +128,12 @@
 		BD7FDAB51316C4B0001D1FBF /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD7FDAB41316C4B0001D1FBF /* OpenGLES.framework */; };
 		BD7FDAB71316C4B0001D1FBF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD7FDAB61316C4B0001D1FBF /* QuartzCore.framework */; };
 		BD86CC5613277AD4001B7D82 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BD86CC5513277AD4001B7D82 /* Localizable.strings */; };
+		BD87014F167F13EA007FF9AA /* icon-iPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BD87014E167F13EA007FF9AA /* icon-iPad@2x.png */; };
+		BD870155167F1DB9007FF9AA /* Default-Portrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = BD870154167F1DB9007FF9AA /* Default-Portrait@2x~ipad.png */; };
+		BD870157167F1DD9007FF9AA /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = BD870156167F1DD9007FF9AA /* Default-Landscape@2x~ipad.png */; };
 		BD937542134B51D70015CC8D /* Dropbox.keys in Resources */ = {isa = PBXBuildFile; fileRef = BD937541134B51D70015CC8D /* Dropbox.keys */; };
 		BD937579134B53000015CC8D /* IASKAppSettingsWebViewController+Customizations.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD937578134B53000015CC8D /* IASKAppSettingsWebViewController+Customizations.mm */; };
 		BD9D943B134919920054C7E8 /* copyrights.html in Resources */ = {isa = PBXBuildFile; fileRef = BD9D9439134919920054C7E8 /* copyrights.html */; };
-		BDB1D7D913773C000051F5B9 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB1D7D813773C000051F5B9 /* libCorePlot-CocoaTouch.a */; };
 		BDB1D9CD1377E6EA0051F5B9 /* AFSK.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1D9CC1377E6EA0051F5B9 /* AFSK.mm */; };
 		BDB1DB61137806AF0051F5B9 /* HiLowSignalProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1DB60137806AF0051F5B9 /* HiLowSignalProcessor.mm */; };
 		BDB1DC34137895850051F5B9 /* 159-voicemail.opacity in Resources */ = {isa = PBXBuildFile; fileRef = BDB1DC33137895830051F5B9 /* 159-voicemail.opacity */; };
@@ -304,6 +307,7 @@
 		BD43CB9E13979D1B000308B8 /* BlackPushButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BlackPushButton@2x.png"; path = "Images/BlackPushButton@2x.png"; sourceTree = "<group>"; };
 		BD5739F5139E7AE5003DD328 /* NetworkActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkActivityIndicator.h; sourceTree = "<group>"; };
 		BD5739F6139E7AE5003DD328 /* NetworkActivityIndicator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NetworkActivityIndicator.mm; sourceTree = "<group>"; };
+		BD5B695A167EA3080087DF6B /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libCorePlot-CocoaTouch.a"; path = "CorePlot/libCorePlot-CocoaTouch.a"; sourceTree = "<group>"; };
 		BD5EAF211345CABC00B01DC7 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BD5EAF221345CABC00B01DC7 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; wrapsLines = 0; };
 		BD5EAF251345CABC00B01DC7 /* DataCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataCapture.h; sourceTree = "<group>"; };
@@ -370,11 +374,13 @@
 		BD7FDAB61316C4B0001D1FBF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		BD86CA071326FB90001B7D82 /* Settings.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = Settings.bundle; sourceTree = "<group>"; };
 		BD86CC32132778D0001B7D82 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		BD87014E167F13EA007FF9AA /* icon-iPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-iPad@2x.png"; path = "Images/icon-iPad@2x.png"; sourceTree = "<group>"; };
+		BD870154167F1DB9007FF9AA /* Default-Portrait@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x~ipad.png"; sourceTree = "<group>"; };
+		BD870156167F1DD9007FF9AA /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
 		BD937541134B51D70015CC8D /* Dropbox.keys */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Dropbox.keys; sourceTree = "<group>"; };
 		BD937577134B53000015CC8D /* IASKAppSettingsWebViewController+Customizations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IASKAppSettingsWebViewController+Customizations.h"; sourceTree = "<group>"; };
 		BD937578134B53000015CC8D /* IASKAppSettingsWebViewController+Customizations.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "IASKAppSettingsWebViewController+Customizations.mm"; sourceTree = "<group>"; };
 		BD9D943A134919920054C7E8 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = English; path = English.lproj/copyrights.html; sourceTree = "<group>"; };
-		BDB1D7D813773C000051F5B9 /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libCorePlot-CocoaTouch.a"; path = "CorePlot/libCorePlot-CocoaTouch.a"; sourceTree = SOURCE_ROOT; };
 		BDB1D9CB1377E6EA0051F5B9 /* AFSK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFSK.h; sourceTree = "<group>"; };
 		BDB1D9CC1377E6EA0051F5B9 /* AFSK.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AFSK.mm; sourceTree = "<group>"; };
 		BDB1D9EB1377E92E0051F5B9 /* SignalProcessorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignalProcessorProtocol.h; sourceTree = "<group>"; };
@@ -490,8 +496,8 @@
 				BDF9DA061326F25C004DC652 /* MessageUI.framework in Frameworks */,
 				BDDD473D1341DCB0001A574B /* Security.framework in Frameworks */,
 				BD5EB0F813460E7200B01DC7 /* SystemConfiguration.framework in Frameworks */,
-				BDB1D7D913773C000051F5B9 /* libCorePlot-CocoaTouch.a in Frameworks */,
 				BD23EAD0167E180900F6CFE7 /* DropboxSDK.framework in Frameworks */,
+				BD5B695B167EA3080087DF6B /* libCorePlot-CocoaTouch.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -570,9 +576,9 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BD5B695A167EA3080087DF6B /* libCorePlot-CocoaTouch.a */,
 				BD23EACF167E180900F6CFE7 /* DropboxSDK.framework */,
 				BDE41538138D2F5E00892C35 /* CoreFoundation.framework */,
-				BDB1D7D813773C000051F5B9 /* libCorePlot-CocoaTouch.a */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765070DF74369002DB57D /* CoreGraphics.framework */,
@@ -846,11 +852,16 @@
 				BD232B5F1333FA9D006ADDC4 /* Default.png */,
 				BD232B601333FA9D006ADDC4 /* Default@2x.png */,
 				BD0619DD167E663B000254E4 /* Default-568h@2x.png */,
+				BD052852133BEE2100A4E49C /* Default-Portrait.png */,
+				BD870154167F1DB9007FF9AA /* Default-Portrait@2x~ipad.png */,
+				BD052850133BEE1D00A4E49C /* Default-Landscape.png */,
+				BD870156167F1DD9007FF9AA /* Default-Landscape@2x~ipad.png */,
 				BD232B611333FA9D006ADDC4 /* DimGreenButton.png */,
 				BD232B621333FA9D006ADDC4 /* DimGreenButton@2x.png */,
 				BD232B631333FA9D006ADDC4 /* GreenButton.png */,
 				BD232B641333FA9D006ADDC4 /* GreenButton@2x.png */,
 				BD232B651333FA9D006ADDC4 /* Icon.png */,
+				BD87014E167F13EA007FF9AA /* icon-iPad@2x.png */,
 				BD052807133BE70600A4E49C /* Icon-Small.png */,
 				BD052809133BE70A00A4E49C /* Icon-Small-50.png */,
 				BD05280B133BE70D00A4E49C /* Icon-72.png */,
@@ -870,8 +881,6 @@
 				BD0B018D133BDA0C0086B23B /* rpm.png */,
 				BD0B018F133BDA100086B23B /* rpm@2x.png */,
 				BD052813133BE71C00A4E49C /* iTunesArtwork */,
-				BD052850133BEE1D00A4E49C /* Default-Landscape.png */,
-				BD052852133BEE2100A4E49C /* Default-Portrait.png */,
 				BDBA1335137A7BB300AD9A95 /* help.png */,
 				BDBA1337137A7BB900AD9A95 /* help@2x.png */,
 				BDBA1364137A825300AD9A95 /* settings.png */,
@@ -1156,6 +1165,9 @@
 				BD43CB9F13979D1D000308B8 /* BlackPushButton@2x.png in Resources */,
 				BD0619DE167E663B000254E4 /* Default-568h@2x.png in Resources */,
 				BD0619E0167E665B000254E4 /* SplashScreen568.opacity in Resources */,
+				BD87014F167F13EA007FF9AA /* icon-iPad@2x.png in Resources */,
+				BD870155167F1DB9007FF9AA /* Default-Portrait@2x~ipad.png in Resources */,
+				BD870157167F1DD9007FF9AA /* Default-Landscape@2x~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1382,7 +1394,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos4.3]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Brad Howes (9GE3SKDXJM)";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1394,14 +1406,16 @@
 				GCC_PREFIX_HEADER = Datac_Prefix.pch;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				INFOPLIST_FILE = "Datac-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/CorePlot\"",
 				);
 				PRODUCT_NAME = Datac;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F812BBFB-6CF3-4E1E-B313-E346AECFEC6A";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = armv7;
 			};
 			name = Debug;
 		};
@@ -1410,7 +1424,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Brad Howes (9GE3SKDXJM)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Brad Howes";
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 4;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1423,16 +1437,17 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				INFOPLIST_FILE = "Datac-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/CorePlot\"",
 				);
 				PRODUCT_NAME = Datac;
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "988848EC-7F8D-45E2-98BD-12EAFAA136D5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C874B8D8-FCBE-4946-8BC5-A63CE04AC5FD";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = armv7;
 			};
 			name = Release;
 		};
@@ -1524,26 +1539,22 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = "";
 				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
 				HEADER_SEARCH_PATHS = "CorePlot/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				RUN_CLANG_STATIC_ANALYZER = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SEPARATE_STRIP = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = armv6;
+				VALID_ARCHS = "armv6 armv7 armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Distribution;
@@ -1552,7 +1563,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Brad Howes (9GE3SKDXJM)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Brad Howes";
 				CURRENT_PROJECT_VERSION = 4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1564,15 +1575,16 @@
 				GCC_THUMB_SUPPORT = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				INFOPLIST_FILE = "Datac-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/CorePlot\"",
 				);
 				PRODUCT_NAME = Datac;
-				PROVISIONING_PROFILE = "988848EC-7F8D-45E2-98BD-12EAFAA136D5";
+				PROVISIONING_PROFILE = "C874B8D8-FCBE-4946-8BC5-A63CE04AC5FD";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = armv7;
 			};
 			name = Distribution;
 		};
@@ -1580,23 +1592,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos4.3]" = "iPhone Developer: Brad Howes (9GE3SKDXJM)";
+				CODE_SIGN_IDENTITY = "";
 				CURRENT_PROJECT_VERSION = 3;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = "CorePlot/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				"PROVISIONING_PROFILE[sdk=iphoneos4.3]" = "988848EC-7F8D-45E2-98BD-12EAFAA136D5";
-				RUN_CLANG_STATIC_ANALYZER = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = armv6;
+				VALID_ARCHS = "armv6 armv7 armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1605,23 +1612,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 3;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = "CorePlot/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				OTHER_LDFLAGS = "-ObjC";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = armv6;
+				VALID_ARCHS = "armv6 armv7 armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

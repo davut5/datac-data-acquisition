@@ -16,4 +16,6 @@
 
 @property (nonatomic, retain) UITableViewCell* dropboxCell;
 
+- (void)updateDropboxCell;
+
 @end
