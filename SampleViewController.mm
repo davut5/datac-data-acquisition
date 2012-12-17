@@ -102,12 +102,13 @@ enum GestureType {
     //
     connectedIndicator.on = NO;
 
-    // recordIndicator.light.userInteractionEnabled = YES;
     recordIndicator.light.onState = kRed;
     recordIndicator.light.blankedState = kDimRed;
     recordIndicator.light.blinkingInterval = 0.25;
     recordIndicator.on = NO;
     
+    powerIndicator.light.onState = kYellow;
+    powerIndicator.light.blankedState = kDimYellow;
     powerIndicator.on = NO;
 
     //

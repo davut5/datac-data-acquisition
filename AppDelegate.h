@@ -29,10 +29,10 @@
 @private
     IBOutlet UIWindow *window;
     IBOutlet UITabBarController* tabBarController;
-    IBOutlet SampleViewController* samplesViewController;
+    IBOutlet SampleViewController* sampleViewController;
     IBOutlet DetectionsViewController* detectionsViewController;
     IBOutlet RecordingsViewController* recordingsViewController;
-    IBOutlet SettingsViewController* settingsController;
+    IBOutlet SettingsViewController* settingsViewController;
     DBSession* dropboxSession;
     DataCapture* dataCapture;
     NSObject<SignalProcessorProtocol>* signalDetector;
@@ -42,10 +42,10 @@
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet UITabBarController* tabBarController;
-@property (nonatomic, retain) IBOutlet SampleViewController* samplesViewController;
+@property (nonatomic, retain) IBOutlet SampleViewController* sampleViewController;
 @property (nonatomic, retain) IBOutlet DetectionsViewController* detectionsViewController;
 @property (nonatomic, retain) IBOutlet RecordingsViewController* recordingsViewController;
-@property (nonatomic, retain) IBOutlet SettingsViewController* appSettingsViewController;
+@property (nonatomic, retain) IBOutlet SettingsViewController* settingsViewController;
 @property (nonatomic, retain) DBSession* dropboxSession;
 @property (nonatomic, retain) DataCapture* dataCapture;
 @property (nonatomic, retain) NSObject<SignalProcessorProtocol>* signalDetector;

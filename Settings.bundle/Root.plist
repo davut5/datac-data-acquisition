@@ -12,7 +12,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>3.0 (146)</string>
+			<string>3.0 (203)</string>
 			<key>Key</key>
 			<string>version</string>
 			<key>Title</key>
@@ -114,9 +114,9 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>PulseFrequencyDetector</string>
+			<string>PulseWidthDetector</string>
 			<key>Title</key>
-			<string>PULSE_FREQUENCY_DETECTOR</string>
+			<string>PULSE_WIDTH_DETECTOR</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
