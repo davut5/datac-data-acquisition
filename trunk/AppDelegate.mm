@@ -32,7 +32,7 @@
 
 @implementation AppDelegate
 
-@synthesize window, tabBarController, samplesViewController, appSettingsViewController, recordingsViewController;
+@synthesize window, tabBarController, sampleViewController, settingsViewController, recordingsViewController;
 @synthesize detectionsViewController, dropboxSession;
 @synthesize dataCapture, signalDetector, switchDetector, vertexBufferManager;
 
@@ -42,9 +42,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     NSLog(@"AppDelegate.application:didFinishLaunchingWithOptions:");
-
+    
     NSUserDefaults* settings = [NSUserDefaults standardUserDefaults];
-
+    
     //
     // Dropbox SDK initialization
     //
@@ -53,25 +53,26 @@
     dropboxSession = [[[DBSession alloc] initWithAppKey:consumerKey appSecret:consumerSecret root:kDBRootDropbox] autorelease];
     dropboxSession.delegate = self;
     [DBSession setSharedSession:dropboxSession];
-
+    
     [application setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
     
     self.dataCapture = [DataCapture create];
     [self makeSignalDetector];
     self.switchDetector = [MicSwitchDetector createWithSampleRate:dataCapture.sampleRate];
     self.vertexBufferManager = [VertexBufferManager createForDuration:1.0 sampleRate:dataCapture.sampleRate];
-
+    
     dataCapture.invertSignal = [settings boolForKey:kSettingsSignalProcessingInvertSignalKey];
     dataCapture.switchDetector = switchDetector;
     dataCapture.vertexBufferManager = vertexBufferManager;
     
     application.idleTimerDisabled = YES;
 
+    self.window.rootViewController = tabBarController;
     [self.window addSubview:tabBarController.view];
     [self.window makeKeyAndVisible];
 
     [NSTimer scheduledTimerWithTimeInterval:0.0 target:self selector:@selector(start) userInfo:nil repeats:NO];
-
+    
     NSLog(@"AppDelegate.application:didFinishLaunchingWithOptions: - END");
     return YES;
 }
@@ -81,8 +82,8 @@
         if ([[DBSession sharedSession] isLinked]) {
             NSLog(@"App linked successfully!");
             // At this point you can start making API calls
-            if (settingsController != nil) {
-                [settingsController updateDropboxCell];
+            if (settingsViewController != nil) {
+                [settingsViewController updateDropboxCell];
             }
         }
         return YES;
@@ -97,7 +98,7 @@
                                stringForKey:kSettingsSignalProcessingActiveDetectorKey];
     NSBundle* bundle = [NSBundle mainBundle];
     Class cls = [bundle classNamed:detectorClass];
-
+    
     self.signalDetector = [[[cls alloc] init] autorelease];
     self.detectionsViewController.detector = self.signalDetector;
     self.dataCapture.sampleProcessor = [self.signalDetector sampleProcessor];
@@ -127,6 +128,7 @@
 {
     NSLog(@"AppDelegate.start");
     [signalDetector reset];
+    [sampleViewController start];
 }
 
 - (void)stop
@@ -175,15 +177,15 @@
     UIViewController* current = [sender selectedViewController];
     if (current == viewController) {
         if (sender.selectedIndex == 0) {
-            [samplesViewController toggleInfoOverlay];
+            [sampleViewController toggleInfoOverlay];
         }
     }
     else {
-	if (sender.selectedIndex == 3) {
-	    [settingsController dismiss:self];
-	}
+        if (sender.selectedIndex == 3) {
+            [settingsViewController dismiss:self];
+        }
     }
-
+    
     return YES;
 }
 
@@ -198,7 +200,7 @@
 
 - (void)stopRecording
 {
-    samplesViewController.recordIndicator.on = NO;
+    sampleViewController.recordIndicator.on = NO;
     dataCapture.sampleRecorder = nil;
     [recordingsViewController stopRecording];
 }
@@ -226,10 +228,10 @@
     if ([detectorClassName isEqualToString:currentClassName] == NO) {
         [self makeSignalDetector];
     }
-
+    
     dataCapture.invertSignal = [settings boolForKey:kSettingsSignalProcessingInvertSignalKey];
-
-    [samplesViewController updateFromSettings];
+    
+    [sampleViewController updateFromSettings];
     [detectionsViewController updateFromSettings];
     [recordingsViewController updateFromSettings];
     [signalDetector updateFromSettings];

@@ -29,20 +29,20 @@
 - (id)initWithCoder:(NSCoder*)coder
 {
     if((self = [super initWithCoder:coder])) {
-	CAEAGLLayer *eaglLayer = (CAEAGLLayer*) self.layer;
-	eaglLayer.opaque = YES;
-	eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
-							 [NSNumber numberWithBool:FALSE], 
-						     kEAGLDrawablePropertyRetainedBacking, 
-						     kEAGLColorFormatRGBA8, 
-						     kEAGLDrawablePropertyColorFormat, 
-						     nil];
-	context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
+        CAEAGLLayer *eaglLayer = (CAEAGLLayer*) self.layer;
+        eaglLayer.opaque = YES;
+        eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
+                                        [NSNumber numberWithBool:FALSE],
+                                        kEAGLDrawablePropertyRetainedBacking,
+                                        kEAGLColorFormatRGBA8,
+                                        kEAGLDrawablePropertyColorFormat,
+                                        nil];
+        context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
         viewFramebuffer = 0;
-//	[self setupView];
-            //	[self drawView];
+        // [self setupView];
+        // [self drawView];
     }
-
+    
     return self;
 }
 
@@ -59,16 +59,16 @@
 {
     glGenFramebuffersOES(1, &viewFramebuffer);
     glGenRenderbuffersOES(1, &viewRenderbuffer);
-
+    
     glBindFramebufferOES(GL_FRAMEBUFFER_OES, viewFramebuffer);
     glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
-
+    
     [context renderbufferStorage:GL_RENDERBUFFER_OES fromDrawable:(id<EAGLDrawable>)self.layer];
     glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_RENDERBUFFER_OES, viewRenderbuffer);
-
+    
     if(glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES) != GL_FRAMEBUFFER_COMPLETE_OES) {
-	NSLog(@"failed to make complete framebuffer object %x", glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES));
-	return NO;
+        NSLog(@"failed to make complete framebuffer object %x", glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES));
+        return NO;
     }
 	
     return YES;
@@ -88,10 +88,10 @@
 {
     NSLog(@"SampleView.startAnimation");
     self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:animationInterval
-							   target:self 
-                                                         selector:@selector(drawView:) 
-							 userInfo:nil
-							  repeats:YES];
+                                                           target:self
+                                                         selector:@selector(drawView:)
+                                                         userInfo:nil
+                                                          repeats:YES];
 }
 
 - (void)stopAnimation
@@ -128,9 +128,9 @@
     [self stopAnimation];
     [self destroyFramebuffer];
     if ([EAGLContext currentContext] == context) {
-	[EAGLContext setCurrentContext:nil];
+        [EAGLContext setCurrentContext:nil];
     }
-
+    
     [context release];
     context = nil;
 	
