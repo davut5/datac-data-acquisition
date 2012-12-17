@@ -71,7 +71,7 @@
     // No longer showing RPM graph. Tear it down.
     //
     self.graph = nil;
-    CPGraphHostingView* hostingView = (CPGraphHostingView*)self.view;
+    CPTGraphHostingView* hostingView = (CPTGraphHostingView*)self.view;
     hostingView.hostedGraph = nil;
     [super viewDidDisappear:animated];
 }
@@ -110,11 +110,11 @@
     }
     
     if (graph != nil) {
-        CPXYPlotSpace* plotSpace = static_cast<CPXYPlotSpace*>(graph.defaultPlotSpace);
+        CPTXYPlotSpace* plotSpace = static_cast<CPTXYPlotSpace*>(graph.defaultPlotSpace);
         NSDecimal oldMaxX = plotSpace.xRange.length;
-        NSDecimal newMaxX = CPDecimalFromFloat(maxX);
+        NSDecimal newMaxX = CPTDecimalFromFloat(maxX);
         if (NSDecimalCompare(&oldMaxX, &newMaxX) != NSOrderedSame) {
-            plotSpace.xRange = [CPPlotRange plotRangeWithLocation:CPDecimalFromInt(0) length:newMaxX];
+            plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromInt(0) length:newMaxX];
         }
     }
 }
@@ -122,19 +122,19 @@
 #pragma mark -
 #pragma mark Plot Data Source Methods
 
-- (NSUInteger)numberOfRecordsForPlot:(CPPlot*)plot
+- (NSUInteger)numberOfRecordsForPlot:(CPTPlot*)plot
 {
     return [points count];
 }
 
-- (NSNumber*)numberForPlot:(CPPlot*)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
+- (NSNumber*)numberForPlot:(CPTPlot*)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
     switch (fieldEnum) {
-        case CPScatterPlotFieldX:
+        case CPTScatterPlotFieldX:
             // Generate X values based on the index of the point we are working with
             return [NSNumber numberWithFloat:(index * xScale)];
             break;
-        case CPScatterPlotFieldY:
+        case CPTScatterPlotFieldY:
             // Points are stored in a circular buffer, starting at newest.
             index = ( newest + index ) % [points count];
             return [points objectAtIndex:index];
@@ -153,8 +153,8 @@
 {
     Float32 maxX = [[NSUserDefaults standardUserDefaults] floatForKey:kSettingsDetectionsViewDurationKey];
     
-    self.graph = [[[CPXYGraph alloc] initWithFrame:CGRectZero] autorelease];
-    [graph applyTheme:[CPTheme themeNamed:kCPDarkGradientTheme]];
+    self.graph = [[[CPTXYGraph alloc] initWithFrame:CGRectZero] autorelease];
+    [graph applyTheme:[CPTTheme themeNamed:kCPTDarkGradientTheme]];
     
     graph.paddingLeft = 0.0f;
     graph.paddingRight = 0.0f;
@@ -168,28 +168,28 @@
     graph.plotAreaFrame.paddingRight = 10.0;
     graph.plotAreaFrame.paddingBottom = 35.0;
     
-    CPMutableLineStyle* majorGridLineStyle = [CPMutableLineStyle lineStyle];
+    CPTMutableLineStyle* majorGridLineStyle = [CPTMutableLineStyle lineStyle];
     majorGridLineStyle.lineWidth = 0.75;
-    majorGridLineStyle.lineColor = [[CPColor colorWithGenericGray:0.5] colorWithAlphaComponent:0.75];
+    majorGridLineStyle.lineColor = [[CPTColor colorWithGenericGray:0.5] colorWithAlphaComponent:0.75];
     
-    CPMutableLineStyle *minorGridLineStyle = [CPMutableLineStyle lineStyle];
+    CPTMutableLineStyle *minorGridLineStyle = [CPTMutableLineStyle lineStyle];
     minorGridLineStyle.lineWidth = 0.25;
-    minorGridLineStyle.lineColor = [[CPColor whiteColor] colorWithAlphaComponent:0.1];
+    minorGridLineStyle.lineColor = [[CPTColor whiteColor] colorWithAlphaComponent:0.1];
     
-    CPMutableTextStyle *textStyle = [CPTextStyle textStyle];
-    textStyle.color = [CPColor colorWithGenericGray:0.75];
+    CPTMutableTextStyle *textStyle = [CPTTextStyle textStyle];
+    textStyle.color = [CPTColor colorWithGenericGray:0.75];
     textStyle.fontSize = 12.0f;
     
-    CPXYPlotSpace *plotSpace = (CPXYPlotSpace *)graph.defaultPlotSpace;
+    CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
     plotSpace.allowsUserInteraction = NO;
-    plotSpace.xRange = [CPPlotRange plotRangeWithLocation:CPDecimalFromInt(0) length:CPDecimalFromFloat(maxX)];
-    plotSpace.yRange = [CPPlotRange plotRangeWithLocation:CPDecimalFromFloat(0.0f) length:CPDecimalFromFloat(12.0f)];
+    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromInt(0) length:CPTDecimalFromFloat(maxX)];
+    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0f) length:CPTDecimalFromFloat(12.0f)];
     
-    CPXYAxisSet* axisSet = (CPXYAxisSet *)graph.axisSet;
-    CPXYAxis* x = axisSet.xAxis;
+    CPTXYAxisSet* axisSet = (CPTXYAxisSet *)graph.axisSet;
+    CPTXYAxis* x = axisSet.xAxis;
     x.titleTextStyle = textStyle;
     x.labelTextStyle = textStyle;
-    x.majorIntervalLength = CPDecimalFromInt(5);
+    x.majorIntervalLength = CPTDecimalFromInt(5);
     x.minorTicksPerInterval = 5;
     x.majorGridLineStyle = majorGridLineStyle;
     x.minorGridLineStyle = minorGridLineStyle;
@@ -199,10 +199,10 @@
     x.title = NSLocalizedString(@"Seconds Past", @"X axis label for RPM plot");
     x.titleOffset = 18.0f;
     
-    CPXYAxis* y = axisSet.yAxis;
+    CPTXYAxis* y = axisSet.yAxis;
     y.titleTextStyle = textStyle;
     y.labelTextStyle = textStyle;
-    y.majorIntervalLength = CPDecimalFromInt(2);
+    y.majorIntervalLength = CPTDecimalFromInt(2);
     y.minorTicksPerInterval = 5;
     y.majorGridLineStyle = majorGridLineStyle;
     y.minorGridLineStyle = minorGridLineStyle;
@@ -213,23 +213,23 @@
     y.title = NSLocalizedString(@"RPM", @"Y axis label for RPM plot");
     y.titleOffset = 20.0f;
 
-    CPScatterPlot* plot = [[[CPScatterPlot alloc] init] autorelease];
-    CPMutableLineStyle* lineStyle = [CPMutableLineStyle lineStyle];
+    CPTScatterPlot* plot = [[[CPTScatterPlot alloc] init] autorelease];
+    CPTMutableLineStyle* lineStyle = [CPTMutableLineStyle lineStyle];
     lineStyle.lineJoin = kCGLineJoinRound;
     lineStyle.lineCap = kCGLineCapRound;
     lineStyle.lineWidth = 3.0f;
-    lineStyle.lineColor = [CPColor cyanColor];
+    lineStyle.lineColor = [CPTColor cyanColor];
     
     plot.dataLineStyle = lineStyle;
     
-    CPFill* fill = [CPFill fillWithColor:[[CPColor cyanColor] colorWithAlphaComponent:0.3]];
+    CPTFill* fill = [CPTFill fillWithColor:[[CPTColor cyanColor] colorWithAlphaComponent:0.3]];
     plot.areaFill = fill;
-    plot.areaBaseValue = CPDecimalFromInt(0);
+    plot.areaBaseValue = CPTDecimalFromInt(0);
     plot.dataSource = self;
     
     [graph addPlot:plot toPlotSpace:plotSpace];
     
-    CPGraphHostingView* hostingView = (CPGraphHostingView*)self.view;
+    CPTGraphHostingView* hostingView = (CPTGraphHostingView*)self.view;
     hostingView.backgroundColor = [UIColor blackColor];
     hostingView.collapsesLayers = YES;
     hostingView.hostedGraph = graph;

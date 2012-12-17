@@ -81,6 +81,9 @@
         if ([[DBSession sharedSession] isLinked]) {
             NSLog(@"App linked successfully!");
             // At this point you can start making API calls
+            if (settingsController != nil) {
+                [settingsController updateDropboxCell];
+            }
         }
         return YES;
     }
