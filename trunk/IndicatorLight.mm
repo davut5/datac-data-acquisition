@@ -60,10 +60,10 @@
             self.blinker = nil;
         }
         else if (blinkingInterval > 0.0) {
-            self.blinker = [NSTimer scheduledTimerWithTimeInterval:blinkingInterval 
+            self.blinker = [NSTimer scheduledTimerWithTimeInterval:blinkingInterval
                                                             target:self
                                                           selector:@selector(blink:)
-                                                          userInfo:nil 
+                                                          userInfo:nil
                                                            repeats:YES];
         }
     }
@@ -93,7 +93,7 @@
         default:
             [self setImage:[UIImage imageNamed:@"OffButton.png"]];
             break;
-    }	
+    }
 }
 
 @end

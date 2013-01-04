@@ -21,7 +21,7 @@
 
 - (id)initWithCoder:(NSCoder*)decoder
 {
-    NSLog(@"RpmViewController.initWithCoder");
+    LOG(@"RpmViewController.initWithCoder");
     
     //
     // We override initWithCoder since we need to run a timer task even if our view is not loaded or shown.
@@ -46,13 +46,13 @@
 
 - (void)viewDidLoad
 {
-    NSLog(@"RpmViewController.viewDidLoad");
+    LOG(@"RpmViewController.viewDidLoad");
     [super viewDidLoad];
 }
 
 - (void)viewDidUnload
 {
-    NSLog(@"RpmViewController.viewDidUnload");
+    LOG(@"RpmViewController.viewDidUnload");
     [super viewDidUnload];
 }
 
@@ -83,22 +83,22 @@
 
 - (void)updateFromSettings
 {
-    NSLog(@"RpmViewController.updateFromSettings");
+    LOG(@"RpmViewController.updateFromSettings");
     NSUserDefaults* settings = [NSUserDefaults standardUserDefaults];
     
     Float32 maxX = [settings floatForKey:kSettingsDetectionsViewDurationKey];
     xScale = 1.0 / [settings floatForKey:kSettingsDetectionsViewUpdateRateKey];
-
+    
     if (updateTimer != nil) {
         [updateTimer invalidate];
         [updateTimer release];
     }
     
     updateTimer = [[NSTimer scheduledTimerWithTimeInterval:xScale
-                                                   target:self
+                                                    target:self
                                                   selector:@selector(pullValue:)
-                                                 userInfo:nil 
-                                                  repeats:YES] retain];
+                                                  userInfo:nil
+                                                   repeats:YES] retain];
     
     UInt32 count = maxX / xScale + 0.5 + 1;
     if (points == nil || count != [points count]) {
@@ -193,7 +193,7 @@
     x.minorTicksPerInterval = 5;
     x.majorGridLineStyle = majorGridLineStyle;
     x.minorGridLineStyle = minorGridLineStyle;
-    NSNumberFormatter* formatter = [[[NSNumberFormatter alloc] init] autorelease]; 
+    NSNumberFormatter* formatter = [[[NSNumberFormatter alloc] init] autorelease];
     [formatter setMaximumFractionDigits:0];
     x.labelFormatter = formatter;
     x.title = NSLocalizedString(@"Seconds Past", @"X axis label for RPM plot");
@@ -212,7 +212,7 @@
     y.labelFormatter = formatter;
     y.title = NSLocalizedString(@"RPM", @"Y axis label for RPM plot");
     y.titleOffset = 20.0f;
-
+    
     CPTScatterPlot* plot = [[[CPTScatterPlot alloc] init] autorelease];
     CPTMutableLineStyle* lineStyle = [CPTMutableLineStyle lineStyle];
     lineStyle.lineJoin = kCGLineJoinRound;

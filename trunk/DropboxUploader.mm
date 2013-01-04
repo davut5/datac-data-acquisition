@@ -17,6 +17,8 @@
 - (void)warnNetworkUnavailable;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 - (void)readyToUpload;
+- (void)attemptLoadAccountInfo:(NSTimer*)timer;
+- (void)attemptCreateRemoteFolder:(NSTimer*)timer;
 
 @end
 
@@ -96,7 +98,49 @@
 {
     restClient = [[DBRestClient alloc] initWithSession:session];
     restClient.delegate = self;
-    // [restClient loadAccountInfo];
+    [self attemptLoadAccountInfo:nil];
+}
+
+- (void)attemptLoadAccountInfo:(NSTimer*)timer
+{
+    [restClient loadAccountInfo];
+}
+
+- (void)restClient:(DBRestClient*)client loadedAccountInfo:(DBAccountInfo*)info
+{
+    LOG(@"DropboxUploader.restClient:loadedAccountInfo:");
+    self.networkActivityIndicator = [NetworkActivityIndicator create];
+    [self attemptCreateRemoteFolder:nil];
+}
+
+- (void)restClient:(DBRestClient*)client loadAccountInfoFailedWithError:(NSError*)error
+{
+    LOG(@"DropboxUploader.restClient:loadAccountInfoFailedWithError: %@, %@", error, [error userInfo]);
+    [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(attemptLoadAccountInfo:) userInfo:nil
+                                    repeats:NO];
+}
+
+- (void)attemptCreateRemoteFolder:(NSTimer*)timer
+{
+    [restClient createFolder:@"/Datac"];
+}
+
+- (void)restClient:(DBRestClient*)client createdFolder:(DBMetadata*)folder
+{
+    LOG(@"DropboxUploader.restClient:createdFolder:");
+    [self readyToUpload];
+}
+
+- (void)restClient:(DBRestClient*)client createFolderFailedWithError:(NSError*)error
+{
+    LOG(@"DropboxUploader.restClient:createFolderFailedWithError: %@, %@", error, [error userInfo]);
+    if (error.code == 403) {
+        [self readyToUpload];
+    }
+    else {
+        [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(attemptCreateRemoteFolder:) userInfo:nil
+                                        repeats:NO];
+    }
 }
 
 - (void)stopRestClient
@@ -156,7 +200,7 @@
 - (void)networkReachabilityChanged:(NSNotification *)notification
 {
     ReachabilityState state = [serverReachability currentReachabilityState];
-    NSLog(@"DropboxUploader.networkReachabilityChanged: %d", state);
+    LOG(@"DropboxUploader.networkReachabilityChanged: %d", state);
     if (state == kNotReachable) {
         if (restClient != nil) {
             [self stopRestClient];
@@ -175,11 +219,11 @@
 {
     if (restClient == nil) return;
     if (uploadingFile != nil) return;
-    
+
     uploadingFile = [recording retain];
     uploadingFile.uploading = YES;
-    
-    NSLog(@"DropboxUploader - uploading file: %@", uploadingFile.filePath);
+
+    LOG(@"DropboxUploader - uploading file: %@", uploadingFile.filePath);
     
     [restClient uploadFile:[uploadingFile.filePath lastPathComponent]
                     toPath:@"/Datac" withParentRev:nil fromPath:uploadingFile.filePath];
@@ -187,55 +231,25 @@
     self.networkActivityIndicator = [NetworkActivityIndicator create];
 }
 
-- (void)restClient:(DBRestClient*)client loadedAccountInfo:(DBAccountInfo*)info
-{
-    NSLog(@"DropboxUploader.restClient:loadedAccountInfo:");
-    self.networkActivityIndicator = [NetworkActivityIndicator create];
-    [restClient createFolder:@"/Datac"];
-}
-
-- (void)restClient:(DBRestClient*)client loadAccountInfoFailedWithError:(NSError*)error
-{
-    NSLog(@"DropboxUploader.restClient:loadAccountInfoFailedWithError: %@, %@", error, [error userInfo]);
-    
-    //
-    // Hmmm. Retry later.
-    //
-    [NSTimer scheduledTimerWithTimeInterval:10.0 target:restClient selector:@selector(loadAccountInfo) userInfo:nil
-                                    repeats:NO];
-}
-
-- (void)restClient:(DBRestClient*)client createdFolder:(DBMetadata*)folder
-{
-    NSLog(@"DropboxUploader.restClient:createdFolder:");
-    [self readyToUpload];
-}
-
-- (void)restClient:(DBRestClient*)client createFolderFailedWithError:(NSError*)error
-{
-    NSLog(@"DropboxUploader.restClient:createFolderFailedWithError: %@, %@", error, [error userInfo]);
-    if ([error code] == 403) {
-        [self readyToUpload];
-    }
-}
-
 - (void)restClient:(DBRestClient*)client uploadProgress:(CGFloat)progress
            forFile:(NSString*)destPath from:(NSString*)srcPath;
 {
-    // NSLog(@"DropboxUploader.restClient:uploadProgress");
+    // LOG(@"DropboxUploader.restClient:uploadProgress");
     uploadingFile.progress = progress;
 }
 
 - (void)restClient:(DBRestClient*)client uploadedFile:(NSString*)destPath from:(NSString*)srcPath
 {
-    NSLog(@"DropboxUploader.restClient:uploadedFile");
+    LOG(@"DropboxUploader.restClient:uploadedFile");
     uploadingFile.uploaded = YES;
+    uploadingFile.progress = 0.0;
     [self readyToUpload];
 }
 
 - (void)restClient:(DBRestClient*)client uploadFileFailedWithError:(NSError*)error
 {
-    NSLog(@"DropboxUploader.restClient:uploadFileFailedWithError: - %@, %@", error, [error userInfo]);
+    LOG(@"DropboxUploader.restClient:uploadFileFailedWithError: - %@, %@", error, [error userInfo]);
+    uploadingFile.progress = error.code * -1.0;
     [self readyToUpload];
 }
 
@@ -243,7 +257,6 @@
 {
     if (uploadingFile != nil) {
         uploadingFile.uploading = NO;
-        uploadingFile.progress = 0.0;
         [uploadingFile release];
         uploadingFile = nil;
     }

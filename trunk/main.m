@@ -6,7 +6,7 @@
 #import <UIKit/UIKit.h>
 #import "UserSettings.h"
 
-int main(int argc, char *argv[]) 
+int main(int argc, char *argv[])
 {
     //
     // !!! Register default setting values before we do anything else.

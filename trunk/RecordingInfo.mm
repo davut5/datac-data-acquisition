@@ -28,7 +28,7 @@
 @dynamic uploaded;
 @dynamic uploading;
 
-- (float)progress 
+- (float)progress
 {
     NSNumber* tmpValue;
     [self willAccessValueForKey:@"progress"];
@@ -37,14 +37,14 @@
     return [tmpValue floatValue];
 }
 
-- (void)setProgress:(float)value 
+- (void)setProgress:(float)value
 {
     [self willChangeValueForKey:@"progress"];
     [self setPrimitiveProgress:[NSNumber numberWithFloat:value]];
     [self didChangeValueForKey:@"progress"];
 }
 
-- (BOOL)uploaded 
+- (BOOL)uploaded
 {
     NSNumber* tmpValue;
     [self willAccessValueForKey:@"uploaded"];
@@ -53,14 +53,14 @@
     return [tmpValue boolValue];
 }
 
-- (void)setUploaded:(BOOL)value 
+- (void)setUploaded:(BOOL)value
 {
     [self willChangeValueForKey:@"uploaded"];
     [self setPrimitiveUploaded:[NSNumber numberWithBool:value]];
     [self didChangeValueForKey:@"uploaded"];
 }
 
-- (BOOL)uploading 
+- (BOOL)uploading
 {
     NSNumber* tmpValue;
     [self willAccessValueForKey:@"uploading"];
@@ -69,7 +69,7 @@
     return [tmpValue boolValue];
 }
 
-- (void)setUploading:(BOOL)value 
+- (void)setUploading:(BOOL)value
 {
     [self willChangeValueForKey:@"uploading"];
     [self setPrimitiveUploading:[NSNumber numberWithBool:value]];
@@ -79,11 +79,11 @@
 + (NSString*)niceSizeOfFileString:(int)bytes
 {
     if (bytes<1024)
-	return [NSString stringWithFormat: NSLocalizedString(@"%d bytes", "@Format for size in bytes"), bytes];
+        return [NSString stringWithFormat: NSLocalizedString(@"%d bytes", "@Format for size in bytes"), bytes];
     else if (bytes<1048576)
-	return [NSString stringWithFormat: NSLocalizedString(@"%dKB", "@Format for size in kilobytes"), (bytes/1024)];
+        return [NSString stringWithFormat: NSLocalizedString(@"%dKB", "@Format for size in kilobytes"), (bytes/1024)];
     else
-	return [NSString stringWithFormat: NSLocalizedString(@"%.2fMB", @"Format for size in megabytes"),
+        return [NSString stringWithFormat: NSLocalizedString(@"%.2fMB", @"Format for size in megabytes"),
                 ((float)bytes/1048576)];
 }
 
@@ -101,10 +101,10 @@ static AudioFileTypeID currentAudioFileType;
     else if ([suffix isEqualToString:@"aiff"] == YES) {
         currentAudioFileType = kAudioFileAIFFType;
     }
-
+    
     NSDateFormatter* dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
     [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
-
+    
     NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString* documentsDirectory = [paths objectAtIndex:0];
     NSString* path = [documentsDirectory stringByAppendingPathComponent:NSLocalizedString(@"Recordings",
@@ -116,14 +116,14 @@ static AudioFileTypeID currentAudioFileType;
                    withIntermediateDirectories:YES
                                     attributes:nil
                                          error:&err] == NO) {;
-            NSLog(@"RecordingInfo.generateRecordingPath: failed to create Recordings directory! - %@", err);
+            LOG(@"RecordingInfo.generateRecordingPath: failed to create Recordings directory! - %@", err);
             path = [path stringByDeletingLastPathComponent];
         }
     }
-
+    
     NSString* name = [[dateFormatter stringFromDate:[NSDate date]] stringByAppendingPathExtension:suffix];
     path = [path stringByAppendingPathComponent:name];
-
+    
     return path;
 }
 
@@ -140,11 +140,11 @@ static AudioFileTypeID currentAudioFileType;
     // Uploading state is temporary and is always reset when reloaded.
     //
     if ([[self primitiveUploading] boolValue] == YES) {
-        NSLog(@"RecordingInfo.awakeFromFetch: resetting self.uploading");
+        LOG(@"RecordingInfo.awakeFromFetch: resetting self.uploading");
         self.uploading = NO;
     }
     if ([[self primitiveProgress] floatValue] != 0.0) {
-        NSLog(@"RecordingInfo.awakeFromFetch: resetting self.progress");
+        LOG(@"RecordingInfo.awakeFromFetch: resetting self.progress");
         self.progress = 0.0;
     }
 }

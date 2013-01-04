@@ -19,7 +19,7 @@
 
 @implementation SampleView
 
-@synthesize animationTimer, animationInterval, delegate;
+@synthesize animationInterval, delegate;
 
 + (Class) layerClass
 {
@@ -29,7 +29,7 @@
 - (id)initWithCoder:(NSCoder*)coder
 {
     if((self = [super initWithCoder:coder])) {
-        CAEAGLLayer *eaglLayer = (CAEAGLLayer*) self.layer;
+        CAEAGLLayer* eaglLayer = (CAEAGLLayer*) self.layer;
         eaglLayer.opaque = YES;
         eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
                                         [NSNumber numberWithBool:FALSE],
@@ -39,10 +39,9 @@
                                         nil];
         context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
         viewFramebuffer = 0;
-        // [self setupView];
-        // [self drawView];
+        displayLink = nil;
     }
-    
+
     return self;
 }
 
@@ -67,7 +66,7 @@
     glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_RENDERBUFFER_OES, viewRenderbuffer);
     
     if(glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES) != GL_FRAMEBUFFER_COMPLETE_OES) {
-        NSLog(@"failed to make complete framebuffer object %x", glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES));
+        LOG(@"failed to make complete framebuffer object %x", glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES));
         return NO;
     }
 	
@@ -86,19 +85,24 @@
 
 - (void)startAnimation
 {
-    NSLog(@"SampleView.startAnimation");
-    self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:animationInterval
-                                                           target:self
-                                                         selector:@selector(drawView:)
-                                                         userInfo:nil
-                                                          repeats:YES];
+    LOG(@"SampleView.startAnimation");
+    if (! displayLink) {
+        displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(drawView:)];
+        int interval = int(60 / animationInterval);
+        if (interval < 1) interval = 1;
+        if (interval > 10) interval = 10;
+        [displayLink setFrameInterval:1];
+        [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    }
 }
 
 - (void)stopAnimation
 {
-    NSLog(@"SampleView.stopAnimation");
-    [animationTimer invalidate];
-    self.animationTimer = nil;
+    LOG(@"SampleView.stopAnimation");
+    if (displayLink) {
+        [displayLink invalidate];
+        displayLink = nil;
+    }
 }
 
 - (void)setupView
@@ -109,7 +113,7 @@
     glEnableClientState(GL_VERTEX_ARRAY);
 }
 
-- (void)drawView:(NSTimer*)timer
+- (void)drawView:(id)sender
 {
     [EAGLContext setCurrentContext:context];
     glBindFramebufferOES(GL_FRAMEBUFFER_OES, viewFramebuffer);
@@ -120,7 +124,7 @@
 
 - (BOOL)isAnimating
 {
-    return animationTimer != nil ? YES : NO;
+    return displayLink != nil ? YES : NO;
 }
 
 - (void)dealloc

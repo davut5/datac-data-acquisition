@@ -18,9 +18,9 @@
 - (id)initWithSampleRate:(Float32)theSampleRate
 {
     if ((self = [super init])) {
-	delegate = nil;
-	sampleRate = theSampleRate;
-	[self updateFromSettings];
+        delegate = nil;
+        sampleRate = theSampleRate;
+        [self updateFromSettings];
     }
 	
     return self;
@@ -35,8 +35,8 @@
 - (void)setPressed:(BOOL)state
 {
     if (pressed != state) {
-	pressed = state;
-	[delegate performSelectorOnMainThread:@selector(switchStateChanged:) withObject:self waitUntilDone:NO];
+        pressed = state;
+        [delegate performSelectorOnMainThread:@selector(switchStateChanged:) withObject:self waitUntilDone:NO];
     }
 }
 

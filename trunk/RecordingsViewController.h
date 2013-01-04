@@ -14,6 +14,7 @@
 @interface RecordingsViewController : UITableViewController <NSFetchedResultsControllerDelegate, DropboxUploaderMonitor> {
 @private
     AppDelegate* appDelegate;
+    IBOutlet UITabBarItem* tabItem;
     NSManagedObjectModel* managedObjectModel;
     NSManagedObjectContext* managedObjectContext;
     NSPersistentStoreCoordinator* persistentStoreCoordinator;

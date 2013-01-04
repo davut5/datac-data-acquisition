@@ -59,8 +59,8 @@
 - (void)start;
 
 /** Stop any active recording and the data capturing and signal processing
-    components.
-*/
+ components.
+ */
 - (void)stop;
 
 /** Start recording of incoming sample data.
@@ -80,9 +80,9 @@
 - (BOOL)isRecordingInto:(RecordingInfo*)recording;
 
 /** Remove the indicated recording file and meta data.
-    \param indexPath the location of the recording data in our managed object
-    model.
-*/
+ \param indexPath the location of the recording data in our managed object
+ model.
+ */
 - (void)recordingDeleted:(RecordingInfo*)recording;
 
 - (void)updateFromSettings;

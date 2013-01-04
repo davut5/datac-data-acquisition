@@ -10,7 +10,7 @@
 @class SampleView;
 
 /** Base class for all signal processor controller classes. Provides signal processors with the ability to display
-    important level values in a SampleView view, and to adjust the level values via pan gestures.
+ important level values in a SampleView view, and to adjust the level values via pan gestures.
  */
 @interface SignalProcessorController : NSObject {
 @private
@@ -26,14 +26,14 @@
 @property (nonatomic, retain) LevelSettingView* levelOverlay;
 
 /** Show signal processor level settings on the held SampleView instance.
-    \param vertices an array of GLfloat values that are setup for fast plotting in the OpenGL context.
+ \param vertices an array of GLfloat values that are setup for fast plotting in the OpenGL context.
  */
 - (void)drawOnSampleView:(GLfloat*)vertices;
 
 - (Float32)distanceFromLevel:(Float32)value;
 
 /** Respond to the user's pan gesture.
-    \param recognizer the pan gesture recognizer that is currently active
+ \param recognizer the pan gesture recognizer that is currently active
  */
 - (void)handlePanGesture:(UIPanGestureRecognizer*)recognizer viewPoint:(CGPoint)pos;
 

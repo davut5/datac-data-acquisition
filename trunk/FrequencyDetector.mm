@@ -15,12 +15,12 @@ NSString* kFrequencyDetectorHighBit = @"1";
 @synthesize lowFrequency, highFrequency, observer, nominalHalfBitLength, nominalLowWaveLength, nominalHighWaveLength;
 @synthesize currentBitLength, currentBitState;
 
-+ (FrequencyDetector*)createForSampleRate:(Float32)samplesPerSecond bitRate:(Float32)bitsPerSecond 
++ (FrequencyDetector*)createForSampleRate:(Float32)samplesPerSecond bitRate:(Float32)bitsPerSecond
                                   lowFreq:(Float32)lowFreqInHz highFreq:(Float32)highFreqInHz
 {
     return [[[FrequencyDetector alloc] initForSampleRate:samplesPerSecond
                                                  bitRate:bitsPerSecond
-                                                 lowFreq:lowFreqInHz 
+                                                 lowFreq:lowFreqInHz
                                                 highFreq:highFreqInHz] autorelease];
 }
 
@@ -34,7 +34,7 @@ NSString* kFrequencyDetectorHighBit = @"1";
         self.lowFrequency = lowFreqInHz;
         self.highFrequency = highFreqInHz;
     }
-
+    
     return self;
 }
 
@@ -62,7 +62,7 @@ NSString* kFrequencyDetectorHighBit = @"1";
     Float32 waveLength = info.sampleCount;
     Float32 dLow = fabs(waveLength - nominalLowWaveLength);
     Float32 dHigh = fabs(waveLength - nominalHighWaveLength);
-
+    
     if (dLow <= maxLowWaveDeviation) {
         if (currentBitState != kFrequencyDetectorLowBit) {
             currentBitState = kFrequencyDetectorLowBit;
@@ -75,9 +75,9 @@ NSString* kFrequencyDetectorHighBit = @"1";
             currentBitLength = 0;
         }
     }
-
+    
     if (currentBitState != kFrequencyDetectorUnknownBit) {
-
+        
         //
         // We don't announce a new bit until we've accumulated about 1/2 of a bit length. There will be twice as many
         // cycles for a 8000 Hz signal vs. a 4000 Hz signal, but the samples per bit are constant.
@@ -85,7 +85,7 @@ NSString* kFrequencyDetectorHighBit = @"1";
         currentBitLength += waveLength;
         if (currentBitLength >= nominalHalfBitLength) {
             currentBitLength -= 2 * nominalHalfBitLength;
-            NSLog(@"nextBitValue: %@", currentBitState);
+            LOG(@"nextBitValue: %@", currentBitState);
             if (observer != nil) {
                 [observer performSelectorOnMainThread:@selector(nextBitValue:)
                                            withObject:currentBitState

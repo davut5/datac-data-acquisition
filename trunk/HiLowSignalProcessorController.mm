@@ -30,7 +30,7 @@ enum GestureKind {
         [NSLocalizedString(@"High Level", "Name of high level") retain],
         nil
     };
-
+    
     return levelNames;
 }
 
@@ -55,7 +55,7 @@ enum GestureKind {
     if (self = [super init]) {
         detector = theDetector;
     }
-
+    
     return self;
 }
 
@@ -84,7 +84,7 @@ struct HitInfo
     CGFloat level;
     CGFloat delta;
     HitInfo(GestureKind k, CGFloat l, CGFloat y)
-    : kind(k), level(l), delta(fabs(l - y)) 
+    : kind(k), level(l), delta(fabs(l - y))
     {}
     
     bool operator<(const HitInfo& rhs) const { return delta < rhs.delta; }
@@ -127,7 +127,7 @@ struct HitInfo
                 detector.minHighLevel = gestureLevel;
             }
         }
-
+        
         [self showLevelOverlay:[HiLowSignalProcessorController levelNames][gestureKind] withValue:gestureLevel];
     }
 }

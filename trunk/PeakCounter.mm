@@ -50,7 +50,7 @@
         if (lowPassFilter != nil) {
             sample = [lowPassFilter filter:sample];
         }
-
+        
         if (sample >= level) {
             if (currentEdge != kEdgeKindRising) {
                 currentEdge = kEdgeKindRising;

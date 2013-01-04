@@ -28,7 +28,7 @@
         maxPulseToPulseWidth = 22000;   // 0.5 seconds of samples
         [self updateFromSettings];
     }
-
+    
     return self;
 }
 
@@ -103,19 +103,19 @@
     if (info.amplitude >= minHighPulseAmplitude) {
         if (state != kInHighPulse) {
             if (state == kInLowPulse) {
-
+                
                 //
                 // We have a valid pulse-to-pulse detection.
                 //
                 if (pulseToPulseWidth < maxPulseToPulseWidth) {
                     currentValue = [smoother filter:pulseToPulseWidth];
-                    NSLog(@"pulseToPulseWidth: %d  smoothed: %f", pulseToPulseWidth, currentValue);
+                    LOG(@"pulseToPulseWidth: %d  smoothed: %f", pulseToPulseWidth, currentValue);
                     if (observer) {
                         [observer pulseDetected:pulseToPulseWidth filtered:currentValue];
                     }
                 }
             }
-
+            
             state = kInHighPulse;
             pulseToPulseWidth = 0;
         }
@@ -127,7 +127,7 @@
             }
         }
     }
-
+    
     pulseToPulseWidth += info.sampleCount;
 }
 

@@ -22,21 +22,21 @@
 {
     B.clear();
     Z.clear();
-
+    
     if (fileName != nil) {
         [fileName autorelease];
         fileName = nil;
     }
-
+    
     if (theFileName == nil) return;
-
+    
     NSString* extension = [theFileName pathExtension];
     if ([extension length] == 0) {
         extension = @"txt";
     }
-
+    
     NSString* baseName = [theFileName stringByDeletingPathExtension];
-
+    
     //
     // Locate the file to read. First, look in the user directory inside the 'Filters' folder.
     //
@@ -47,15 +47,15 @@
     NSFileManager* fileManager = [[[NSFileManager alloc] init] autorelease];
     if ([fileManager fileExistsAtPath:path] == NO) {
         NSError* err = nil;
-        if ([fileManager createDirectoryAtPath:path 
+        if ([fileManager createDirectoryAtPath:path
                    withIntermediateDirectories:YES
                                     attributes:nil
                                          error:&err] == NO) {
-            NSLog(@"LowPassFilter.setFileName: failed to create Filters directory - %@", err);
+            LOG(@"LowPassFilter.setFileName: failed to create Filters directory - %@", err);
             path = [path stringByDeletingLastPathComponent];
         }
     }
-
+    
     path = [path stringByAppendingPathComponent:baseName];
     path = [path stringByAppendingPathExtension:extension];
     if ([fileManager fileExistsAtPath:path] == YES) {
@@ -63,7 +63,7 @@
         fileName = [theFileName retain];
         return;
     }
-
+    
     //
     // Attempt to locate the file in the application bundle.
     //
@@ -74,8 +74,8 @@
         fileName = [theFileName retain];
         return;
     }
-
-    NSLog(@"did not find resource file '%@.%@'", baseName, extension);
+    
+    LOG(@"did not find resource file '%@.%@'", baseName, extension);
 }
 
 + (id)createFromFile:(NSString *)theFileName
@@ -108,9 +108,9 @@
     
     for (NSNumber* obj in taps) {
         B.push_back([obj floatValue]);
-	Z.push_back(0.0);
+        Z.push_back(0.0);
     }
-
+    
     return self;
 }
 
@@ -125,23 +125,23 @@
 - (void)reset
 {
     for (UInt32 index = 0; index < Z.size(); ++index)
-	Z[index] = 0.0;
+        Z[index] = 0.0;
 }
 
 - (Float32)filter:(Float32)x
 {
     if (Z.size() == 0) return x;
-
+    
     Float32 y = B[0] * x + Z[0];
-
+    
     //
     // Update difference equation weights.
     //
     UInt32 tapIndex = 1;
     for (; tapIndex < Z.size(); ++tapIndex) {
-	Z[tapIndex - 1] = B[tapIndex] * x + Z[tapIndex];
+        Z[tapIndex - 1] = B[tapIndex] * x + Z[tapIndex];
     }
-
+    
     return y;
 }
 
@@ -160,16 +160,16 @@
 
 - (void)loadFile:(NSString*)path
 {
-    NSLog(@"LowPassFilter.loadFile: loading file '%@'", path);
-
+    LOG(@"LowPassFilter.loadFile: loading file '%@'", path);
+    
     //
     // Read the contents of the file. The format should be one tap weight per line.
     //
     NSError* error;
     NSString* contents = [NSString stringWithContentsOfFile:path encoding:NSUnicodeStringEncoding error: &error];
     if (contents == nil) {
-	NSLog(@"failed to read contents of file '%@'", path);
-	return;
+        LOG(@"failed to read contents of file '%@'", path);
+        return;
     }
     
     //
@@ -179,15 +179,15 @@
     NSDecimal tap;
     NSMutableArray* taps = [NSMutableArray arrayWithCapacity:32];
     while ([scanner scanDecimal:&tap]) {
-	[taps addObject:[NSDecimalNumber decimalNumberWithDecimal:tap]];
+        [taps addObject:[NSDecimalNumber decimalNumberWithDecimal:tap]];
     }
     
-    NSLog(@"num taps: %d", [taps count]);
+    LOG(@"num taps: %d", [taps count]);
     
     for (NSDecimalNumber* obj in taps) {
-	B.push_back([obj floatValue]);
-	NSLog(@"B[%lu]: %f", B.size()-1, B.back());
-	Z.push_back(0.0);
+        B.push_back([obj floatValue]);
+        LOG(@"B[%lu]: %f", B.size()-1, B.back());
+        Z.push_back(0.0);
     }
 }
 

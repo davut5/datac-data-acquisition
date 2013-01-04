@@ -17,7 +17,7 @@
         maxValue = 0;
         sampleCount = 0;
     }
-
+    
     return self;
 }
 
@@ -59,7 +59,7 @@
         self.info = [[[WaveCycleDetectorInfo alloc] init] autorelease];
         [self reset];
     }
-
+    
     return self;
 }
 
@@ -71,7 +71,7 @@
         if (sample >= highLevel) {
             if (state != kRisingEdge) {
                 if (state == kFallingEdge) {
-
+                    
                     //
                     // Finished cycle detection.
                     //
@@ -87,7 +87,7 @@
                     [pool drain];
 #endif
                 }
-
+                
                 state = kRisingEdge;
             }
         }

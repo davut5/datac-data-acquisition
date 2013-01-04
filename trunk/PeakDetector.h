@@ -15,19 +15,19 @@
 @class LowPassFilter;
 
 /** Simple signal detector that looks for and counts the rising edges of peaks above a user-settable level. Periodically
-    reports these peak counts in a notification named kPeakDetectorCounterUpdateNotification.
-*/
+ reports these peak counts in a notification named kPeakDetectorCounterUpdateNotification.
+ */
 
 @interface PeakDetector : NSObject <SignalProcessorProtocol> {
 @private
     PeakCounter* sampleProcessor;
     PeakDetectorController* controller;
     LowPassFilter* counterDecayFilter;
-
+    
     Float32 detectionScale;
     Float32 counterScale;
     Float32 lastDetection;
-
+    
     std::deque<UInt32> counterHistory;
     size_t counterHistorySize;
 }

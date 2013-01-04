@@ -32,7 +32,7 @@
     IBOutlet UILabel* yNeg05Label;
     IBOutlet UITextView* infoOverlay;
     IBOutlet LevelSettingView* levelOverlay;
-
+    
     VertexBufferManager* vertexBufferManager;
     SignalProcessorController* signalProcessorController;
     
@@ -44,9 +44,8 @@
     CGFloat gestureStart;
     CGPoint gesturePoint;
     GLfloat yAxes[8];
-
+    
     int gestureType;
-
     CGPoint kineticPanVelocity;
     BOOL kineticPanActive;
 }

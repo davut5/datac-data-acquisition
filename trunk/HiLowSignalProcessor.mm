@@ -31,7 +31,7 @@
         controller = nil;
         frequency = 0.0;
     }
-
+    
     return self;
 }
 

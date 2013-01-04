@@ -15,8 +15,8 @@ enum EdgeKind {
 };
 
 /** Simple processor that detects when the signal rises above a given level. Maintains a count of the number of times
-    this occurs.
-*/
+ this occurs.
+ */
 @interface PeakCounter : NSObject<SampleProcessorProtocol> {
 @private
     Float32 level;

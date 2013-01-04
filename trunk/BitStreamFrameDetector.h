@@ -8,9 +8,9 @@
 #import "BitDetectorObserver.h"
 #import "BitStreamFrameDetectorObserver.h"
 
-/** The BitStreamFrameDetector attemps to find sequences of bit values ('0' and '1') with length frameSize, where the 
- start of the frame consists of a predefined prefix (such as 0xAA or '10101010') and ends with a predefined suffix 
- (such as 0x55 or b01010101). The approach taken is quite simple: accumulate bits from a BitDetector and when there are 
+/** The BitStreamFrameDetector attemps to find sequences of bit values ('0' and '1') with length frameSize, where the
+ start of the frame consists of a predefined prefix (such as 0xAA or '10101010') and ends with a predefined suffix
+ (such as 0x55 or b01010101). The approach taken is quite simple: accumulate bits from a BitDetector and when there are
  frameSize bits, check if the string starts with a given prefix value and ends with a given suffix value. If so, fire a
  frameContentBitStream: message to the registered observer with the frame contents, and clear the bits accumulator.
  */

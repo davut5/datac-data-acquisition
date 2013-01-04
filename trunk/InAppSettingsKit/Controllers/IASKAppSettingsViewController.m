@@ -113,7 +113,7 @@ CGRect IASKCGRectSwap(CGRect rect);
 - (id)initWithStyle:(UITableViewStyle)style
 {
     if (style != UITableViewStyleGrouped) {
-        NSLog(@"only UITableViewStyleGrouped style is supported, forcing it.");
+        LOG(@"only UITableViewStyleGrouped style is supported, forcing it.");
     }
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
@@ -131,7 +131,7 @@ CGRect IASKCGRectSwap(CGRect rect);
     if (!nibNameOrNil) {
         return [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     }
-    NSLog (@"%@ is now deprecated, we are moving away from nibs.", NSStringFromSelector(_cmd));
+    LOG (@"%@ is now deprecated, we are moving away from nibs.", NSStringFromSelector(_cmd));
     return [self initWithStyle:UITableViewStyleGrouped];
 }
 
@@ -721,7 +721,7 @@ CGRect IASKCGRectSwap(CGRect rect);
 			[self.delegate settingsViewController:self buttonTappedForSpecifier:specifier];
 		} else if ([self.delegate respondsToSelector:@selector(settingsViewController:buttonTappedForKey:)]) {
 			// deprecated, provided for backward compatibility
-			NSLog(@"InAppSettingsKit Warning: -settingsViewController:buttonTappedForKey: is deprecated. Please use -settingsViewController:buttonTappedForSpecifier:");
+			LOG(@"InAppSettingsKit Warning: -settingsViewController:buttonTappedForKey: is deprecated. Please use -settingsViewController:buttonTappedForSpecifier:");
 			[self.delegate settingsViewController:self buttonTappedForKey:[specifier key]];
 		} else {
 			// legacy code, provided for backward compatibility
@@ -730,7 +730,7 @@ CGRect IASKCGRectSwap(CGRect rect);
 			SEL buttonAction = [specifier buttonAction];
 			if ([buttonClass respondsToSelector:buttonAction]) {
 				[buttonClass performSelector:buttonAction withObject:self withObject:[specifier key]];
-				NSLog(@"InAppSettingsKit Warning: Using IASKButtonSpecifier without implementing the delegate method is deprecated");
+				LOG(@"InAppSettingsKit Warning: Using IASKButtonSpecifier without implementing the delegate method is deprecated");
 			}
 		}
     } else if ([[specifier type] isEqualToString:kIASKMailComposeSpecifier]) {

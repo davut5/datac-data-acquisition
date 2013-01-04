@@ -36,7 +36,7 @@
         postedAlert = nil;
         counterScale = -1.0;
         counterHistory.clear();
-	[self updateFromSettings];
+        [self updateFromSettings];
     }
     return self;
 }
@@ -72,13 +72,13 @@
         while ([weights count] < decaySteps) {
             [weights addObject:weight];
         }
-
+        
         self.counterDecayFilter = [LowPassFilter createFromArray:weights];
         [self reset];
     }
-
+    
     sampleProcessor.level = [settings floatForKey:kSettingsPeakDetectorLevelKey];
-
+    
     if ([settings boolForKey:kSettingsPeakDetectorUseLowPassFilterKey] == YES) {
         NSString* fileName = [settings stringForKey:kSettingsPeakDetectorLowPassFilterFileNameKey];
         LowPassFilter* lowPassFilter = sampleProcessor.lowPassFilter;
@@ -101,9 +101,9 @@
     else {
         sampleProcessor.lowPassFilter = nil;
     }
-
+    
     detectionScale = [settings floatForKey:kSettingsPeakDetectorScalingKey] * counterScale;
-
+    
     counterHistorySize = counterScale * 10;
     while (counterHistory.size() < counterHistorySize) {
         counterHistory.push_back(0);
@@ -128,7 +128,7 @@
     if (controller == nil) {
         controller = [[PeakDetectorController createWithPeakDetector:self] retain];
     }
-
+    
     return controller;
 }
 
