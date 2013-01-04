@@ -22,9 +22,9 @@
 - (void)handlePanGesture:(UIPanGestureRecognizer *)recognizer;
 - (void)handlePinchGesture:(UIPinchGestureRecognizer *)recognizer;
 - (void)switchStateChanged:(MicSwitchDetector*)sender;
-- (void)adaptViewToOrientation:(NSTimeInterval)duration;
 - (void)dismissInfoOverlay:(UITapGestureRecognizer*)recognizer;
 - (void)placeYLabels;
+- (void)updateXLabels;
 - (void)updateKineticPan;
 
 @end
@@ -35,10 +35,6 @@
 @synthesize xMinLabel, xMaxLabel, yMaxLabel, yPos05Label, yZeroLabel, yNeg05Label, signalProcessorController;
 @synthesize xMin, yMin, scale;
 
-//
-// Maximum age of audio samples we can show at one go. Since we capture at 44.1kHz, that means 44.1k
-// OpenGL vertices or 2 88.2k floats.
-//
 static const CGFloat kScaleMin = 0.0001;
 static const CGFloat kScaleMax = 1.0;
 static const CGFloat kXMin =  0.0;
@@ -55,7 +51,7 @@ enum GestureType {
 
 - (id)initWithCoder:(NSCoder*)decoder
 {
-    NSLog(@"SampleViewController.initWithCoder");
+    LOG(@"SampleViewController.initWithCoder");
     if (self = [super initWithCoder:decoder]) {
         appDelegate = nil;
     }
@@ -72,27 +68,27 @@ enum GestureType {
     [super dealloc];
 }
 
--(void)viewDidLoad 
+-(void)viewDidLoad
 {
-    NSLog(@"SampleViewController.viewDidLoad");
+    LOG(@"SampleViewController.viewDidLoad");
     appDelegate = static_cast<AppDelegate*>([[UIApplication sharedApplication] delegate]);
-
+    
     signalProcessorController = nil;
     sampleView.delegate = self;
     self.view.autoresizesSubviews = YES;
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     kineticPanActive = NO;
-
+    
     //
     // Register for notification when the DataCapture properties emittingPowerSignal and pluggedIn
     // change so we can update our display appropriately.
     //
     vertexBufferManager = appDelegate.vertexBufferManager;
     
-    [appDelegate.dataCapture addObserver:self forKeyPath:NSStringFromSelector(@selector(emittingPowerSignal)) 
+    [appDelegate.dataCapture addObserver:self forKeyPath:NSStringFromSelector(@selector(emittingPowerSignal))
                                  options:0 context:nil];
-    [appDelegate.dataCapture addObserver:self forKeyPath:NSStringFromSelector(@selector(pluggedIn)) 
+    [appDelegate.dataCapture addObserver:self forKeyPath:NSStringFromSelector(@selector(pluggedIn))
                                  options:0 context:nil];
     
     appDelegate.switchDetector.delegate = self;
@@ -101,7 +97,7 @@ enum GestureType {
     // Set widgets so that they will appear behind the graph view when we rotate to the landscape view.
     //
     connectedIndicator.on = NO;
-
+    
     recordIndicator.light.onState = kRed;
     recordIndicator.light.blankedState = kDimRed;
     recordIndicator.light.blinkingInterval = 0.25;
@@ -110,25 +106,25 @@ enum GestureType {
     powerIndicator.light.onState = kYellow;
     powerIndicator.light.blankedState = kDimYellow;
     powerIndicator.on = NO;
-
+    
     //
     // Install single-tap gesture to freeze the display.
     //
     UITapGestureRecognizer* stgr = [[[UITapGestureRecognizer alloc]
-                                     initWithTarget:self action:@selector(handleSingleTapGesture:)] 
+                                     initWithTarget:self action:@selector(handleSingleTapGesture:)]
                                     autorelease];
     [sampleView addGestureRecognizer:stgr];
-
+    
     //
     // Install a 1 finger pan guesture to pan the display levels
     //
-    UIPanGestureRecognizer* pgr = [[[UIPanGestureRecognizer alloc] 
+    UIPanGestureRecognizer* pgr = [[[UIPanGestureRecognizer alloc]
                                     initWithTarget:self action:@selector(handlePanGesture:)]
                                    autorelease];
     pgr.minimumNumberOfTouches = 1;
     pgr.maximumNumberOfTouches = 1;
     [sampleView addGestureRecognizer:pgr];
-
+    
     //
     // Install a pinch gester to change xScale
     //
@@ -136,7 +132,7 @@ enum GestureType {
                                        initWithTarget:self action:@selector(handlePinchGesture:)]
                                       autorelease];
     [sampleView addGestureRecognizer:pigr];
-
+    
     //
     // Install tap gesture to dismiss the info overlay
     //
@@ -161,6 +157,11 @@ enum GestureType {
     }
     
     return signalProcessorController;
+}
+
+- (void)viewWillLayoutSubviews
+{
+    [self placeYLabels];
 }
 
 - (void)setScale:(CGFloat)value
@@ -206,7 +207,7 @@ enum GestureType {
     value = round((xMin + xSpan) * 10000.0) / 10000.0;
     xMaxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%5.4gs", @"Format string for X label"), value];
 }
-    
+
 - (void)setYMin:(CGFloat)value
 {
     if (value < kYMin) value = kYMin;
@@ -222,7 +223,7 @@ enum GestureType {
 
 - (void)viewDidUnload
 {
-    NSLog(@"SampleViewController.viewDidUnload");
+    LOG(@"SampleViewController.viewDidUnload");
     [self stop];
     if (signalProcessorController) {
         [signalProcessorController release];
@@ -233,15 +234,14 @@ enum GestureType {
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    NSLog(@"SampleViewController.viewWillAppear");
-    [self adaptViewToOrientation:0];
+    LOG(@"SampleViewController.viewWillAppear");
     [self start];
     [super viewWillAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    NSLog(@"SampleViewController.viewWillDisappear");
+    LOG(@"SampleViewController.viewWillDisappear");
     [self stop];
     if (signalProcessorController) {
         [signalProcessorController release];
@@ -253,61 +253,60 @@ enum GestureType {
 - (void)start
 {
     if (! [sampleView isAnimating]) {
-        NSLog(@"SampleViewController.start");
-	[sampleView startAnimation];
+        LOG(@"SampleViewController.start");
+        [sampleView startAnimation];
     }
 }
 
 - (void)stop
 {
     if ([sampleView isAnimating]) {
-        NSLog(@"SampleViewController.stop");
-	[sampleView stopAnimation];
+        LOG(@"SampleViewController.stop");
+        [sampleView stopAnimation];
     }
 }
 
 - (void)updateFromSettings
 {
     self.scale = kScaleMax - [[NSUserDefaults standardUserDefaults] floatForKey:kSettingsInputViewScaleKey] + kScaleMin;
-
-    Float32 rate = 1.0 / [[NSUserDefaults standardUserDefaults] floatForKey:kSettingsInputViewUpdateRateKey];
+    int rate = [[NSUserDefaults standardUserDefaults] integerForKey:kSettingsInputViewUpdateRateKey];
     if (rate != sampleView.animationInterval) {
-	sampleView.animationInterval = rate;
-	if ([sampleView isAnimating]) {
-	    [sampleView stopAnimation];
-	    [sampleView startAnimation];
-	}
+        sampleView.animationInterval = rate;
+        if ([sampleView isAnimating]) {
+            [sampleView stopAnimation];
+            [sampleView startAnimation];
+        }
     }
 }
 
 - (IBAction)togglePower {
-    NSLog(@"togglePower");
+    LOG(@"togglePower");
     powerIndicator.on = ! powerIndicator.on;
     [appDelegate.dataCapture setEmittingPowerSignal: powerIndicator.on];
 }
 
 - (IBAction)toggleRecord {
-    NSLog(@"toggleRecord");
+    LOG(@"toggleRecord");
     recordIndicator.on = ! recordIndicator.on;
     if (recordIndicator.on == YES) {
-	[appDelegate startRecording];
+        [appDelegate startRecording];
     }
     else {
-	[appDelegate stopRecording];
+        [appDelegate stopRecording];
     }
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change
                        context:(void *)context
 {
     //
     // !!! Be careful - this may be running in a thread other than the main one.
     //
     if ([keyPath isEqual:@"emittingPowerSignal"]) {
-	powerIndicator.on = appDelegate.dataCapture.emittingPowerSignal;
+        powerIndicator.on = appDelegate.dataCapture.emittingPowerSignal;
     }
     else if ([keyPath isEqual:@"pluggedIn"]) {
-	connectedIndicator.on = appDelegate.dataCapture.pluggedIn;
+        connectedIndicator.on = appDelegate.dataCapture.pluggedIn;
     }
 }
 
@@ -316,7 +315,7 @@ enum GestureType {
 }
 
 - (void)didReceiveMemoryWarning {
-    NSLog(@"Memory Warning");
+    LOG(@"Memory Warning");
     [super didReceiveMemoryWarning];
 }
 
@@ -355,7 +354,7 @@ enum GestureType {
     glVertexPointer(2, GL_FLOAT, 0, vertices);
     
     GLfloat xMax = xMin + xSpan;
-
+    
     //
     // Draw three horizontal values at Y = -0.5, 0.0, and +0.5
     //
@@ -378,11 +377,11 @@ enum GestureType {
     vertices[13] = yAxes[3];
     vertices[14] = xMax;
     vertices[15] = yAxes[3];
-    
+
     glColor4f(.5, .5, .5, 1.0);
     glLineWidth(0.5);
     glDrawArrays(GL_LINES, 0, 8);
-
+    
     [self.signalProcessorController drawOnSampleView:vertices];
 }
 
@@ -410,7 +409,7 @@ enum GestureType {
             CGFloat height = sampleView.bounds.size.height;
             pos.y = (1.0 - pos.y / height) * ySpan + yMin;
             Float32 distance = [signalProcessorController distanceFromLevel:pos.y];
-            NSLog(@"distance: %f %f", distance, distance / ySpan);
+            LOG(@"distance: %f %f", distance, distance / ySpan);
             if (distance / ySpan < 0.05) {
                 gestureType = kGestureDetector;
                 CGFloat width = sampleView.bounds.size.width;
@@ -418,7 +417,7 @@ enum GestureType {
                 [signalProcessorController handlePanGesture:recognizer viewPoint:pos];
             }
         }
-
+        
         if (gestureType == kGestureUnknown) {
             gestureType = kGesturePan;
             gesturePoint = pos;
@@ -426,9 +425,9 @@ enum GestureType {
         }
         return;
     }
-
+    
     CGPoint pos = [recognizer locationInView:sampleView];
-
+    
     if (gestureType == kGestureDetector) {
         if (self.signalProcessorController) {
             CGFloat width = sampleView.bounds.size.width;
@@ -441,10 +440,10 @@ enum GestureType {
         if (recognizer.state == UIGestureRecognizerStateEnded) {
             gestureType = kUnknownType;
         }
-
+        
         return;
     }
-
+    
     if (gestureType == kGesturePan) {
         CGFloat width = sampleView.bounds.size.width;
         CGFloat height = sampleView.bounds.size.height;
@@ -477,13 +476,13 @@ enum GestureType {
         if (kineticPanVelocity.x > 0) kineticPanVelocity.x -= 1;
         else if (kineticPanVelocity.x <0) kineticPanVelocity.x += 1;
     }
-
+    
     if (dy) {
         self.yMin = yMin + dy;
         if (kineticPanVelocity.y > 0) kineticPanVelocity.y -= 1;
         else if (kineticPanVelocity.y <0) kineticPanVelocity.y += 1;
     }
-
+    
     kineticPanActive = kineticPanVelocity.x != 0 || kineticPanVelocity.y != 0;
 }
 
@@ -507,28 +506,10 @@ enum GestureType {
     }
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
-                                         duration:(NSTimeInterval)duration
-{
-    [self adaptViewToOrientation:duration];
-}
-
-- (void)adaptViewToOrientation:(NSTimeInterval)duration
-{
-    if (duration > 0.0f) {
-        [UIView beginAnimations:@"" context:nil];
-        [UIView setAnimationDuration:duration];
-    }
-
-    [self placeYLabels];
-    
-    if (duration > 0.0) {
-        [UIView commitAnimations];
-    }
-}
-
 - (void)placeYLabels
 {
+    LOG(@"placeYLabels");
+
     //
     // Place the grid labels in the appropriate location after a rotation event.
     //
@@ -550,42 +531,42 @@ enum GestureType {
     while (t <= 1.0) {
         yAxes[index++] = t;
         t+= 0.25;
-    } 
-
+    }
+    
     t = (0.0 - yMin) / ySpan - 0.25;
     if (t > 1.0) {
         t -= (int((t - 1.0) / 0.25) + 1) * 0.25;
     }
-
+    
     while (t > 0.0) {
         yAxes[index++] = t;
         t -= 0.25;
     }
-
+    
     NSString* format = NSLocalizedString(@"%5.4g", @"Format string for Y labels");
-
-    yNeg05Label.center = CGPointMake(yNeg05Label.center.x, offset + height * (1 - yAxes[0]) + 
+    
+    yNeg05Label.center = CGPointMake(yNeg05Label.center.x, offset + height * (1 - yAxes[0]) +
                                      yNeg05Label.bounds.size.height * 0.5 + 1);
     CGFloat y = yMin + yAxes[0] * ySpan;
     yAxes[0] = y;
     CGFloat value = round(y * 10000.0) / 10000.0;
     yNeg05Label.text = [NSString stringWithFormat:format, value];
-
-    yZeroLabel.center = CGPointMake(yZeroLabel.center.x, offset + height * (1 - yAxes[1])+ 
+    
+    yZeroLabel.center = CGPointMake(yZeroLabel.center.x, offset + height * (1 - yAxes[1])+
                                     yZeroLabel.bounds.size.height * 0.5 + 1);
     y = yMin + yAxes[1] * ySpan;
     yAxes[1] = y;
     value = round(y * 10000.0) / 10000.0;
     yZeroLabel.text = [NSString stringWithFormat:format, value];
-
-    yPos05Label.center = CGPointMake(yPos05Label.center.x, offset + height * (1 - yAxes[2]) + 
+    
+    yPos05Label.center = CGPointMake(yPos05Label.center.x, offset + height * (1 - yAxes[2]) +
                                      yPos05Label.bounds.size.height * 0.5 + 1);
     y = yMin + yAxes[2] * ySpan;
     yAxes[2] = y;
     value = round(y * 10000.0) / 10000.0;
     yPos05Label.text = [NSString stringWithFormat:format, value];
-
-    yMaxLabel.center = CGPointMake(yMaxLabel.center.x, offset + height * (1 - yAxes[3]) + 
+    
+    yMaxLabel.center = CGPointMake(yMaxLabel.center.x, offset + height * (1 - yAxes[3]) +
                                    yMaxLabel.bounds.size.height * 0.5 + 1);
     y = yMin + yAxes[3] * ySpan;
     yAxes[3] = y;
@@ -601,15 +582,15 @@ enum GestureType {
 - (void)toggleInfoOverlay
 {
     if ([self.signalProcessorController showInfoOverlay] == NO) return;
-
+    
     if (infoOverlay.hidden) {
         infoOverlay.hidden = NO;
-
+        
         //
         // Add the view managed by the infoOverlayController to our infoOverlay view and make them visible.
         //
         [self.signalProcessorController infoOverlayWillAppear: infoOverlay];
-
+        
         //
         // Reveal the infoOverlay view by popping it up from the tab bar at the bottom of the screen. End when
         // it is centered over the sampleView display.
@@ -623,9 +604,9 @@ enum GestureType {
         [UIView commitAnimations];
     }
     else {
-
+        
         //
-        // Hide the infoOverlay view by dropping it into the tab bar at the bottom of the screen. When the 
+        // Hide the infoOverlay view by dropping it into the tab bar at the bottom of the screen. When the
         // animation is done, invoke hideInfoOverlayDone to remove the custom view from our infoOverlay view.
         //
         [self.signalProcessorController infoOverlayWillDisappear];

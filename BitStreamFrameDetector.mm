@@ -90,26 +90,26 @@
     [bits appendString:bitValue];
     if ([bits length] == frameSize) {
         if ([bits hasPrefix:prefix] && [bits hasSuffix:suffix]) {
-
+            
             //
             // Extract and save the contents of the frame. Alert observer of new frame contents.
             //
-            NSLog(@"BitStreamFrameDetector: matched frame: %@", bits);
+            LOG(@"BitStreamFrameDetector: matched frame: %@", bits);
             [frameContents release];
             frameContents = [[bits substringWithRange:NSMakeRange([prefix length], contentSize)] retain];
             if (observer != nil) {
                 [observer frameContentBitStream:frameContents];
             }
-
+            
             //
             // Clear out the bit accumulator since we used everything.
             //
             [bits deleteCharactersInRange:NSMakeRange(0, frameSize)];
         }
         else {
-
+            
             //
-            // We did not match. Locate the next match for prefix and start from there. If not found, start dropping 
+            // We did not match. Locate the next match for prefix and start from there. If not found, start dropping
             // bits from the end of the prefix and look for a match at the end of the string.
             //
             NSRange found = [bits rangeOfString:prefix options:NSLiteralSearch range:NSMakeRange(1, frameSize-1)];

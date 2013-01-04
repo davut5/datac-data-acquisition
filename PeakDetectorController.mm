@@ -20,7 +20,7 @@
     if (self = [super init]) {
         peakDetector = thePeakDetector;
     }
-
+    
     return self;
 }
 
@@ -63,7 +63,7 @@
             if (gestureLevel < -1.0) gestureLevel = -1.0;
             peakDetector.level = gestureLevel;
         }
-
+        
         [self showLevelOverlay:NSLocalizedString(@"Level", @"Name of PeakDetector level") withValue:gestureLevel];
     }
 }
@@ -75,7 +75,7 @@
 
 - (void)updateInfoOverlay:(NSTimer*)timer
 {
-    NSLog(@"PeakDetectorInfoOverlayController.updateInfo");
+    LOG(@"PeakDetectorInfoOverlayController.updateInfo");
     NSString* counterHistory = [peakDetector counterHistoryAsString];
     NSString* filterValues = [peakDetector.counterDecayFilter description];
     NSString* content = [NSString stringWithFormat:

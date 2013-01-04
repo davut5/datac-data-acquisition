@@ -17,13 +17,13 @@ struct AudioUnitRenderProcContext;
 typedef void (*DataCaptureProcessSamplesProc)(id, SEL, AudioBufferList*, UInt32, const AudioTimeStamp*);
 
 /** Data collection class for the exteral device. Uses the AudioUnit
-    infrastructure to obtain samples from the external device and to emit a
-    signal to the device for power.
+ infrastructure to obtain samples from the external device and to emit a
+ signal to the device for power.
  
-    NOTE: processors will be activated in an AudioUnit thread, not the main
-    thread. See the VertexBufferManager class for an example of what to do to
-    remain thread-safe with the main thread.
-*/
+ NOTE: processors will be activated in an AudioUnit thread, not the main
+ thread. See the VertexBufferManager class for an example of what to do to
+ remain thread-safe with the main thread.
+ */
 @interface DataCapture : NSObject
 {
 @private

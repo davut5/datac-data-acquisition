@@ -23,7 +23,7 @@
             [weights addObject:weight];
         }
     }
-
+    
     if (self = [super initFromArray:weights]) {
         average = 0.0;
     }

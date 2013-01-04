@@ -22,7 +22,7 @@
 
 - (void)viewDidLoad
 {
-    NSLog(@"SettingsViewController.viewDidLoad");
+    LOG(@"SettingsViewController.viewDidLoad");
     appDelegate = static_cast<AppDelegate*>([[UIApplication sharedApplication] delegate]);
     [super setDelegate: self];
     [super viewDidLoad];
@@ -30,7 +30,7 @@
 
 - (void)viewDidUnload
 {
-    NSLog(@"SettingsViewController.viewDidUnload");
+    LOG(@"SettingsViewController.viewDidUnload");
     appDelegate = nil;
     [super setDelegate:nil];
     [super viewDidUnload];

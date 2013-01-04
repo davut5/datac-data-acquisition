@@ -27,7 +27,7 @@
 {
     WeightedAverager* wavg = [WeightedAverager createForSize:3];
     STAssertEquals(wavg.average, 0.0f, @"expected 0.0 initial average");
-
+    
     Float32 avg = [wavg filter:10.0];
     STAssertEquals(avg, 5.0f, @"expected 5.0f");
     avg = [wavg filter:9.0];
@@ -38,7 +38,7 @@
     STAssertEqualsWithAccuracy(avg, 9.0f/6.0f + 8.0f/3.0f + 8.0f/2.0f, 0.000001, @"expected 9/6 + 8/3 + 8/2");
     avg = [wavg filter:8.0];
     STAssertEqualsWithAccuracy(avg, 8.0f, 0.000001, @"expected 8.0");
-
+    
     [wavg reset];
     STAssertEquals(wavg.average, 0.0f, @"expected 0.0 after reset");
 }

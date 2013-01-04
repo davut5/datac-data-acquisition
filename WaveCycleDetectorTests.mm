@@ -28,7 +28,7 @@
     widths.push_back(info.sampleCount);
 }
 
-- (void)test1 
+- (void)test1
 {
     NSString* filePath = [[NSBundle bundleForClass:[self class] ] pathForResource:@"invertedAudio" ofType:@"wav"];
     STAssertNotNil(filePath, @"");
@@ -52,7 +52,7 @@
     // client format is always linear PCM - so here we determine how many frames of lpcm
     // we can read/write given our buffer size
     UInt32 numFrames = bufferByteSize / 4;
-
+    
     oss = ExtAudioFileRead(audioFile, &numFrames, &fillBufList);
     
     STAssertEquals(numFrames, 8192ul, @"");
@@ -86,24 +86,24 @@
     wcd.observer = self;
     detections.clear();
     [wcd addSamples:&samples[0] count:samples.size()];
-
+    
     STAssertEquals(detections.size(), 361ul, @"");
     for (int index = 1; index < 23; ++index) {
         STAssertEqualsWithAccuracy(detections[index], 0.9f, 0.25, @"");
     }
-
+    
     for (int index = 23; index < 31; ++index) {
         STAssertEqualsWithAccuracy(detections[index], 0.28f, 0.4, @"");
     }
-
+    
     for (int index = 31; index < 48; ++index) {
         STAssertEqualsWithAccuracy(detections[index], 0.9f, 0.25, @"");
     }
-
+    
     for (int index = 48; index < 82; ++index) {
         STAssertEqualsWithAccuracy(detections[index], 0.28f, 0.4, @"");
     }
-
+    
     for (int index = 82; index < 117; ++index) {
         STAssertEqualsWithAccuracy(detections[index], 0.9f, 0.25, @"");
     }

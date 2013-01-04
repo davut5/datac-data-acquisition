@@ -67,13 +67,13 @@ enum GestureKind {
     glLineWidth(2.0);
     glColor4f(1., 0., 1., 1.0);
     glDrawArrays(GL_LINES, 0, 2);
-
+    
     vertices[1] = detector.highLevel;
     vertices[3] = detector.highLevel;
     glLineWidth(2.0);
     glColor4f(1., .5, 0., 1.0);
     glDrawArrays(GL_LINES, 0, 2);
-
+    
     vertices[1] = detector.minHighPulseAmplitude;
     vertices[3] = detector.minHighPulseAmplitude;
     glLineWidth(2.0);
@@ -87,9 +87,9 @@ struct HitInfo
     CGFloat level;
     CGFloat delta;
     HitInfo(GestureKind k, CGFloat l, CGFloat y)
-        : kind(k), level(l), delta(fabs(l - y)) 
+    : kind(k), level(l), delta(fabs(l - y))
     {}
-
+    
     bool operator<(const HitInfo& rhs) const { return delta < rhs.delta; }
 };
 
@@ -108,7 +108,7 @@ struct HitInfo
 {
     if (recognizer.state == UIGestureRecognizerStateEnded) {
         NSUserDefaults* settings = [NSUserDefaults standardUserDefaults];
-        [settings setObject:[NSNumber numberWithFloat:gestureLevel] 
+        [settings setObject:[NSNumber numberWithFloat:gestureLevel]
                      forKey:[PulseWidthDetectorController keyNames][gestureKind]];
         [[NSUserDefaults standardUserDefaults] synchronize];
         gestureKind = kAdjustUnknown;

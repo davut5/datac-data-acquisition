@@ -18,7 +18,7 @@
         infoOverlayUpdateTimer = nil;
         levelOverlay = nil;
     }
-
+    
     return self;
 }
 
@@ -47,7 +47,7 @@
 - (void)infoOverlayWillAppear:(UITextView*)theInfoOverlay
 {
     infoOverlay = [theInfoOverlay retain];
-    self.infoOverlayUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:infoOverlayUpdateTimerInterval 
+    self.infoOverlayUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:infoOverlayUpdateTimerInterval
                                                                    target:self
                                                                  selector:@selector(updateInfoOverlay:)
                                                                  userInfo:nil

@@ -23,11 +23,11 @@
             [weights addObject:[NSDecimalNumber numberWithFloat:((size - index) * scale)]];
         }
     }
-
+    
     if (self = [super initFromArray:weights]) {
         average = 0.0;
     }
-
+    
     return self;
 }
 

@@ -11,30 +11,26 @@
 
 static const int kValuesPerVertex = 2;
 
-+ (id)bufferWithCapacity:(UInt32)theCapacity sampleRate:(Float64)sampleRate
-{
-    return [[[VertexBuffer alloc] initWithCapacity:theCapacity sampleRate:sampleRate] autorelease];
-}
-
 - (id)initWithCapacity:(UInt32)theCapacity sampleRate:(Float64)sampleRate
 {
     if ((self = [super init])) {
-	//
-	// Internally we hold N + 1 vertices, with the first being reserved for the last one from the
-	// previous buffer. That way we can properly stitch together buffers using the glDrawArrays()
-	// call.
-	//
-	capacity = theCapacity + 1;
-	vertices = new GLfloat[capacity * kValuesPerVertex];
 
-	GLfloat xScale = 1.0 / sampleRate;
-	GLfloat* ptr = vertices;
-	for (int index = 0; index < capacity; ++index) {
-	    *ptr++ = xScale * (index - 1);
-	    *ptr++ = 0.0;
-	}
+        //
+        // Internally we hold N + 1 vertices, with the first being reserved for the last one from the
+        // previous buffer. That way we can properly stitch together buffers using the glDrawArrays()
+        // call.
+        //
+        capacity = theCapacity + 1;
+        vertices = new GLfloat[capacity * kValuesPerVertex];
 
-	[self clear];
+        GLfloat xScale = 1.0 / sampleRate;
+        GLfloat* ptr = vertices;
+        for (int index = 0; index < capacity; ++index) {
+            *ptr++ = xScale * (index - 1);
+            *ptr++ = 0.0;
+        }
+
+        [self clear];
     }
     return self;
 }
@@ -57,13 +53,18 @@ static const int kValuesPerVertex = 2;
     count = 0;
 }
 
+- (BOOL)remaining
+{
+    return capacity - count;
+}
+
 - (void)addSamples:(Float32*)ptr count:(UInt32)numSamples
 {
     //
-    // Incoming samples are in the order of oldest to newest. We want to plot newest to oldest, so reverse the order.
+    // Incoming samples are in the order of oldest to newest.
     //
-    count = numSamples;
-    vptr = &vertices[ 3 ];
+    vptr = &vertices[ 3 + count ];
+    count += numSamples;
     ptr += numSamples;
     while (numSamples-- > 0) {
         *vptr = *--ptr;
@@ -79,13 +80,13 @@ static const int kValuesPerVertex = 2;
     // data in our vertices.
     //
     if (previousBuffer != nil) {
-	vertices[1] = [previousBuffer lastValue];
-	glVertexPointer(2, GL_FLOAT, 0, &vertices[0]);
-	glDrawArrays(GL_LINE_STRIP, 0, count+1);
+        vertices[1] = [previousBuffer lastValue];
+        glVertexPointer(2, GL_FLOAT, 0, &vertices[0]);
+        glDrawArrays(GL_LINE_STRIP, 0, count + 1);
     }
     else {
-	glVertexPointer(2, GL_FLOAT, 0, &vertices[2]);
-	glDrawArrays(GL_LINE_STRIP, 0, count);
+        glVertexPointer(2, GL_FLOAT, 0, &vertices[2]);
+        glDrawArrays(GL_LINE_STRIP, 0, count);
     }
 
     return vertices[count * kValuesPerVertex];

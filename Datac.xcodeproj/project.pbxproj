@@ -27,8 +27,6 @@
 		BD0B0182133BD6A90086B23B /* ekg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BD0B0181133BD6A80086B23B /* ekg@2x.png */; };
 		BD0B018E133BDA0C0086B23B /* rpm.png in Resources */ = {isa = PBXBuildFile; fileRef = BD0B018D133BDA0C0086B23B /* rpm.png */; };
 		BD0B0190133BDA100086B23B /* rpm@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BD0B018F133BDA100086B23B /* rpm@2x.png */; };
-		BD1242F613A4B9FE005D19C1 /* SampleCircularBufferTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD14B4CA1357296E00F39A4B /* SampleCircularBufferTests.mm */; };
-		BD1242F713A4B9FF005D19C1 /* SampleCircularBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD14B4701357247000F39A4B /* SampleCircularBuffer.mm */; };
 		BD14B43F13571CD400F39A4B /* BitDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD14B43E13571CD400F39A4B /* BitDetector.mm */; };
 		BD14DFFA1381E8E80007F4B9 /* DimRedButton.png in Resources */ = {isa = PBXBuildFile; fileRef = BD14DFF91381E8E70007F4B9 /* DimRedButton.png */; };
 		BD14DFFC1381E8EF0007F4B9 /* DimRedButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BD14DFFB1381E8ED0007F4B9 /* DimRedButton@2x.png */; };
@@ -71,9 +69,7 @@
 		BD232B821333FAC5006ADDC4 /* DimGreenButton.opacity in Resources */ = {isa = PBXBuildFile; fileRef = BD232B801333FAC5006ADDC4 /* DimGreenButton.opacity */; };
 		BD232B831333FAC5006ADDC4 /* SplashScreen.opacity in Resources */ = {isa = PBXBuildFile; fileRef = BD232B811333FAC5006ADDC4 /* SplashScreen.opacity */; };
 		BD23EAD0167E180900F6CFE7 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD23EACF167E180900F6CFE7 /* DropboxSDK.framework */; };
-		BD24DE8D139AB1B9005C7D0C /* LevelSettingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD24DE8C139AB1B9005C7D0C /* LevelSettingView.mm */; };
 		BD24DE8E139AB1B9005C7D0C /* LevelSettingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD24DE8C139AB1B9005C7D0C /* LevelSettingView.mm */; };
-		BD24DF86139AD9D6005C7D0C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765070DF74369002DB57D /* CoreGraphics.framework */; };
 		BD2647D5134B4746005CC79E /* 159-voicemail.png in Resources */ = {isa = PBXBuildFile; fileRef = BD2647D4134B4746005CC79E /* 159-voicemail.png */; };
 		BD29187C1328456500FE5395 /* SampleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD29187B1328456500FE5395 /* SampleView.xib */; };
 		BD2F285C1383B613000E69AE /* AUOutputBL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD2F285A1383B613000E69AE /* AUOutputBL.cpp */; };
@@ -83,7 +79,6 @@
 		BD43CB9D13979A86000308B8 /* BlackPushButton.png in Resources */ = {isa = PBXBuildFile; fileRef = BD43CB9C13979A84000308B8 /* BlackPushButton.png */; };
 		BD43CB9F13979D1D000308B8 /* BlackPushButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BD43CB9E13979D1B000308B8 /* BlackPushButton@2x.png */; };
 		BD472E8E141798B200C62F7A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BD86CA071326FB90001B7D82 /* Settings.bundle */; };
-		BD5739F7139E7AE5003DD328 /* NetworkActivityIndicator.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5739F6139E7AE5003DD328 /* NetworkActivityIndicator.mm */; };
 		BD5739F8139E7AE5003DD328 /* NetworkActivityIndicator.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5739F6139E7AE5003DD328 /* NetworkActivityIndicator.mm */; };
 		BD5B695B167EA3080087DF6B /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD5B695A167EA3080087DF6B /* libCorePlot-CocoaTouch.a */; };
 		BD5EAF311345CABC00B01DC7 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF221345CABC00B01DC7 /* AppDelegate.mm */; };
@@ -108,12 +103,7 @@
 		BD5EB0F413460E2700B01DC7 /* Reachability.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EB0F313460E2700B01DC7 /* Reachability.mm */; };
 		BD5EB0F813460E7200B01DC7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD5EB0F713460E7200B01DC7 /* SystemConfiguration.framework */; };
 		BD7E79B21358D37100F38E0F /* BitStreamFrameDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD7E79B11358D37100F38E0F /* BitStreamFrameDetector.mm */; };
-		BD7E79EC1358DB8600F38E0F /* BitStreamFrameDetectorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD7E79E11358DB0200F38E0F /* BitStreamFrameDetectorTests.mm */; };
-		BD7E7A141358DE6A00F38E0F /* BitStreamFrameDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD7E79B11358D37100F38E0F /* BitStreamFrameDetector.mm */; };
-		BD7E7A151358DE6E00F38E0F /* BitDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD14B43E13571CD400F39A4B /* BitDetector.mm */; };
-		BD7E7A181358DE7B00F38E0F /* UserSettings.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF4E1345CADF00B01DC7 /* UserSettings.mm */; };
 		BD7E7A7A1358E39B00F38E0F /* BitFrameDecoder.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD7E7A791358E39B00F38E0F /* BitFrameDecoder.mm */; };
-		BD7E7A871358E48700F38E0F /* BitFrameDecoder.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD7E7A791358E39B00F38E0F /* BitFrameDecoder.mm */; };
 		BD7FD91C1316C355001D1FBF /* CADebugMacros.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD7FD90C1316C355001D1FBF /* CADebugMacros.cpp */; };
 		BD7FD91D1316C355001D1FBF /* CAXException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD7FD90F1316C355001D1FBF /* CAXException.cpp */; };
 		BD7FD91E1316C355001D1FBF /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD7FD9111316C355001D1FBF /* CAStreamBasicDescription.cpp */; };
@@ -154,16 +144,7 @@
 		BDB1DC581378988B0051F5B9 /* icon.opacity in Resources */ = {isa = PBXBuildFile; fileRef = BDB1DC571378988B0051F5B9 /* icon.opacity */; };
 		BDB66E911369FE05009FF047 /* WaveCycleDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB66E901369FE05009FF047 /* WaveCycleDetector.mm */; };
 		BDB66EC1136AAED7009FF047 /* WeightedAverager.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB66EC0136AAED7009FF047 /* WeightedAverager.mm */; };
-		BDB66ED9136B17DF009FF047 /* WeightedAveragerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB66ECE136B176F009FF047 /* WeightedAveragerTests.mm */; };
-		BDB66F04136B18C2009FF047 /* WeightedAverager.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB66EC0136AAED7009FF047 /* WeightedAverager.mm */; };
-		BDB66F05136B18D3009FF047 /* LowPassFilter.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD5EAF2E1345CABC00B01DC7 /* LowPassFilter.mm */; };
-		BDB66FDC136E90E6009FF047 /* WaveCycleDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB66E901369FE05009FF047 /* WaveCycleDetector.mm */; };
-		BDB66FEC136E940D009FF047 /* WaveCycleDetectorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB66FEA136E93D1009FF047 /* WaveCycleDetectorTests.mm */; };
 		BDB670A8136EBBCF009FF047 /* FrequencyDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB670A7136EBBCF009FF047 /* FrequencyDetector.mm */; };
-		BDB670A9136EBBCF009FF047 /* FrequencyDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB670A7136EBBCF009FF047 /* FrequencyDetector.mm */; };
-		BDB670EF136EF90E009FF047 /* FrequencyDetectorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB670EE136EF90E009FF047 /* FrequencyDetectorTests.mm */; };
-		BDB83003135991A30026F11B /* BitFrameDecoderTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB82FFF135991600026F11B /* BitFrameDecoderTests.mm */; };
-		BDB833B0135C50740026F11B /* LowPassFilterTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB833AB135C50350026F11B /* LowPassFilterTests.mm */; };
 		BDBA132A137A768B00AD9A95 /* guide.html in Resources */ = {isa = PBXBuildFile; fileRef = BDBA1328137A768B00AD9A95 /* guide.html */; };
 		BDBA1336137A7BB500AD9A95 /* help.png in Resources */ = {isa = PBXBuildFile; fileRef = BDBA1335137A7BB300AD9A95 /* help.png */; };
 		BDBA1338137A7BBB00AD9A95 /* help@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BDBA1337137A7BB900AD9A95 /* help@2x.png */; };
@@ -178,38 +159,17 @@
 		BDDD473D1341DCB0001A574B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDDD473C1341DCB0001A574B /* Security.framework */; };
 		BDE413B6138CECAC00892C35 /* PulseWidthDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE413B5138CECAC00892C35 /* PulseWidthDetector.mm */; };
 		BDE413C7138CF08000892C35 /* PulseWidthDetectorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE413C6138CF08000892C35 /* PulseWidthDetectorController.mm */; };
-		BDE41435138CFC4D00892C35 /* PulseWidthDetectorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE41434138CFC4D00892C35 /* PulseWidthDetectorTests.mm */; };
-		BDE41445138D016D00892C35 /* PulseWidthDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE413B5138CECAC00892C35 /* PulseWidthDetector.mm */; };
-		BDE4144A138D019700892C35 /* PulseWidthDetectorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE413C6138CF08000892C35 /* PulseWidthDetectorController.mm */; };
-		BDE4146E138D021400892C35 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD7FDAB41316C4B0001D1FBF /* OpenGLES.framework */; };
-		BDE41471138D022E00892C35 /* SignalProcessorController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2FC23B137443AC004BEA40 /* SignalProcessorController.mm */; };
-		BDE414A0138D22F500892C35 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD7FDAA41316C4B0001D1FBF /* AudioToolbox.framework */; };
-		BDE414AF138D23C700892C35 /* audio.wav in Resources */ = {isa = PBXBuildFile; fileRef = BDE414AE138D23C600892C35 /* audio.wav */; };
-		BDEB620F138D388F001AE9EE /* invertedAudio.wav in Resources */ = {isa = PBXBuildFile; fileRef = BDEB620E138D388F001AE9EE /* invertedAudio.wav */; };
 		BDEB64C2138D7D16001AE9EE /* ZoomMin.png in Resources */ = {isa = PBXBuildFile; fileRef = BDEB64C1138D7D14001AE9EE /* ZoomMin.png */; };
 		BDEB64C4138D7D69001AE9EE /* ZoomMax.png in Resources */ = {isa = PBXBuildFile; fileRef = BDEB64C3138D7D68001AE9EE /* ZoomMax.png */; };
-		BDEF5A0313865F590074E93A /* PeakCounterTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEF5A0213865F590074E93A /* PeakCounterTests.mm */; };
 		BDEF5A0D138660950074E93A /* PeakCounter.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEF5A0C138660950074E93A /* PeakCounter.mm */; };
-		BDEF5A42138667030074E93A /* PeakCounter.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEF5A0C138660950074E93A /* PeakCounter.mm */; };
 		BDEF5E711387259F0074E93A /* iphone.css in Resources */ = {isa = PBXBuildFile; fileRef = BDEF5E6F1387259E0074E93A /* iphone.css */; };
 		BDEF5EC41387329D0074E93A /* stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = BDEF5EC21387329D0074E93A /* stripes.png */; };
 		BDEF5ED8138732F00074E93A /* ipad.css in Resources */ = {isa = PBXBuildFile; fileRef = BDEF5ED6138732F00074E93A /* ipad.css */; };
 		BDEF5F5013873A5D0074E93A /* ios.css in Resources */ = {isa = PBXBuildFile; fileRef = BDEF5F4E13873A5C0074E93A /* ios.css */; };
-		BDF07791138FF28A005529BC /* RunningAverager.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDF07790138FF28A005529BC /* RunningAverager.mm */; };
 		BDF07792138FF28A005529BC /* RunningAverager.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDF07790138FF28A005529BC /* RunningAverager.mm */; };
 		BDF9DA061326F25C004DC652 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDF9DA051326F25C004DC652 /* MessageUI.framework */; };
 		BDFB98071348FBBB00551716 /* about.html in Resources */ = {isa = PBXBuildFile; fileRef = BDFB98051348FBBB00551716 /* about.html */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		BD14B4D813572AD800F39A4B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BD14B4A8135728D500F39A4B;
-			remoteInfo = LogicTests;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -239,8 +199,6 @@
 		BD14B43E13571CD400F39A4B /* BitDetector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BitDetector.mm; sourceTree = "<group>"; };
 		BD14B46F1357247000F39A4B /* SampleCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleCircularBuffer.h; sourceTree = "<group>"; };
 		BD14B4701357247000F39A4B /* SampleCircularBuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SampleCircularBuffer.mm; sourceTree = "<group>"; };
-		BD14B4A9135728D500F39A4B /* LogicTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LogicTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		BD14B4AA135728D500F39A4B /* LogicTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LogicTests-Info.plist"; sourceTree = "<group>"; };
 		BD14B4CA1357296E00F39A4B /* SampleCircularBufferTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SampleCircularBufferTests.mm; sourceTree = "<group>"; };
 		BD14DFF91381E8E70007F4B9 /* DimRedButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DimRedButton.png; path = Images/DimRedButton.png; sourceTree = "<group>"; };
 		BD14DFFB1381E8ED0007F4B9 /* DimRedButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DimRedButton@2x.png"; path = "Images/DimRedButton@2x.png"; sourceTree = "<group>"; };
@@ -339,7 +297,6 @@
 		BD5EB0F213460E2700B01DC7 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		BD5EB0F313460E2700B01DC7 /* Reachability.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Reachability.mm; sourceTree = "<group>"; };
 		BD5EB0F713460E7200B01DC7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		BD7339A1138EAEE900FFBF28 /* LogicTestsDebug-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LogicTestsDebug-Info.plist"; sourceTree = "<group>"; };
 		BD7E79821358ABED00F38E0F /* RecordingInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordingInfo.h; sourceTree = "<group>"; };
 		BD7E798D1358AD1B00F38E0F /* SampleProcessorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleProcessorProtocol.h; sourceTree = "<group>"; };
 		BD7E79B01358D37100F38E0F /* BitStreamFrameDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitStreamFrameDetector.h; sourceTree = "<group>"; };
@@ -484,16 +441,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BD14B4A6135728D500F39A4B /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BDE4146E138D021400892C35 /* OpenGLES.framework in Frameworks */,
-				BDE414A0138D22F500892C35 /* AudioToolbox.framework in Frameworks */,
-				BD24DF86139AD9D6005C7D0C /* CoreGraphics.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -501,7 +448,6 @@
 			isa = PBXGroup;
 			children = (
 				1D6058910D05DD3D006BFB54 /* Datac.app */,
-				BD14B4A9135728D500F39A4B /* LogicTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -516,7 +462,6 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				BD7339A1138EAEE900FFBF28 /* LogicTestsDebug-Info.plist */,
 			);
 			name = Tabby;
 			sourceTree = "<group>";
@@ -528,7 +473,6 @@
 				BD5EB0F213460E2700B01DC7 /* Reachability.h */,
 				BD5EB0F313460E2700B01DC7 /* Reachability.mm */,
 				BD7FD90A1316C355001D1FBF /* iPublicUtility */,
-				28A0AB4B0D9B1048005BE974 /* Datac_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
 			name = "Other Sources";
@@ -549,7 +493,6 @@
 				BD86CA071326FB90001B7D82 /* Settings.bundle */,
 				BDF9D8731326C88B004DC652 /* Images */,
 				8D1107310486CEB800E47090 /* Datac-Info.plist */,
-				BD14B4AA135728D500F39A4B /* LogicTests-Info.plist */,
 				BD86CC5513277AD4001B7D82 /* Localizable.strings */,
 				BD2303731331FCBA006ADDC4 /* taps.txt */,
 			);
@@ -600,6 +543,7 @@
 		BD5EAF391345CAC200B01DC7 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				28A0AB4B0D9B1048005BE974 /* Datac_Prefix.pch */,
 				BD7E79751358AB6300F38E0F /* LED Indicator Button */,
 				BD7E79871358AC5E00F38E0F /* Signal Processors */,
 				BDEF5BDF13869AAE0074E93A /* Tabs */,
@@ -979,30 +923,11 @@
 			buildRules = (
 			);
 			dependencies = (
-				BD14B4D913572AD800F39A4B /* PBXTargetDependency */,
 			);
 			name = Datac;
 			productName = Tabby;
 			productReference = 1D6058910D05DD3D006BFB54 /* Datac.app */;
 			productType = "com.apple.product-type.application";
-		};
-		BD14B4A8135728D500F39A4B /* LogicTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BD14B4AE135728D600F39A4B /* Build configuration list for PBXNativeTarget "LogicTests" */;
-			buildPhases = (
-				BD14B4A4135728D500F39A4B /* Resources */,
-				BD14B4A5135728D500F39A4B /* Sources */,
-				BD14B4A6135728D500F39A4B /* Frameworks */,
-				BD14B4A7135728D500F39A4B /* ShellScript */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = LogicTests;
-			productName = LogicTests;
-			productReference = BD14B4A9135728D500F39A4B /* LogicTests.octest */;
-			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
 
@@ -1031,7 +956,6 @@
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Datac */,
-				BD14B4A8135728D500F39A4B /* LogicTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1131,31 +1055,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BD14B4A4135728D500F39A4B /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BDE414AF138D23C700892C35 /* audio.wav in Resources */,
-				BDEB620F138D388F001AE9EE /* invertedAudio.wav in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		BD14B4A7135728D500F39A4B /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/bash;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n#\"${HOME}/bin/otest\"\n";
-		};
 		BD3B78761417970600CF72B2 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1238,47 +1140,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BD14B4A5135728D500F39A4B /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BD7E79EC1358DB8600F38E0F /* BitStreamFrameDetectorTests.mm in Sources */,
-				BD7E7A141358DE6A00F38E0F /* BitStreamFrameDetector.mm in Sources */,
-				BD7E7A151358DE6E00F38E0F /* BitDetector.mm in Sources */,
-				BD7E7A181358DE7B00F38E0F /* UserSettings.mm in Sources */,
-				BD7E7A871358E48700F38E0F /* BitFrameDecoder.mm in Sources */,
-				BDB83003135991A30026F11B /* BitFrameDecoderTests.mm in Sources */,
-				BDB833B0135C50740026F11B /* LowPassFilterTests.mm in Sources */,
-				BDB66ED9136B17DF009FF047 /* WeightedAveragerTests.mm in Sources */,
-				BDB66F04136B18C2009FF047 /* WeightedAverager.mm in Sources */,
-				BDB66F05136B18D3009FF047 /* LowPassFilter.mm in Sources */,
-				BDB66FDC136E90E6009FF047 /* WaveCycleDetector.mm in Sources */,
-				BDB66FEC136E940D009FF047 /* WaveCycleDetectorTests.mm in Sources */,
-				BDB670A9136EBBCF009FF047 /* FrequencyDetector.mm in Sources */,
-				BDB670EF136EF90E009FF047 /* FrequencyDetectorTests.mm in Sources */,
-				BDEF5A0313865F590074E93A /* PeakCounterTests.mm in Sources */,
-				BDEF5A42138667030074E93A /* PeakCounter.mm in Sources */,
-				BDE41435138CFC4D00892C35 /* PulseWidthDetectorTests.mm in Sources */,
-				BDE41445138D016D00892C35 /* PulseWidthDetector.mm in Sources */,
-				BDE4144A138D019700892C35 /* PulseWidthDetectorController.mm in Sources */,
-				BDE41471138D022E00892C35 /* SignalProcessorController.mm in Sources */,
-				BDF07791138FF28A005529BC /* RunningAverager.mm in Sources */,
-				BD24DE8D139AB1B9005C7D0C /* LevelSettingView.mm in Sources */,
-				BD5739F7139E7AE5003DD328 /* NetworkActivityIndicator.mm in Sources */,
-				BD1242F613A4B9FE005D19C1 /* SampleCircularBufferTests.mm in Sources */,
-				BD1242F713A4B9FF005D19C1 /* SampleCircularBuffer.mm in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		BD14B4D913572AD800F39A4B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BD14B4A8135728D500F39A4B /* LogicTests */;
-			targetProxy = BD14B4D813572AD800F39A4B /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		BD86CC5513277AD4001B7D82 /* Localizable.strings */ = {
@@ -1417,147 +1279,6 @@
 			};
 			name = Release;
 		};
-		BD14B4AB135728D500F39A4B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
-					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
-				);
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = UNIT_TESTING;
-				INFOPLIST_FILE = "LogicTests-Info.plist";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					SenTestingKit,
-					"-framework",
-					UIKit,
-				);
-				PRODUCT_NAME = LogicTests;
-				SDKROOT = iphoneos;
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Debug;
-		};
-		BD14B4AC135728D500F39A4B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
-					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
-				);
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = UNIT_TESTING;
-				INFOPLIST_FILE = "LogicTests-Info.plist";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					SenTestingKit,
-					"-framework",
-					UIKit,
-				);
-				PRODUCT_NAME = LogicTests;
-				SDKROOT = iphoneos;
-				WRAPPER_EXTENSION = octest;
-				ZERO_LINK = NO;
-			};
-			name = Release;
-		};
-		BD14B4AD135728D500F39A4B /* Distribution */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
-					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
-				);
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = UNIT_TESTING;
-				INFOPLIST_FILE = "LogicTests-Info.plist";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					SenTestingKit,
-					"-framework",
-					UIKit,
-				);
-				PRODUCT_NAME = LogicTests;
-				SDKROOT = iphoneos;
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Distribution;
-		};
-		BD878CA4134B353D00FA143C /* Distribution */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CURRENT_PROJECT_VERSION = 3;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_VERSION = "";
-				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
-				HEADER_SEARCH_PATHS = "CorePlot/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "";
-				SDKROOT = iphoneos;
-				SEPARATE_STRIP = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "armv6 armv7 armv7s";
-				VERSIONING_SYSTEM = "apple-generic";
-			};
-			name = Distribution;
-		};
-		BD878CA5134B353D00FA143C /* Distribution */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Brad Howes";
-				CURRENT_PROJECT_VERSION = 4;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Datac_Prefix.pch;
-				GCC_THUMB_SUPPORT = YES;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				HEADER_SEARCH_PATHS = (
-					"CorePlot/**",
-					"InAppSettingsKit/**",
-				);
-				INFOPLIST_FILE = "Datac-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/CorePlot\"",
-				);
-				PRODUCT_NAME = Datac;
-				PROVISIONING_PROFILE = "C874B8D8-FCBE-4946-8BC5-A63CE04AC5FD";
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = armv7;
-			};
-			name = Distribution;
-		};
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1569,7 +1290,8 @@
 				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = "CorePlot/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DDEBUG=1";
 				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1593,6 +1315,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
+				SEPARATE_STRIP = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "armv6 armv7 armv7s";
@@ -1608,17 +1331,6 @@
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
-				BD878CA5134B353D00FA143C /* Distribution */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		BD14B4AE135728D600F39A4B /* Build configuration list for PBXNativeTarget "LogicTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BD14B4AB135728D500F39A4B /* Debug */,
-				BD14B4AC135728D500F39A4B /* Release */,
-				BD14B4AD135728D500F39A4B /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1628,7 +1340,6 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
-				BD878CA4134B353D00FA143C /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

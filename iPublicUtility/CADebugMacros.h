@@ -49,6 +49,7 @@ Copyright (C) 2009 Apple Inc. All Rights Reserved.
 
 #if !defined(__CADebugMacros_h__)
 #define __CADebugMacros_h__
+#undef DEBUG
 
 //=============================================================================
 //	Includes

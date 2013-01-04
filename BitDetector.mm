@@ -25,7 +25,7 @@ NSString* kBitDetectorHighBit = @"1";
         observer = nil;
         [self updateFromSettings];
     }
-
+    
     return self;
 }
 
@@ -56,7 +56,7 @@ NSString* kBitDetectorHighBit = @"1";
         Float32 sample = *ptr++;
         if (sample >= minHighLevel) {
             if (currentBitState != kBitDetectorHighBit) {
-
+                
                 //
                 // Start of new high (1) bit pulse
                 //
@@ -66,7 +66,7 @@ NSString* kBitDetectorHighBit = @"1";
         }
         else if (sample <= maxLowLevel) {
             if (currentBitState != kBitDetectorLowBit) {
-
+                
                 //
                 // Start of new low (0) bit pulse
                 //
@@ -74,27 +74,27 @@ NSString* kBitDetectorHighBit = @"1";
                 pulseWidth = 0;
             }
         }
-
+        
         if (currentBitState != kBitDetectorUnknownBit) {
-
+            
             //
             // Count samples that fall in the 'grey' zone as part of the current pulse - otherwise, our timing gets
             // messed up. Alternatively, do MofN detection to declare an pulse, but keep the pulseWidth counter to
             // stay aligned with edge transitions.
             //
             ++pulseWidth;
-
+            
             if (pulseWidth == nominalHalfPulseWidth) {
-
+                
                 //
-                // Doing this will allow us to trigger again if a full pulse of samples passes by with no change in 
+                // Doing this will allow us to trigger again if a full pulse of samples passes by with no change in
                 // level.
                 //
                 pulseWidth *= -1;
-                NSLog(@"nextBitValue: %@", currentBitState);
-
+                LOG(@"nextBitValue: %@", currentBitState);
+                
                 if (observer != nil) {
-                    [observer performSelectorOnMainThread:@selector(nextBitValue:) 
+                    [observer performSelectorOnMainThread:@selector(nextBitValue:)
                                                withObject:currentBitState
                                             waitUntilDone:NO];
                 }

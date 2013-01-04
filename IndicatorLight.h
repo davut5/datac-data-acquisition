@@ -16,8 +16,8 @@ enum IndicatorState {
 };
 
 /** A simple on/off indicator light.
-    The illuminated property controls whether the light is on or off.
-*/
+ The illuminated property controls whether the light is on or off.
+ */
 @interface IndicatorLight : UIImageView {
 @private
     IndicatorState state;

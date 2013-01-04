@@ -41,7 +41,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    NSLog(@"AppDelegate.application:didFinishLaunchingWithOptions:");
+    LOG(@"AppDelegate.application:didFinishLaunchingWithOptions:");
     
     NSUserDefaults* settings = [NSUserDefaults standardUserDefaults];
     
@@ -54,7 +54,7 @@
     dropboxSession.delegate = self;
     [DBSession setSharedSession:dropboxSession];
     
-    [application setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
+    [application setStatusBarStyle:UIStatusBarStyleBlackOpaque];
     
     self.dataCapture = [DataCapture create];
     [self makeSignalDetector];
@@ -66,21 +66,21 @@
     dataCapture.vertexBufferManager = vertexBufferManager;
     
     application.idleTimerDisabled = YES;
-
+    
     self.window.rootViewController = tabBarController;
     [self.window addSubview:tabBarController.view];
     [self.window makeKeyAndVisible];
-
+    
     [NSTimer scheduledTimerWithTimeInterval:0.0 target:self selector:@selector(start) userInfo:nil repeats:NO];
     
-    NSLog(@"AppDelegate.application:didFinishLaunchingWithOptions: - END");
+    LOG(@"AppDelegate.application:didFinishLaunchingWithOptions: - END");
     return YES;
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
     if ([[DBSession sharedSession] handleOpenURL:url]) {
         if ([[DBSession sharedSession] isLinked]) {
-            NSLog(@"App linked successfully!");
+            LOG(@"App linked successfully!");
             // At this point you can start making API calls
             if (settingsViewController != nil) {
                 [settingsViewController updateDropboxCell];
@@ -106,34 +106,34 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-    NSLog(@"applicationWillResignActive");
+    LOG(@"applicationWillResignActive");
     [self stop];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    NSLog(@"applicationDidBecomeActive");
+    LOG(@"applicationDidBecomeActive");
     [dataCapture start];
     [self start];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    NSLog(@"applicationWillTerminate");
+    LOG(@"applicationWillTerminate");
     [dataCapture stop];
     [self stop];
 }
 
 - (void)start
 {
-    NSLog(@"AppDelegate.start");
+    LOG(@"AppDelegate.start");
     [signalDetector reset];
     [sampleViewController start];
 }
 
 - (void)stop
 {
-    NSLog(@"AppDelegate.stop");
+    LOG(@"AppDelegate.stop");
     [self stopRecording];
     [recordingsViewController saveContext];
 }
@@ -143,7 +143,7 @@
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
-    NSLog(@"applicationDidReceiveMemoryWarning");
+    LOG(@"applicationDidReceiveMemoryWarning");
 }
 
 - (void)dealloc {
@@ -160,7 +160,7 @@
 
 - (void)sessionDidReceiveAuthorizationFailure:(DBSession *)session userId:(NSString *)userId;
 {
-    NSLog(@"failed to receive authorization");
+    LOG(@"failed to receive authorization");
     [[[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Dropbox Authorization",
                                                            @"Dropbox authorization failure alert title.")
                                  message:NSLocalizedString(@"Failed to access configured Dropbox account.",
@@ -173,7 +173,7 @@
 
 - (BOOL)tabBarController:(UITabBarController*)sender shouldSelectViewController:(UIViewController*)viewController
 {
-    NSLog(@"AppDelegate.tabBarController:shouldSelectViewController: %@", viewController);
+    LOG(@"AppDelegate.tabBarController:shouldSelectViewController: %@", viewController);
     UIViewController* current = [sender selectedViewController];
     if (current == viewController) {
         if (sender.selectedIndex == 0) {
@@ -196,6 +196,8 @@
 {
     RecordingInfo* recording = [recordingsViewController startRecording];
     dataCapture.sampleRecorder = [SampleRecorder createRecording:recording withFormat:dataCapture.streamFormat];
+    UITabBarItem* item = [tabBarController.tabBar.items objectAtIndex:0];
+    item.badgeValue = @"REC";
 }
 
 - (void)stopRecording
@@ -203,6 +205,8 @@
     sampleViewController.recordIndicator.on = NO;
     dataCapture.sampleRecorder = nil;
     [recordingsViewController stopRecording];
+    UITabBarItem* item = [tabBarController.tabBar.items objectAtIndex:0];
+    item.badgeValue = nil;
 }
 
 - (BOOL)isRecording

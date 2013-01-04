@@ -55,18 +55,18 @@
 - (void)setName:(NSString*)name value:(Float32)value
 {
     if (formatter == nil) [self makeFormatter];
-
-    self.text = [NSString stringWithFormat:@"%@\n%@", name, 
+    
+    self.text = [NSString stringWithFormat:@"%@\n%@", name,
                  [formatter stringFromNumber:[NSNumber numberWithFloat:value]], nil];
     self.hidden = NO;
     self.alpha = 1.0;
-
+    
     if (hidingTimer != nil) {
         [hidingTimer invalidate];
         [hidingTimer release];
     }
-
-    hidingTimer = [[NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(fadeView) 
+    
+    hidingTimer = [[NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(fadeView)
                                                   userInfo:nil repeats:NO] retain];
 }
 
@@ -87,7 +87,7 @@
 - (void)drawRect:(CGRect)rect
 {
     CGRect boxRect = self.bounds;
-    CGContextRef ctxt = UIGraphicsGetCurrentContext();  
+    CGContextRef ctxt = UIGraphicsGetCurrentContext();
     boxRect = CGRectInset(boxRect, 1.0f, 1.0f);
     [self fillRoundedRect:boxRect inContext:ctxt];
     [super drawRect:rect];

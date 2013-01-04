@@ -13,6 +13,12 @@
 #import "VertexBuffer.h"
 #import "VertexBufferManager.h"
 
+static const SInt32 kFloatToQ824 = 1 << 24;
+static const Float32 kQ824ToFloat = Float32(1.0) / Float32(kFloatToQ824);
+
+#define Q824_TO_FLOAT(V) ((V) * kQ824ToFloat);
+
+
 struct AudioUnitRenderProcContext
 {
     DataCapture* self;
@@ -21,20 +27,15 @@ struct AudioUnitRenderProcContext
     DataCaptureProcessSamplesProc processSamplesProc;
 };
 
-static const SInt32 kFloatToQ824 = 1 << 24;
-static const Float32 kQ824ToFloat = Float32(1.0) / Float32(kFloatToQ824);
-
-#define Q824_TO_FLOAT(V) ((V) * kQ824ToFloat);
-
 @interface DataCapture(Private)
 
 /** Initialize the audio session for the application.
  */
 - (void)initializeAudioSession;
 
-/** Initlialize the AudioUnit graph that we use to obtain samples from the microphone (if present) and to emit 
-    a power signal for the external device (if present).
-*/
+/** Initlialize the AudioUnit graph that we use to obtain samples from the microphone (if present) and to emit
+ a power signal for the external device (if present).
+ */
 - (void)initializeAudioUnit;
 
 /** Start the AudioUnit graph to being signal processing.
@@ -54,8 +55,8 @@ static const Float32 kQ824ToFloat = Float32(1.0) / Float32(kFloatToQ824);
 - (BOOL)hasAudioInput;
 
 /** Callback invoked when the audio route of the device changes. Evaluates the new route to see if we can use
-    it for data collection and power harvesting.
-*/
+ it for data collection and power harvesting.
+ */
 - (void)audioRouteDidChange:(CFDictionaryRef)dict;
 
 /** Callback invoked when the audio session for the application is interrupted.
@@ -82,61 +83,61 @@ static const Float32 kQ824ToFloat = Float32(1.0) / Float32(kFloatToQ824);
 - (id)init
 {
     if ((self = [super init])) {
-	audioUnit = nil;
-	sampleProcessor = nil;
-	switchDetector = nil;
-	vertexBufferManager = nil;
-	sampleRecorder = nil;
-	maxAudioSampleCount = 0;
-	sampleRate = 44100.0;
-	powerSignal = nil;
-	audioUnitRunning = NO;
-	emittingPowerSignal = NO;
-	pluggedIn = NO;
-	[self initializeAudioSession];
+        audioUnit = nil;
+        sampleProcessor = nil;
+        switchDetector = nil;
+        vertexBufferManager = nil;
+        sampleRecorder = nil;
+        maxAudioSampleCount = 0;
+        sampleRate = 44100.0;
+        powerSignal = nil;
+        audioUnitRunning = NO;
+        emittingPowerSignal = NO;
+        pluggedIn = NO;
+        [self initializeAudioSession];
     }
-
+    
     return self;
 }
 
 - (void)dealloc
 {
     delete audioUnitRenderProcContext;
-
+    
     [self stop];
     self.sampleProcessor = nil;
     self.switchDetector = nil;
     self.vertexBufferManager = nil;
-
+    
     [super dealloc];
 }
 
 - (void)start
 {
-    NSLog(@"DataCapture.start");
+    LOG(@"DataCapture.start");
     if (audioUnit == nil) {
-	self.pluggedIn = [self isPluggedIn];
-	if (pluggedIn == NO) 
-	    self.emittingPowerSignal = NO;
-        NSLog(@"initializing AudioUnit");
-	[self initializeAudioUnit];
-	if (audioUnit) {
-            NSLog(@"starting AudioUnit");
-	    [self startAudioUnit];
-	}
+        self.pluggedIn = [self isPluggedIn];
+        if (pluggedIn == NO)
+            self.emittingPowerSignal = NO;
+        LOG(@"initializing AudioUnit");
+        [self initializeAudioUnit];
+        if (audioUnit) {
+            LOG(@"starting AudioUnit");
+            [self startAudioUnit];
+        }
     }
 }
 
 - (void)stop
 {
-    NSLog(@"DataCapture.stop");
+    LOG(@"DataCapture.stop");
     if (audioUnit) {
-        NSLog(@"stopping AudioUnit");
-	[self stopAudioUnit];
-	AudioComponentInstanceDispose(audioUnit);
-	audioUnit = nil;
-	delete [] powerSignal;
-	powerSignal = 0;
+        LOG(@"stopping AudioUnit");
+        [self stopAudioUnit];
+        AudioComponentInstanceDispose(audioUnit);
+        audioUnit = nil;
+        delete [] powerSignal;
+        powerSignal = 0;
     }
 }
 
@@ -147,26 +148,26 @@ static const Float32 kQ824ToFloat = Float32(1.0) / Float32(kFloatToQ824);
 
 @end // public interface
 
-static void 
+static void
 audioSessionInterruptionListener(void* context, UInt32 kind)
 {
     [static_cast<DataCapture*>(context) audioSessionWasInterrupted:kind];
 }
 
-static void 
+static void
 audioSessionPropertyListener(void* context, AudioSessionPropertyID inID, UInt32 inDataSize,
-			     const void* inData)
+                             const void* inData)
 {
     DataCapture* THIS = static_cast<DataCapture*>(context);
     if (inID == kAudioSessionProperty_AudioRouteChange) {
-	CFDictionaryRef dict = static_cast<CFDictionaryRef>(inData);
-	[THIS audioRouteDidChange:dict];
+        CFDictionaryRef dict = static_cast<CFDictionaryRef>(inData);
+        [THIS audioRouteDidChange:dict];
     }
 }
 
 static OSStatus
 audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, const AudioTimeStamp* inTimeStamp,
-		    UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList* ioData)
+                    UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList* ioData)
 {
     AudioUnitRenderProcContext* ctxt = static_cast<AudioUnitRenderProcContext*>(context);
     OSStatus err = AudioUnitRender(ctxt->audioUnit, ioActionFlags, inTimeStamp, 1, inNumberFrames, ioData);
@@ -182,196 +183,196 @@ audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, co
     // Initialize our audio session for simultaneous record and playback.
     //
     XThrowIfError(AudioSessionInitialize(NULL, // main run loop
-					 NULL, // kCFRunLoopDefaultMode
-					 audioSessionInterruptionListener, self),
-		  "failed to initialize audio session");
-
+                                         NULL, // kCFRunLoopDefaultMode
+                                         audioSessionInterruptionListener, self),
+                  "failed to initialize audio session");
+    
     UInt32 value = kAudioSessionCategory_PlayAndRecord;
     XThrowIfError(AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(value), &value),
-		  "failed to set audio category");
+                  "failed to set audio category");
 	
     XThrowIfError(AudioSessionAddPropertyListener(kAudioSessionProperty_AudioRouteChange, audioSessionPropertyListener,
-						  self), "failed to set property listener");
-
+                                                  self), "failed to set property listener");
+    
     //
     // Request small buffer for low-latency display and processing
     //
     Float32 preferredBufferSize = 0.005;
-    XThrowIfError(AudioSessionSetProperty(kAudioSessionProperty_PreferredHardwareIOBufferDuration, 
-					  sizeof(preferredBufferSize), &preferredBufferSize), 
-		  "failed to set buffer duration");
-
+    XThrowIfError(AudioSessionSetProperty(kAudioSessionProperty_PreferredHardwareIOBufferDuration,
+                                          sizeof(preferredBufferSize), &preferredBufferSize),
+                  "failed to set buffer duration");
+    
     XThrowIfError(AudioSessionSetActive(true), "failed to set audio session active");
 }
 
 - (void)initializeAudioUnit
 {
     try {
-	//
-	// Create AudioUnits graph that allows us to read from mic write to speakers.
-	//
-	AudioComponentDescription desc;
-	desc.componentType = kAudioUnitType_Output;
-	desc.componentSubType = kAudioUnitSubType_RemoteIO;
-	desc.componentManufacturer = kAudioUnitManufacturer_Apple;
-	desc.componentFlags = 0;
-	desc.componentFlagsMask = 0;
-
-	AudioComponent comp = AudioComponentFindNext(NULL, &desc);
-	XThrowIfError(AudioComponentInstanceNew(comp, &audioUnit), "failed to open the remote I/O unit");
-
-	//
-	// Enable (1) mic (Bus 1 of Remote I/O)
-	//
-	AudioUnitElement bus = 1;
-	UInt32 value = 1;
-	XThrowIfError(AudioUnitSetProperty(audioUnit, 
-                                           kAudioOutputUnitProperty_EnableIO, 
-                                           kAudioUnitScope_Input, 
+        //
+        // Create AudioUnits graph that allows us to read from mic write to speakers.
+        //
+        AudioComponentDescription desc;
+        desc.componentType = kAudioUnitType_Output;
+        desc.componentSubType = kAudioUnitSubType_RemoteIO;
+        desc.componentManufacturer = kAudioUnitManufacturer_Apple;
+        desc.componentFlags = 0;
+        desc.componentFlagsMask = 0;
+        
+        AudioComponent comp = AudioComponentFindNext(NULL, &desc);
+        XThrowIfError(AudioComponentInstanceNew(comp, &audioUnit), "failed to open the remote I/O unit");
+        
+        //
+        // Enable (1) mic (Bus 1 of Remote I/O)
+        //
+        AudioUnitElement bus = 1;
+        UInt32 value = 1;
+        XThrowIfError(AudioUnitSetProperty(audioUnit,
+                                           kAudioOutputUnitProperty_EnableIO,
+                                           kAudioUnitScope_Input,
                                            bus,
-					   &value, 
+                                           &value,
                                            sizeof(value)), "failed to enable mic");
-
-	//
-	// Install render callback so we can muck with input samples. (Bus 0 of remote I/O for speakers, headphones).
-	// Install aspects of ourselves into the context object.
-	//
-	bus = 0;
-
-	audioUnitRenderProcContext = new AudioUnitRenderProcContext;
+        
+        //
+        // Install render callback so we can muck with input samples. (Bus 0 of remote I/O for speakers, headphones).
+        // Install aspects of ourselves into the context object.
+        //
+        bus = 0;
+        
+        audioUnitRenderProcContext = new AudioUnitRenderProcContext;
         SEL processSamplesSelector = @selector(processSamples:frameCount:);
-	audioUnitRenderProcContext->processSamplesSelector = processSamplesSelector;
-	audioUnitRenderProcContext->processSamplesProc = 
-            (DataCaptureProcessSamplesProc)[self methodForSelector:processSamplesSelector];
-
-	audioUnitRenderProcContext->self = self;
-	audioUnitRenderProcContext->audioUnit = audioUnit;
+        audioUnitRenderProcContext->processSamplesSelector = processSamplesSelector;
+        audioUnitRenderProcContext->processSamplesProc =
+        (DataCaptureProcessSamplesProc)[self methodForSelector:processSamplesSelector];
+        
+        audioUnitRenderProcContext->self = self;
+        audioUnitRenderProcContext->audioUnit = audioUnit;
         renderCallback.inputProc = audioUnitRenderProc;
         renderCallback.inputProcRefCon = audioUnitRenderProcContext;
-	XThrowIfError(AudioUnitSetProperty(audioUnit,
-                                           kAudioUnitProperty_SetRenderCallback, 
-                                           kAudioUnitScope_Input, 
-                                           bus, 
-					   &renderCallback, 
+        XThrowIfError(AudioUnitSetProperty(audioUnit,
+                                           kAudioUnitProperty_SetRenderCallback,
+                                           kAudioUnitScope_Input,
+                                           bus,
+                                           &renderCallback,
                                            sizeof(renderCallback)), "failed to set render callback");
-
-	//
-	// Set our required format - Canonical AU format: LPCM non-interleaved 8.24 fixed point (1 channel)
-	//
+        
+        //
+        // Set our required format - Canonical AU format: LPCM non-interleaved 8.24 fixed point (1 channel)
+        //
         // streamFormat.mSampleRate = 44100;
-	streamFormat.SetAUCanonical(1, false);
-
-	//
-	// Set format for input to speakers/headphones
-	//
-	bus = 0;
-	XThrowIfError(AudioUnitSetProperty(audioUnit, 
-                                           kAudioUnitProperty_StreamFormat, 
-                                           kAudioUnitScope_Input, 
+        streamFormat.SetAUCanonical(1, false);
+        
+        //
+        // Set format for input to speakers/headphones
+        //
+        bus = 0;
+        XThrowIfError(AudioUnitSetProperty(audioUnit,
+                                           kAudioUnitProperty_StreamFormat,
+                                           kAudioUnitScope_Input,
                                            bus,
-					   &streamFormat, 
+                                           &streamFormat,
                                            sizeof(streamFormat)), "failed to set speaker input format");
-
-	//
-	// Set format for output from mic.
-	//
-	bus = 1;
-	XThrowIfError(AudioUnitSetProperty(audioUnit, 
-                                           kAudioUnitProperty_StreamFormat, 
-                                           kAudioUnitScope_Output, 
+        
+        //
+        // Set format for output from mic.
+        //
+        bus = 1;
+        XThrowIfError(AudioUnitSetProperty(audioUnit,
+                                           kAudioUnitProperty_StreamFormat,
+                                           kAudioUnitScope_Output,
                                            bus,
-					   &streamFormat, 
+                                           &streamFormat,
                                            sizeof(streamFormat)), "failed to set mic output format");
-	XThrowIfError(AudioUnitInitialize(audioUnit), "failed to initialize the remote I/O unit");
-
+        XThrowIfError(AudioUnitInitialize(audioUnit), "failed to initialize the remote I/O unit");
+        
         UInt32 size = sizeof(streamFormat);
-	XThrowIfError(AudioUnitGetProperty(audioUnit, 
-                                           kAudioUnitProperty_StreamFormat, 
-                                           kAudioUnitScope_Output, 
+        XThrowIfError(AudioUnitGetProperty(audioUnit,
+                                           kAudioUnitProperty_StreamFormat,
+                                           kAudioUnitScope_Output,
                                            bus,
-					   &streamFormat,
+                                           &streamFormat,
                                            &size), "failed to get mic output format");
-	size = sizeof(streamFormat.mSampleRate);
-	XThrowIfError(AudioSessionGetProperty(kAudioSessionProperty_CurrentHardwareSampleRate,
-                                              &size, 
+        size = sizeof(streamFormat.mSampleRate);
+        XThrowIfError(AudioSessionGetProperty(kAudioSessionProperty_CurrentHardwareSampleRate,
+                                              &size,
                                               &streamFormat.mSampleRate),
                       "couldn't get hardware sample rate");
         
-        NSLog(@"mic format: %s", streamFormat.toString().c_str());
-
-	size = sizeof(maxAudioSampleCount);
-	XThrowIfError(AudioUnitGetProperty(audioUnit,
-                                           kAudioUnitProperty_MaximumFramesPerSlice, 
-                                           kAudioUnitScope_Global, 
+        LOG(@"mic format: %s", streamFormat.toString().c_str());
+        
+        size = sizeof(maxAudioSampleCount);
+        XThrowIfError(AudioUnitGetProperty(audioUnit,
+                                           kAudioUnitProperty_MaximumFramesPerSlice,
+                                           kAudioUnitScope_Global,
                                            0,
-					   &maxAudioSampleCount, 
+                                           &maxAudioSampleCount,
                                            &size), "failed to get max sample count");
-	NSLog(@"maxAudioSampleCount: %lu", maxAudioSampleCount);
-
+        LOG(@"maxAudioSampleCount: %lu", maxAudioSampleCount);
+        
         sampleBuffer.clear();
         sampleBuffer.resize(maxAudioSampleCount, 0.0f);
-
-	//
-	// 8.24 fixed-point representation
-	// 2^24 --> (1 << 24)
-	// FIXED(I) -> (I << 24)
-	// FIXED(R) -> (R * (1<<24))
-	//
-	powerSignal = new SInt32[maxAudioSampleCount];
-	const SInt32 kAmplitude = 1 << 24; // +1 in Q8.24 format
-	SInt32* ptr = powerSignal;
-	for (UInt32 index = 0; index < maxAudioSampleCount; ++index, ++ptr) {
-	    *ptr = kAmplitude * ( 1 - 2 * ( index & 1 ) ); // 1/2 of 44.1 kHz = 22.05 kHz
-	}
-
-	return;
+        
+        //
+        // 8.24 fixed-point representation
+        // 2^24 --> (1 << 24)
+        // FIXED(I) -> (I << 24)
+        // FIXED(R) -> (R * (1<<24))
+        //
+        powerSignal = new SInt32[maxAudioSampleCount];
+        const SInt32 kAmplitude = 1 << 24; // +1 in Q8.24 format
+        SInt32* ptr = powerSignal;
+        for (UInt32 index = 0; index < maxAudioSampleCount; ++index, ++ptr) {
+            *ptr = kAmplitude * ( 1 - 2 * ( index & 1 ) ); // 1/2 of 44.1 kHz = 22.05 kHz
+        }
+        
+        return;
     }
     catch (CAXException &e) {
-	char buf[1024];
-	fprintf(stderr, "Error: %s (%s)\n", e.mOperation, e.FormatError(buf));
+        char buf[1024];
+        fprintf(stderr, "Error: %s (%s)\n", e.mOperation, e.FormatError(buf));
     }
     catch (...) {
-	fprintf(stderr, "An unknown error occurred\n");
-    }	
-
+        fprintf(stderr, "An unknown error occurred\n");
+    }
+    
     //
     // Failure from above. Clean up.
     //
     if (audioUnit) {
-	AudioComponentInstanceDispose(audioUnit);
-	audioUnit = nil;
+        AudioComponentInstanceDispose(audioUnit);
+        audioUnit = nil;
     }
 }
 
 - (void)startAudioUnit
 {
     if (audioUnit != nil && audioUnitRunning == NO) {
-	XThrowIfError(AudioSessionSetActive(true), "could not activate session");
-	XThrowIfError(AudioOutputUnitStart(audioUnit), "could not start audio unit");
-	audioUnitRunning = YES;
+        XThrowIfError(AudioSessionSetActive(true), "could not activate session");
+        XThrowIfError(AudioOutputUnitStart(audioUnit), "could not start audio unit");
+        audioUnitRunning = YES;
     }
 }
 
 - (void)stopAudioUnit
 {
     if (audioUnit != nil && audioUnitRunning == YES) {
-	audioUnitRunning = NO;
-	XThrowIfError(AudioOutputUnitStop(audioUnit), "could not stop audio unit");
+        audioUnitRunning = NO;
+        XThrowIfError(AudioOutputUnitStop(audioUnit), "could not stop audio unit");
     }
 }
 
 - (void)audioSessionWasInterrupted:(UInt32)kind
 {
     if (kind == kAudioSessionBeginInterruption) {
-	NSLog(@"AudioSession BEGIN interruption\n");
-	[self stopAudioUnit];
+        LOG(@"AudioSession BEGIN interruption\n");
+        [self stopAudioUnit];
     }
     else if (kind == kAudioSessionEndInterruption) {
-	NSLog(@"AudioSession END interruption\n");
-	[self startAudioUnit];
+        LOG(@"AudioSession END interruption\n");
+        [self startAudioUnit];
     }
     else {
-	NSLog(@"AudioSession unknown interruption - %lu\n", kind);
+        LOG(@"AudioSession unknown interruption - %lu\n", kind);
     }
 }
 
@@ -380,28 +381,28 @@ audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, co
     UInt32 value;
     UInt32 size = sizeof(value);
     XThrowIfError(AudioSessionGetProperty(kAudioSessionProperty_AudioInputAvailable, &size, &value),
-		  "failed to get AudioInputAvailable property value");
-    NSLog(@"hasAudioInput: %lu", value);
+                  "failed to get AudioInputAvailable property value");
+    LOG(@"hasAudioInput: %lu", value);
     return value;
 }
 
 - (BOOL)isPluggedIn
 {
-    NSLog(@"iphone simulator - %d", TARGET_IPHONE_SIMULATOR);
+    LOG(@"iphone simulator - %d", TARGET_IPHONE_SIMULATOR);
 #if TARGET_IPHONE_SIMULATOR
     return NO;
 #endif
-
+    
     CFStringRef audioRoute;
     UInt32 size = sizeof(CFStringRef);
     OSStatus err = AudioSessionGetProperty(kAudioSessionProperty_AudioRoute, &size, &audioRoute);
     if (err) {
-	NSLog(@"failed to get audio route: %ld", err);
-	return NO;
+        LOG(@"failed to get audio route: %ld", err);
+        return NO;
     }
-
-    NSLog(@"audio route: %@", audioRoute);
-
+    
+    LOG(@"audio route: %@", audioRoute);
+    
     BOOL result = CFStringCompare(audioRoute, CFSTR("HeadsetInOut"), 0) == kCFCompareEqualTo ? YES : NO;
     CFRelease(audioRoute);
 	
@@ -413,28 +414,28 @@ audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, co
     UInt32 value;
     CFNumberRef routeChangeReasonRef = (CFNumberRef)CFDictionaryGetValue(dict, CFSTR(kAudioSession_AudioRouteChangeKey_Reason));
     CFNumberGetValue(routeChangeReasonRef, kCFNumberSInt32Type, &value);
-    NSLog(@"route change reason: %lu", value);
-
+    LOG(@"route change reason: %lu", value);
+    
     BOOL audioInputAvailable = [self hasAudioInput];
     self.pluggedIn = [self isPluggedIn];
-
+    
     //
     // Since we don't know what is plugged in, be safe and disable the power signal.
     //
     self.emittingPowerSignal = NO;
-
+    
     if (audioUnitRunning == YES && audioInputAvailable == NO) {
-	[self stopAudioUnit];
+        [self stopAudioUnit];
     }
     else if (audioUnitRunning == NO && audioInputAvailable == YES) {
-	[self startAudioUnit];
+        [self startAudioUnit];
     }
 }
 
 - (void)processSamples:(AudioBufferList*)ioData frameCount:(UInt32)frameCount
 {
     UInt32 count = frameCount;
-    SInt32* sptr = static_cast<SInt32*>(ioData->mBuffers[0].mData); 
+    SInt32* sptr = static_cast<SInt32*>(ioData->mBuffers[0].mData);
 
     //
     // Save samples if recording
@@ -442,7 +443,7 @@ audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, co
     if (sampleRecorder) {
         [sampleRecorder writeData:ioData frameCount:frameCount];
     }
-
+    
     if (sampleBuffer.size() < frameCount) {
         sampleBuffer.resize(frameCount, 0.0f);
     }
@@ -461,20 +462,17 @@ audioUnitRenderProc(void* context, AudioUnitRenderActionFlags* ioActionFlags, co
     fptr = &sampleBuffer[0];
     [sampleProcessor addSamples:fptr count:count];
     [switchDetector addSamples:fptr count:count];
-
-    VertexBuffer* vertexBuffer = [vertexBufferManager getBufferForCount:count];
-    if (vertexBuffer)
-        [vertexBuffer addSamples:fptr count:count];
-
+    [vertexBufferManager addSamples:fptr count:count];
+    
     if (emittingPowerSignal == YES) {
-	for (UInt32 buffer = 0; buffer < ioData->mNumberBuffers; ++buffer ) {
-	    memcpy(ioData->mBuffers[buffer].mData, powerSignal, ioData->mBuffers[buffer].mDataByteSize);
-	}
+        for (UInt32 buffer = 0; buffer < ioData->mNumberBuffers; ++buffer ) {
+            memcpy(ioData->mBuffers[buffer].mData, powerSignal, ioData->mBuffers[buffer].mDataByteSize);
+        }
     }
     else {
-	for (UInt32 buffer=0; buffer < ioData->mNumberBuffers; ++buffer) {
-	    memset(ioData->mBuffers[buffer].mData, 0, ioData->mBuffers[buffer].mDataByteSize);
-	}
+        for (UInt32 buffer=0; buffer < ioData->mNumberBuffers; ++buffer) {
+            memset(ioData->mBuffers[buffer].mData, 0, ioData->mBuffers[buffer].mDataByteSize);
+        }
     }
 }
 

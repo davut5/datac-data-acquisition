@@ -35,7 +35,7 @@
 - (id)initWithCapacity:(NSUInteger)capacity initialValue:(Float32)theInitialValue
 {
     if (self = [super init]) {
-	samples.resize(capacity, theInitialValue);
+        samples.resize(capacity, theInitialValue);
         initialValue = theInitialValue;
         tail = 0;
     }
@@ -68,7 +68,7 @@
         *valueCount = 0;
         return nil;
     }
-
+    
     size_t pos = (tail + index) % samples.size();
     if (pos < tail) {
         *valueCount = tail - pos;
@@ -76,7 +76,7 @@
     else {
         *valueCount = samples.size() - pos;
     }
-
+    
     return &samples[pos];
 }
 
@@ -87,14 +87,14 @@
     //
     NSUInteger count;
     Float32* ptr = [self valuesStartingAt:0 count:&count];
-    NSLog(@"count: %d", count);
+    LOG(@"count: %d", count);
     SampleSpan* span = [SampleSpan spanAt:ptr forCount:count];
     NSMutableArray* spans = [NSMutableArray arrayWithObject:span];
     if (count != samples.size()) {
         ptr = [self valuesStartingAt:count count:&count];
         [spans addObject:[SampleSpan spanAt:ptr forCount:count]];
     }
-
+    
     return spans;
 }
 

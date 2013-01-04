@@ -55,9 +55,9 @@
         outputFormat.mFramesPerPacket = 1;
         outputFormat.mBitsPerChannel = 16;
         
-        NSLog(@"initRecording: path: %@", theRecording.filePath);
-        NSLog(@"initRecording: input format: %s", inputFormat->toString().c_str());
-        NSLog(@"initRecording: output format: %s", outputFormat.toString().c_str());
+        LOG(@"initRecording: path: %@", theRecording.filePath);
+        LOG(@"initRecording: input format: %s", inputFormat->toString().c_str());
+        LOG(@"initRecording: output format: %s", outputFormat.toString().c_str());
         
         OSStatus err = ExtAudioFileCreateWithURL((CFURLRef)[NSURL fileURLWithPath:theRecording.filePath],
                                                  //kAudioFileCAFType,
@@ -67,20 +67,20 @@
                                                  kAudioFileFlags_EraseFile,
                                                  &file);
         if (err) {
-            NSLog(@"failed ExtAudioFileCreateWithURL: %ld", err);
+            LOG(@"failed ExtAudioFileCreateWithURL: %ld", err);
         }
         else {
-            err = ExtAudioFileSetProperty(file, 
-                                          kExtAudioFileProperty_ClientDataFormat, 
-                                          sizeof(*inputFormat), 
+            err = ExtAudioFileSetProperty(file,
+                                          kExtAudioFileProperty_ClientDataFormat,
+                                          sizeof(*inputFormat),
                                           inputFormat);
             if (err) {
-                NSLog(@"failed ExtAudioFileSetProperty: %ld", err);
+                LOG(@"failed ExtAudioFileSetProperty: %ld", err);
             }
             else {
                 err = ExtAudioFileWriteAsync(file, 0, 0);
                 if (err) {
-                    NSLog(@"failed ExtAudioFileWriteAsync: %ld", err);
+                    LOG(@"failed ExtAudioFileWriteAsync: %ld", err);
                 }
             }
         }
@@ -117,7 +117,7 @@
 - (void)writeData:(AudioBufferList *)ioData frameCount:(UInt32)frameCount
 {
     //
-    // Grab the oldest buffer in our list and copy over the incoming AudioBufferList data so we don't have to worry 
+    // Grab the oldest buffer in our list and copy over the incoming AudioBufferList data so we don't have to worry
     // about it getting changed before it is written to disk.
     //
     AUOutputBL* buffer = buffers.back();

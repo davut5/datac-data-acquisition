@@ -36,7 +36,7 @@
         frequency = 0;
         observer = nil;
     }
-
+    
     return self;
 }
 
@@ -46,7 +46,7 @@
     // First 10 bits make up the button state
     //
     buttonState = [BitFrameDecoder integerFromBits:[bits substringWithRange:NSMakeRange(0, 10)]];
-
+    
     //
     // The RPM value is encoded in two bytes, MSB first.
     //

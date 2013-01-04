@@ -8,8 +8,8 @@
 @class SignalProcessorController;
 
 /** Protocol for objects that perform signal processing on the audio stream. Unlike the SampleProcessorProtocol, this
-    one does not interact directly with DataCapture and the audio input samples. However, implementors of this protocol
-    must implement the sampleProcessor message which will return an object that implements the SampleProcessorProtocol.
+ one does not interact directly with DataCapture and the audio input samples. However, implementors of this protocol
+ must implement the sampleProcessor message which will return an object that implements the SampleProcessorProtocol.
  */
 @protocol SignalProcessorProtocol
 @optional
@@ -23,7 +23,7 @@
 - (void)updateFromSettings;
 
 /** Obtain a SignalProcessorController object that the SampleViewController can use to show and modify state within the
-    signal processor. Implementations must return nil if there is no SignalProcessorController to use.
+ signal processor. Implementations must return nil if there is no SignalProcessorController to use.
  */
 - (SignalProcessorController*)controller;
 
