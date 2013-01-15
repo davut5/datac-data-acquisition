@@ -45,6 +45,7 @@
 - (void)startAnimation;
 - (void)stopAnimation;
 - (BOOL)isAnimating;
+- (void)setContext;
 
 @property (nonatomic, assign) int animationInterval;
 @property (nonatomic, assign) id <SampleViewDelegate> delegate;

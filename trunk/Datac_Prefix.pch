@@ -7,9 +7,17 @@
 
 #define LOG(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
 
+#define GLEC(A) A;							\
+do {						    		\
+    GLenum err = glGetError();			    		\
+    if ( err != GL_NO_ERROR ) 		    			\
+        LOG(@"*** GL error after %s - %d", #A, err); \
+} while(0)
+
 #else
 
 #define LOG(...)
+#define GLEC(A) A
 
 #endif
 

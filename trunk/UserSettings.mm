@@ -54,7 +54,7 @@ NSString* kSettingsPulseWidthDetectorSmoothingKey = @"PULSE_WIDTH_DETECTOR_SMOOT
                                 @"PeakDetector", kSettingsSignalProcessingActiveDetectorKey,
                                 [NSNumber numberWithBool:NO], kSettingsSignalProcessingInvertSignalKey,
                                 
-                                [NSNumber numberWithFloat:20.0], kSettingsInputViewUpdateRateKey,
+                                [NSNumber numberWithFloat:30.0], kSettingsInputViewUpdateRateKey,
                                 [NSNumber numberWithFloat:0.0001], kSettingsInputViewScaleKey,
                                 
                                 [NSNumber numberWithFloat:30.0], kSettingsDetectionsViewDurationKey,

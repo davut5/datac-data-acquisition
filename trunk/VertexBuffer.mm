@@ -11,27 +11,27 @@
 
 static const int kValuesPerVertex = 2;
 
-- (id)initWithCapacity:(UInt32)theCapacity sampleRate:(Float64)sampleRate
+- (id)initWithCapacity:(UInt32)theCapacity lastY:(GLfloat)lastY
 {
     if ((self = [super init])) {
 
         //
-        // Internally we hold N + 1 vertices, with the first being reserved for the last one from the
+        // Internally we hold N + 1 vertices, with the first being reserved for the last Y value from the
         // previous buffer. That way we can properly stitch together buffers using the glDrawArrays()
-        // call.
+        // and a proper glTranslate() call.
         //
         capacity = theCapacity + 1;
-        vertices = new GLfloat[capacity * kValuesPerVertex];
-
-        GLfloat xScale = 1.0 / sampleRate;
-        GLfloat* ptr = vertices;
-        for (int index = 0; index < capacity; ++index) {
-            *ptr++ = xScale * (index - 1);
-            *ptr++ = 0.0;
+        vertices = new Vertex[capacity];
+        Vertex* vptr = vertices;
+        *vptr++ = Vertex(0, lastY);
+        for (UInt32 i = 1; i < capacity; ++i) {
+            *vptr++ = Vertex(i, 0.0);
         }
-
-        [self clear];
+        vbo = 0;
+        count = 1;
+        stale = YES;
     }
+
     return self;
 }
 
@@ -42,54 +42,72 @@ static const int kValuesPerVertex = 2;
     [super dealloc];
 }
 
-- (GLfloat)lastValue
+- (GLfloat)lastYValue;
 {
-    // NOTE: count does not reflect the space held by the reserved vertex.
-    return vertices[count * kValuesPerVertex + 1];
+    return vertices[count - 1].y_;
 }
 
-- (void)clear
+- (void)resetWithLastY:(GLfloat)lastY
 {
-    count = 0;
+    count = 1;
+    vertices[0].y_ = lastY;
+    stale = vbo == 0;
 }
 
-- (BOOL)remaining
+- (BOOL)filled
 {
-    return capacity - count;
+    return capacity == count;
 }
 
-- (void)addSamples:(Float32*)ptr count:(UInt32)numSamples
+- (void)releaseResources
 {
-    //
-    // Incoming samples are in the order of oldest to newest.
-    //
-    vptr = &vertices[ 3 + count ];
-    count += numSamples;
-    ptr += numSamples;
-    while (numSamples-- > 0) {
-        *vptr = *--ptr;
-        vptr += 2;
+    if (vbo != 0) {
+        glDeleteBuffers(1, &vbo);
+        vbo = 0;
     }
 }
 
-- (GLfloat)drawVerticesJoinedWith:(VertexBuffer*)previousBuffer
+- (UInt32)addSamples:(Float32*)ptr count:(UInt32)numSamples
 {
     //
-    // If not the first buffer to draw, copy the last Y value from the previous buffer
-    // into the first vertex slot of our buffer, then draw. Otherwise, just draw the
-    // data in our vertices.
+    // Add samples to the buffer until we are full. Newer values appear at the end with higher X values.
     //
-    if (previousBuffer != nil) {
-        vertices[1] = [previousBuffer lastValue];
-        glVertexPointer(2, GL_FLOAT, 0, &vertices[0]);
-        glDrawArrays(GL_LINE_STRIP, 0, count + 1);
+    Vertex* vptr = vertices + count;
+    for (; numSamples > 0 && count < capacity; --numSamples, ++count) {
+        vptr++->y_ = *ptr++;
+    }
+
+    stale = YES;
+    return numSamples;
+}
+
+- (void)drawVertices
+{
+    if (stale == YES) {
+        stale = NO;
+
+        //
+        // Create a VBO for our samples.
+        //
+        if (vbo == 0) {
+            glGenBuffers(1, &vbo);
+        }
+
+        //
+        // Use our VBO and copy samples into it.
+        //
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glBufferData(GL_ARRAY_BUFFER, count * sizeof(Vertex), vertices, GL_DYNAMIC_DRAW);
     }
     else {
-        glVertexPointer(2, GL_FLOAT, 0, &vertices[2]);
-        glDrawArrays(GL_LINE_STRIP, 0, count);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
     }
 
-    return vertices[count * kValuesPerVertex];
+    //
+    // Use our VBO and draw its contents.
+    //
+    glVertexPointer(2, GL_FLOAT, 0, 0);
+    glDrawArrays(GL_LINE_STRIP, 0, count);
 }
 
 @end

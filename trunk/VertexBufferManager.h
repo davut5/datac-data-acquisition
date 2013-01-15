@@ -6,6 +6,7 @@
 #import <Foundation/Foundation.h>
 #import "SampleProcessorProtocol.h"
 
+@class SampleView;
 @class VertexBuffer;
 
 /** Collection of one or more VertexBuffer objects that hold past audio samples for display
@@ -16,28 +17,41 @@
  */
 @interface VertexBufferManager : NSObject<SampleProcessorProtocol> {
 @private
-    NSMutableArray* vertexBuffers;
+    NSMutableArray* vertices;
+    UInt32 capacity;
     NSLock* lock;
-    UInt32 first;
-    SInt32 unallocated;
+    Float64 seconds;
     Float64 sampleRate;
+    UInt32 bufferSize;
+    SampleView* sampleView;
+    GLfloat bufferedSampleCount;
+    GLfloat xMin;
+    GLfloat xMax;
+    GLfloat yMin;
+    GLfloat yMax;
     BOOL frozen;
 }
 
+@property (nonatomic, retain) NSLock* lock;
+@property (nonatomic, assign) Float64 sampleRate;
 @property (nonatomic, assign) BOOL frozen;
+@property (nonatomic, retain) SampleView* sampleView;
+@property (nonatomic, assign) GLfloat xMin;
+@property (nonatomic, assign) GLfloat xMax;
+@property (nonatomic, assign) GLfloat yMin;
+@property (nonatomic, assign) GLfloat yMax;
 
 /** Class method that creates a new VertexBufferManager object for a given number of seconds duration
  at a given audio sample rate.
  */
-+ (id)createForDuration:(Float64)seconds sampleRate:(Float64)sampleRate;
++ (id)createForDuration:(Float64)seconds sampleRate:(Float64)sampleRate bufferSize:(UInt32)bufferSize;
 
 /** Initialize new VertexBufferManager instance.
  */
-- (id)initForDuration:(Float64)seconds sampleRate:(Float64)sampleRate;
+- (id)initForDuration:(Float64)seconds sampleRate:(Float64)sampleRate bufferSize:(UInt32)bufferSize;
 
-/** Draw the current vertex data, starting with the most-recent on the left-hand side of the display, visiting
- VertexBuffer objects until it completely redraws the view.
- */
-- (void)drawVerticesStartingAt:(GLfloat)offset forSpan:(GLfloat)span;
+- (void)drawVertices;
+
+- (void)releaseResources;
 
 @end

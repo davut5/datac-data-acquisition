@@ -45,6 +45,11 @@
     return self;
 }
 
+-(void)setContext
+{
+    [EAGLContext setCurrentContext:context];
+}
+
 -(void)layoutSubviews
 {
     [EAGLContext setCurrentContext:context];
@@ -91,7 +96,8 @@
         int interval = int(60 / animationInterval);
         if (interval < 1) interval = 1;
         if (interval > 10) interval = 10;
-        [displayLink setFrameInterval:1];
+        [displayLink setFrameInterval:interval];
+        LOG(@"interval: %d", interval);
         [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     }
 }
@@ -108,18 +114,29 @@
 - (void)setupView
 {
     // Sets up matrices and transforms for OpenGL ES
+    glDisable(GL_DITHER);
+    glDisable(GL_ALPHA_TEST);
+    glDisable(GL_BLEND);
+    glDisable(GL_STENCIL_TEST);
+    glDisable(GL_FOG);
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_DEPTH_TEST);
+
     glViewport(0, 0, self.bounds.size.width, self.bounds.size.height);
     glClearColor(0.f, 0.f, 0.f, 1.0f);
+
     glEnableClientState(GL_VERTEX_ARRAY);
 }
 
 - (void)drawView:(id)sender
 {
-    [EAGLContext setCurrentContext:context];
-    glBindFramebufferOES(GL_FRAMEBUFFER_OES, viewFramebuffer);
-    [delegate drawView:self];
-    glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
-    [context presentRenderbuffer:GL_RENDERBUFFER_OES];
+    if (self.hidden == NO) {
+        [EAGLContext setCurrentContext:context];
+        glBindFramebufferOES(GL_FRAMEBUFFER_OES, viewFramebuffer);
+        [delegate drawView:self];
+        glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
+        [context presentRenderbuffer:GL_RENDERBUFFER_OES];
+    }
 }
 
 - (BOOL)isAnimating
