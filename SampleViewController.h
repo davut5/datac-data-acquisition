@@ -14,10 +14,11 @@
 @class LevelSettingView;
 @class SignalProcessorController;
 @class VertexBufferManager;
+@class VertexBuffer;
 
 /** Controller for the view that contains engineering data for the data capture interface.
  */
-@interface SampleViewController : UIViewController <SampleViewDelegate, MicSwitchDetectorDelegate> {
+@interface SampleViewController : UIViewController <SampleViewDelegate, MicSwitchDetectorDelegate, UIGestureRecognizerDelegate> {
 @private
     AppDelegate* appDelegate;
     IBOutlet SampleView* sampleView;
@@ -43,11 +44,15 @@
     CGFloat scale;
     CGFloat gestureStart;
     CGPoint gesturePoint;
-    GLfloat yAxes[8];
-    
+    CGFloat gestureXMin;
+    CGFloat gestureYMin;
     int gestureType;
     CGPoint kineticPanVelocity;
     BOOL kineticPanActive;
+    BOOL viewChanged;
+
+    GLfloat yAxes[8];
+    GLfloat axis[ 16 ];
 }
 
 @property (nonatomic, retain) IBOutlet SampleView* sampleView;
@@ -67,6 +72,8 @@
 @property (nonatomic, assign) CGFloat xMin;
 @property (nonatomic, assign) CGFloat yMin;
 @property (nonatomic, assign) CGFloat scale;
+
+@property (nonatomic, retain) VertexBuffer* vertexBuffer;
 
 - (IBAction)togglePower;
 - (IBAction)toggleRecord;

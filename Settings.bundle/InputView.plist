@@ -14,7 +14,7 @@
 			<key>AutocorrectionType</key>
 			<string>No</string>
 			<key>DefaultValue</key>
-			<real>20</real>
+			<integer>30</integer>
 			<key>Key</key>
 			<string>INPUT_VIEW_UPDATE_RATE</string>
 			<key>KeyboardType</key>
@@ -34,11 +34,11 @@
 		</dict>
 		<dict>
 			<key>MaximumValue</key>
-			<real>1.0</real>
+			<real>1</real>
 			<key>MinimumValue</key>
 			<real>0.0001</real>
 			<key>DefaultValue</key>
-			<real>1.0</real>
+			<real>1</real>
 			<key>Key</key>
 			<string>INPUT_VIEW_SCALE</string>
 			<key>Type</key>

@@ -59,8 +59,8 @@
     self.dataCapture = [DataCapture create];
     [self makeSignalDetector];
     self.switchDetector = [MicSwitchDetector createWithSampleRate:dataCapture.sampleRate];
-    self.vertexBufferManager = [VertexBufferManager createForDuration:1.0 sampleRate:dataCapture.sampleRate];
-    
+    self.vertexBufferManager = [VertexBufferManager createForDuration:1.0 sampleRate:dataCapture.sampleRate bufferSize:512 * 4];
+
     dataCapture.invertSignal = [settings boolForKey:kSettingsSignalProcessingInvertSignalKey];
     dataCapture.switchDetector = switchDetector;
     dataCapture.vertexBufferManager = vertexBufferManager;
@@ -113,6 +113,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     LOG(@"applicationDidBecomeActive");
+    vertexBufferManager.sampleView = sampleViewController.sampleView;
     [dataCapture start];
     [self start];
 }

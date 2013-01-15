@@ -8,34 +8,43 @@
 
 #import "SampleProcessorProtocol.h"
 
+struct Vertex
+{
+    Vertex() {}
+    Vertex(GLfloat x, GLfloat y) : x_(x), y_(y) {}
+    GLfloat x_;
+    GLfloat y_;
+};
+
 /** Array of OpenGL floats used to communicate vertex coordinates to OpenGL processor.
- The array has a maximum capacity, and a current count value that is set from within
- the processAudioSamples call. Of special note, the first element of the internal
- vertices attribute does not hold new data, but is instead held in reserve to hold
- the Y value of the last vertex of the previously drawn VertexBuffer.
  */
-@interface VertexBuffer : NSObject<SampleProcessorProtocol> {
+@interface VertexBuffer : NSObject {
 @private
-    GLfloat* vertices;
-    GLfloat* vptr;
+    Vertex* vertices;
     UInt32 count;
     UInt32 capacity;
+    GLuint vbo;
+    BOOL stale;
 }
 
-@property(nonatomic,assign,readonly) GLfloat* vertices;
-@property(nonatomic,assign) UInt32 count;
+@property(nonatomic, assign, readonly) Vertex* vertices;
+@property(nonatomic, assign, readonly) UInt32 count;
 
 /** Initialize new VertexBuffer object to hold the maximum number of 2-tuple vertices
  with the X values preset to a monotonically increasing sequence of 1/sampleRate values.
  */
-- (id)initWithCapacity:(UInt32)capacity sampleRate:(Float64)sampleRate;
+- (id)initWithCapacity:(UInt32)capacity lastY:(GLfloat)lastY;
 
-- (void)clear;
+- (void)releaseResources;
 
-/** Render the vertices held in the buffer. If the given previousBuffer is not
- nil, set up the draw such that the new vertices appear joined to the previous
- ones.
- */
-- (GLfloat)drawVerticesJoinedWith:(VertexBuffer*)previousBuffer;
+- (void)resetWithLastY:(GLfloat)lastY;
+
+- (BOOL)filled;
+
+- (UInt32)addSamples:(Float32 *)samples count:(UInt32)frameSize;
+
+- (void)drawVertices;
+
+- (GLfloat)lastYValue;
 
 @end

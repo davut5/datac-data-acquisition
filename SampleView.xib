@@ -214,7 +214,7 @@
 										<string key="NSFrame">{{28, 4}, {43, 18}}</string>
 										<reference key="NSSuperview" ref="521814168"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="752077089"/>
+										<reference key="NSNextKeyView" ref="268427195"/>
 										<object class="NSColor" key="IBUIBackgroundColor">
 											<int key="NSColorSpace">1</int>
 											<bytes key="NSRGB">MSAxIDEgMAA</bytes>
@@ -347,6 +347,7 @@
 						<string key="NSFrame">{{159, 396}, {159, 15}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -474,7 +475,7 @@
 						<string key="NSFrame">{{20, 65}, {280, 326}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="268427195"/>
+						<reference key="NSNextKeyView" ref="191104558"/>
 						<reference key="IBUIBackgroundColor" ref="665126873"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<float key="IBUIAlpha">0.80000001192092896</float>
@@ -501,10 +502,10 @@
 					<object class="IBUILabel" id="268427195">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">269</int>
-						<string key="NSFrame">{{110, 280}, {100, 100}}</string>
+						<string key="NSFrameSize">{320, 44}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="191104558"/>
+						<reference key="NSNextKeyView" ref="752077089"/>
 						<reference key="IBUIBackgroundColor" ref="824593302"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -534,7 +535,7 @@
 							<int key="NSfFlags">16</int>
 						</object>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
-						<double key="preferredMaxLayoutWidth">100</double>
+						<double key="preferredMaxLayoutWidth">320</double>
 					</object>
 				</object>
 				<string key="NSFrame">{{0, 20}, {320, 411}}</string>

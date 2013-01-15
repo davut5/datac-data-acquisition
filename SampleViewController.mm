@@ -14,6 +14,7 @@
 #import "SignalProcessorController.h"
 #import "SampleViewController.h"
 #import "UserSettings.h"
+#import "VertexBuffer.h"
 #import "VertexBufferManager.h"
 
 @interface SampleViewController(Private)
@@ -23,8 +24,7 @@
 - (void)handlePinchGesture:(UIPinchGestureRecognizer *)recognizer;
 - (void)switchStateChanged:(MicSwitchDetector*)sender;
 - (void)dismissInfoOverlay:(UITapGestureRecognizer*)recognizer;
-- (void)placeYLabels;
-- (void)updateXLabels;
+- (void)updateLabels;
 - (void)updateKineticPan;
 
 @end
@@ -33,7 +33,7 @@
 
 @synthesize sampleView, powerIndicator, connectedIndicator, recordIndicator, infoOverlay, levelOverlay;
 @synthesize xMinLabel, xMaxLabel, yMaxLabel, yPos05Label, yZeroLabel, yNeg05Label, signalProcessorController;
-@synthesize xMin, yMin, scale;
+@synthesize xMin, yMin, scale, vertexBuffer;
 
 static const CGFloat kScaleMin = 0.0001;
 static const CGFloat kScaleMax = 1.0;
@@ -46,7 +46,7 @@ enum GestureType {
     kGestureUnknown,
     kGestureScale,
     kGesturePan,
-    kGestureDetector,
+    kGestureSignalProcessor,
 };
 
 - (id)initWithCoder:(NSCoder*)decoder
@@ -61,11 +61,18 @@ enum GestureType {
 
 - (void)dealloc
 {
+    self.vertexBuffer = nil;
+
     if (signalProcessorController) {
         [signalProcessorController release];
         signalProcessorController = nil;
     }
     [super dealloc];
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
 }
 
 -(void)viewDidLoad
@@ -114,7 +121,7 @@ enum GestureType {
                                      initWithTarget:self action:@selector(handleSingleTapGesture:)]
                                     autorelease];
     [sampleView addGestureRecognizer:stgr];
-    
+
     //
     // Install a 1 finger pan guesture to pan the display levels
     //
@@ -122,7 +129,8 @@ enum GestureType {
                                     initWithTarget:self action:@selector(handlePanGesture:)]
                                    autorelease];
     pgr.minimumNumberOfTouches = 1;
-    pgr.maximumNumberOfTouches = 1;
+    pgr.maximumNumberOfTouches = 2;
+    pgr.delegate = self;
     [sampleView addGestureRecognizer:pgr];
     
     //
@@ -131,6 +139,7 @@ enum GestureType {
     UIPinchGestureRecognizer* pigr = [[[UIPinchGestureRecognizer alloc]
                                        initWithTarget:self action:@selector(handlePinchGesture:)]
                                       autorelease];
+    pigr.delegate = self;
     [sampleView addGestureRecognizer:pigr];
     
     //
@@ -139,13 +148,16 @@ enum GestureType {
     stgr = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissInfoOverlay:)] autorelease];
     [infoOverlay addGestureRecognizer:stgr];
 
-    scale = 1.0;
-    self.xMin = 0.0;    // Use self.xMin to update xMinLabel
-    yMin = -1.0;
-    self.scale = 1.0;   // Use self.scale to update xMaxLabel and set xSpan, ySpan
+    scale = kScaleMax;
+    xMin = kXMin;
+    xSpan = kXMax - kXMin;
+    yMin = kYMin;
+    ySpan = kYMax - kYMin;
+
+    viewChanged = YES;
+    vertexBuffer = nil;
 
     [self updateFromSettings];
-
     [super viewDidLoad];
 }
 
@@ -161,64 +173,65 @@ enum GestureType {
 
 - (void)viewWillLayoutSubviews
 {
-    [self placeYLabels];
+    LOG(@"SampleViewController.viewWillLayoutSubviews: width: %f height: %f", self.view.bounds.size.width, self.view.bounds.size.height);
+    viewChanged = YES;
 }
 
 - (void)setScale:(CGFloat)value
 {
-    CGFloat yc = yMin + ySpan / 2.0f;
-
     if (value < kScaleMin) value = kScaleMin;
     if (value > kScaleMax) value = kScaleMax;
 
-    scale = value;
-    xSpan = scale * (kXMax - kXMin);
-    ySpan = scale * (kYMax - kYMin);
+    if (scale != value) {
+        viewChanged = YES;
 
-    //
-    // Move xMin back if the new scale would make xMax too large.
-    //
-    CGFloat xMax = xMin + xSpan;
-    if (xMax > kXMax) {
-        self.xMin = kXMax - xSpan;
-        xMax = kXMax;
+        CGFloat yc = yMin + ySpan / 2.0f;
+        scale = value;
+        xSpan = scale * (kXMax - kXMin);
+        ySpan = scale * (kYMax - kYMin);
+
+        //
+        // Move xMin back if the new scale would make xMax too large.
+        //
+        CGFloat xMax = xMin + xSpan;
+        if (xMax > kXMax) {
+            xMin = kXMax - xSpan;
+        }
+
+        self.yMin = yc - ySpan / 2.0f;
     }
-
-    xMaxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%5.4gs", @"Format string for X label"), xMax];
-
-    self.yMin = yc - ySpan / 2.0f;
 }
 
 - (void)setXMin:(CGFloat)value
 {
     if (value < kXMin) value = kXMin;
+    if (value != xMin) {
+        viewChanged = YES;
 
-    //
-    // Reduce value if it would make xMax too large.
-    //
-    CGFloat xMax = value + xSpan;
-    if (xMax > kXMax) value = kXMax - xSpan;
+        //
+        // Reduce value if it would make xMax too large.
+        //
+        CGFloat xMax = value + xSpan;
+        if (xMax > kXMax) value = kXMax - xSpan;
 
-    xMin = value;
-
-    value = round(xMin * 10000.0) / 10000.0;
-    xMinLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%5.4gs", @"Format string for X label"), value];
-
-    value = round((xMin + xSpan) * 10000.0) / 10000.0;
-    xMaxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%5.4gs", @"Format string for X label"), value];
+        xMin = value;
+    }
 }
+
 
 - (void)setYMin:(CGFloat)value
 {
     if (value < kYMin) value = kYMin;
+    if (value != yMin) {
+        viewChanged = YES;
 
-    //
-    // Reduce value if it would make yMax too large.
-    //
-    CGFloat diff = (value + ySpan) - kYMax;
-    if (diff > 0.0f) value -= diff;
-    yMin = value;
-    [self placeYLabels];
+        //
+        // Reduce value if it would make yMax too large.
+        //
+        CGFloat diff = (value + ySpan) - kYMax;
+        if (diff > 0.0f) value -= diff;
+        yMin = value;
+    }
 }
 
 - (void)viewDidUnload
@@ -236,13 +249,16 @@ enum GestureType {
 {
     LOG(@"SampleViewController.viewWillAppear");
     [self start];
+    sampleView.hidden = NO;
     [super viewWillAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     LOG(@"SampleViewController.viewWillDisappear");
-    [self stop];
+//    [self stop];
+    infoOverlay.hidden = YES;
+    sampleView.hidden = YES;
     if (signalProcessorController) {
         [signalProcessorController release];
         signalProcessorController = nil;
@@ -333,56 +349,65 @@ enum GestureType {
     }
 
     glClear(GL_COLOR_BUFFER_BIT);
+    
+    if (viewChanged) {
+        viewChanged = NO;
 
-    //
-    // Set scaling for the floating-point samples
-    //
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrthof(xMin, xMin + xSpan, yMin, yMin + ySpan, -1.0f, 1.0f);
+        vertexBufferManager.xMin = xMin;
+        vertexBufferManager.xMax = xMin + xSpan;
+        vertexBufferManager.yMin = yMin;
+        vertexBufferManager.yMax = yMin + ySpan;
+        
+        //
+        // Set scaling for the floating-point samples
+        //
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
 
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        glOrthof(xMin, xMin + xSpan, yMin, yMin + ySpan, -1.0f, 1.0f);
+
+        [self updateLabels];
+    }
 
     glColor4f(0., 1., 0., 1.);
     glLineWidth(1.25);
-    glPushMatrix();
-    [vertexBufferManager drawVerticesStartingAt:xMin forSpan:xSpan];
-    glPopMatrix();
+    [vertexBufferManager drawVertices];
+    
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    GLfloat vertices[ 16 ];
-    glVertexPointer(2, GL_FLOAT, 0, vertices);
-    
+    glVertexPointer(2, GL_FLOAT, 0, axis);
     GLfloat xMax = xMin + xSpan;
-    
+
     //
     // Draw three horizontal values at Y = -0.5, 0.0, and +0.5
     //
-    vertices[0] = xMin;
-    vertices[1] = yAxes[0];
-    vertices[2] = xMax;
-    vertices[3] = yAxes[0];
+    axis[0] = xMin;
+    axis[1] = yAxes[0];
+    axis[2] = xMax;
+    axis[3] = yAxes[0];
     
-    vertices[4] = xMin;
-    vertices[5] = yAxes[1];
-    vertices[6] = xMax;
-    vertices[7] = yAxes[1];
+    axis[4] = xMin;
+    axis[5] = yAxes[1];
+    axis[6] = xMax;
+    axis[7] = yAxes[1];
     
-    vertices[8] = xMin;
-    vertices[9] = yAxes[2];
-    vertices[10] = xMax;
-    vertices[11] = yAxes[2];
+    axis[8] = xMin;
+    axis[9] = yAxes[2];
+    axis[10] = xMax;
+    axis[11] = yAxes[2];
     
-    vertices[12] = xMin;
-    vertices[13] = yAxes[3];
-    vertices[14] = xMax;
-    vertices[15] = yAxes[3];
+    axis[12] = xMin;
+    axis[13] = yAxes[3];
+    axis[14] = xMax;
+    axis[15] = yAxes[3];
 
-    glColor4f(.5, .5, .5, 1.0);
+    glColor4f(.5, .5, .5, 0.5);
     glLineWidth(0.5);
     glDrawArrays(GL_LINES, 0, 8);
-    
-    [self.signalProcessorController drawOnSampleView:vertices];
+
+    [self.signalProcessorController drawOnSampleView:axis];
 }
 
 - (void)handleSingleTapGesture:(UITapGestureRecognizer*)recognizer
@@ -402,66 +427,76 @@ enum GestureType {
 
 - (void)handlePanGesture:(UIPanGestureRecognizer*)recognizer
 {
-    if (recognizer.state == UIGestureRecognizerStateBegan) {
-        CGPoint pos = [recognizer locationInView:sampleView];
-        gestureType = kGestureUnknown;
-        if (self.signalProcessorController != nil) {
-            CGFloat height = sampleView.bounds.size.height;
-            pos.y = (1.0 - pos.y / height) * ySpan + yMin;
-            Float32 distance = [signalProcessorController distanceFromLevel:pos.y];
-            LOG(@"distance: %f %f", distance, distance / ySpan);
-            if (distance / ySpan < 0.05) {
-                gestureType = kGestureDetector;
-                CGFloat width = sampleView.bounds.size.width;
-                pos.x = pos.x / width * xSpan + xMin;
-                [signalProcessorController handlePanGesture:recognizer viewPoint:pos];
+    switch (recognizer.state) {
+        case UIGestureRecognizerStateBegan:
+            gestureType = kGestureUnknown;
+
+            //
+            // If we have a signal processor, give it a chance to grab a setting line.
+            //
+            if (self.signalProcessorController != nil && recognizer.numberOfTouches == 2) {
+                CGFloat height = sampleView.bounds.size.height;
+                for (NSUInteger touchIndex = 0; touchIndex < recognizer.numberOfTouches; ++touchIndex) {
+                    CGPoint pos = [recognizer locationOfTouch:touchIndex inView:sampleView];
+                    CGFloat y = (1.0 - pos.y / height) * ySpan + yMin;
+                    Float32 distance = [signalProcessorController distanceFromLevel:y] / ySpan;
+                    if (distance < 0.05) {
+
+                        //
+                        // Touch is on the setting line. Let the signal processor adjust it.
+                        //
+                        gestureType = kGestureSignalProcessor;
+                        CGFloat width = sampleView.bounds.size.width;
+                        pos.x = pos.x / width * xSpan + xMin;
+                        pos.y = y;
+                        [signalProcessorController handlePanGesture:recognizer viewPoint:pos];
+                        break;
+                    }
+                }
             }
-        }
-        
-        if (gestureType == kGestureUnknown) {
-            gestureType = kGesturePan;
-            gesturePoint = pos;
-            [levelOverlay hide];
-        }
-        return;
-    }
-    
-    CGPoint pos = [recognizer locationInView:sampleView];
-    
-    if (gestureType == kGestureDetector) {
-        if (self.signalProcessorController) {
+
+            if (gestureType == kGestureUnknown) {
+                CGPoint pos = [recognizer locationInView:sampleView];
+            
+                //
+                // Initiate a pan.
+                //
+                gestureType = kGesturePan;
+                gesturePoint = pos;
+                gestureXMin = xMin;
+                gestureYMin = yMin;
+                [levelOverlay hide];
+            }
+            break;
+
+        case UIGestureRecognizerStateChanged:
+        case UIGestureRecognizerStateEnded:
+            CGPoint pos = [recognizer locationInView:sampleView];
             CGFloat width = sampleView.bounds.size.width;
             CGFloat height = sampleView.bounds.size.height;
-            pos.x = pos.x / width * xSpan + xMin;
-            pos.y = (1.0 - pos.y / height) * ySpan + yMin;
-            [signalProcessorController handlePanGesture:recognizer viewPoint:pos];
-        }
-        
-        if (recognizer.state == UIGestureRecognizerStateEnded) {
-            gestureType = kUnknownType;
-        }
-        
-        return;
+            switch (gestureType) {
+                case kGestureSignalProcessor:
+                    if (self.signalProcessorController) {
+                        pos.x = pos.x / width * xSpan + xMin;
+                        pos.y = (1.0 - pos.y / height) * ySpan + yMin;
+                        [signalProcessorController handlePanGesture:recognizer viewPoint:pos];
+                    }
+                    break;
+
+                case kGesturePan:
+                    CGFloat dx = (gesturePoint.x - pos.x) / width;
+                    CGFloat dy = (pos.y - gesturePoint.y) / height;
+                    if (dx != 0.0 || dy != 0.0) {
+                        self.xMin = gestureXMin + dx * xSpan;
+                        self.yMin = gestureYMin + dy * ySpan;
+                    }
+                    break;
+            }
+            break;
     }
-    
-    if (gestureType == kGesturePan) {
-        CGFloat width = sampleView.bounds.size.width;
-        CGFloat height = sampleView.bounds.size.height;
-        CGPoint pos = [recognizer translationInView:sampleView];
-        CGFloat dx = (gesturePoint.x - pos.x) / width;
-        CGFloat dy = (pos.y - gesturePoint.y) / height;
-        self.xMin = xMin + dx * xSpan;
-        self.yMin = yMin + dy * ySpan;
-        gesturePoint = pos;
-        if (recognizer.state == UIGestureRecognizerStateEnded) {
-            kineticPanVelocity = [recognizer velocityInView:sampleView];
-            kineticPanVelocity.x = int(kineticPanVelocity.x / 20);
-            if (fabs(kineticPanVelocity.x) < 20) kineticPanVelocity.x = 0;
-            kineticPanVelocity.y = int(kineticPanVelocity.y / 20);
-            if (fabs(kineticPanVelocity.y) < 20) kineticPanVelocity.y = 0;
-            kineticPanActive = kineticPanVelocity.x != 0 || kineticPanVelocity.y != 0;
-            gestureType = kUnknownType;
-        }
+
+    if (recognizer.state == UIGestureRecognizerStateEnded) {
+        gestureType = kUnknownType;
     }
 }
 
@@ -506,13 +541,16 @@ enum GestureType {
     }
 }
 
-- (void)placeYLabels
+- (void)updateLabels
 {
-    LOG(@"placeYLabels");
+    // LOG(@"SampleViewController.updateLabels");
 
-    //
-    // Place the grid labels in the appropriate location after a rotation event.
-    //
+    CGFloat value = round(xMin * 10000.0) / 10000.0;
+    xMinLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%5.4gs", @"Format string for X label"), value];
+    
+    value = round((xMin + xSpan) * 10000.0) / 10000.0;
+    xMaxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%5.4gs", @"Format string for X label"), value];
+
     SInt32 offset = sampleView.frame.origin.y;
     SInt32 height = sampleView.frame.size.height;
     int index = 0;
@@ -525,14 +563,11 @@ enum GestureType {
         t += (int((0.0 - t) / 0.25) + 1) * 0.25;
     }
     
-    //
-    // TODO: don't show element that with t < 0.08 since it overlaps the xMin label.
-    //
     while (t <= 1.0) {
         yAxes[index++] = t;
         t+= 0.25;
     }
-    
+
     t = (0.0 - yMin) / ySpan - 0.25;
     if (t > 1.0) {
         t -= (int((t - 1.0) / 0.25) + 1) * 0.25;
@@ -549,7 +584,7 @@ enum GestureType {
                                      yNeg05Label.bounds.size.height * 0.5 + 1);
     CGFloat y = yMin + yAxes[0] * ySpan;
     yAxes[0] = y;
-    CGFloat value = round(y * 10000.0) / 10000.0;
+    value = round(y * 10000.0) / 10000.0;
     yNeg05Label.text = [NSString stringWithFormat:format, value];
     
     yZeroLabel.center = CGPointMake(yZeroLabel.center.x, offset + height * (1 - yAxes[1])+
